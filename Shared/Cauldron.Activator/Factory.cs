@@ -39,6 +39,12 @@ namespace Cauldron.Activator
         }
 
         /// <summary>
+        /// Creates a wrapper for <see cref="Factory"/> that implements <see cref="IServiceProvider"/>.
+        /// </summary>
+        /// <returns></returns>
+        public static IServiceProvider CreateServiceProvider() => new FactoryContainer();
+
+        /// <summary>
         /// Occures if an object was created. This will only be invoked if the created object has set its <see cref="ComponentAttribute.InvokeOnObjectCreationEvent"/> to true.
         /// </summary>
         public static event EventHandler<FactoryObjectCreatedEventArgs> ObjectCreated;
