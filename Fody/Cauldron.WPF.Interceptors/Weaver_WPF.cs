@@ -16,7 +16,7 @@ public static class Weaver_WPF
     public const int Priority = 50;
 
     [Display("WPF/XAML Interceptor")]
-    public static void Implement(Builder builder)
+    public static void Implement(BuilderOld builder)
     {
         var multiBindingValueConverterInterface = builder.TypeExists("System.Windows.Data.IMultiValueConverter") ? builder.GetType("System.Windows.Data.IMultiValueConverter").Import() : null;
         var valueConverterInterface = builder.TypeExists("Windows.UI.Xaml.Data.IValueConverter") ? builder.GetType("Windows.UI.Xaml.Data.IValueConverter").Import() : builder.GetType("System.Windows.Data.IValueConverter").Import();
@@ -124,7 +124,7 @@ public static class Weaver_WPF
     }
 
     [Display("XAML initializer for baml resources")]
-    public static void ImplementBamlInit(Builder builder)
+    public static void ImplementBamlInit(BuilderOld builder)
     {
         if (builder.ResourceNames == null)
             return;
@@ -218,7 +218,7 @@ public static class Weaver_WPF
     }
 
     [Display("IChangeAwareViewModel implementer")]
-    public static void ImplementPropertyChangedEvent(Builder builder)
+    public static void ImplementPropertyChangedEvent(BuilderOld builder)
     {
         var changeAwareInterface = new __IChangeAwareViewModel();
         var viewModelInterface = new __IViewModel();

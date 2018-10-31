@@ -10,11 +10,11 @@ namespace Cauldron.Interception.Cecilator
         [EditorBrowsable(EditorBrowsableState.Never), DebuggerBrowsable(DebuggerBrowsableState.Never)]
         internal readonly CustomAttribute customAttribute;
 
-        internal AttributedProperty(Property property, CustomAttribute customAttribute) : base(property)
+        internal AttributedProperty(Property property, CustomAttribute customAttribute)
         {
             this.customAttribute = customAttribute;
             this.Property = property;
-            this.Attribute = new BuilderCustomAttribute(property.type.Builder, property.Getter != null ? property.Getter.methodDefinition : property.Setter.methodDefinition, customAttribute);
+            this.Attribute = new BuilderCustomAttribute(property.Getter != null ? property.Getter.methodDefinition : property.Setter.methodDefinition, customAttribute);
         }
 
         public BuilderCustomAttribute Attribute { get; private set; }

@@ -1,121 +1,19 @@
 ﻿using Cauldron.Interception.Cecilator.Coders;
 using Mono.Cecil;
+using Mono.Cecil.Cil;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
 
 namespace Cauldron.Interception.Cecilator
 {
     /// <exclude/>
-    public abstract class CecilatorBase : CecilatorObject
+    public abstract class CecilatorBase : ICecilatorLogging
     {
-        /// <exclude/>
-        [EditorBrowsable(EditorBrowsableState.Never), DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        protected readonly List<TypeDefinition> allTypes;
+        private readonly ICecilatorLogging logging;
 
-        /// <exclude/>
-        [EditorBrowsable(EditorBrowsableState.Never), DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        protected readonly ModuleDefinition moduleDefinition;
-
-        internal CecilatorBase(WeaverBase weaver)
+        internal CecilatorBase()
         {
-            this.Initialize(weaver.LogInfo, weaver.LogWarning, weaver.LogWarningPoint, weaver.LogError, weaver.LogErrorPoint);
-
-            this.moduleDefinition = weaver.ModuleDefinition;
-
-            this.ReferenceCopyLocal = weaver.ReferenceCopyLocalPaths
-                .Where(x => x.EndsWith(".dll"))
-                .Select(x => LoadAssembly(x))
-                .Where(x => x != null)
-                .ToArray();
-
-            var referencedAssemblies = weaver
-                .With(x =>
-                {
-                    if (weaver.Config.Attribute("ReferenceRecursive").With(y => y == null ? true : bool.Parse(y.Value)))
-                        return x.GetAllReferencedAssemblies(weaver.Resolve(this.moduleDefinition.AssemblyReferences));
-
-                    return weaver.Resolve(this.moduleDefinition.AssemblyReferences);
-                })
-                .Concat(weaver.References.Split(';').Select(x => LoadAssembly(x)))
-                .Where(x => x != null).ToArray() as IEnumerable<AssemblyDefinition>;
-
-            if (weaver.Config.Attribute("ReferenceCopyLocal").With(x => x == null ? true : bool.Parse(x.Value)))
-                referencedAssemblies = referencedAssemblies.Concat(this.ReferenceCopyLocal);
-
-            this.ReferencedAssemblies = referencedAssemblies.Distinct(new AssemblyDefinitionEqualityComparer()).ToArray();
-
-            this.Log("-----------------------------------------------------------------------------");
-
-            foreach (var item in this.ReferencedAssemblies)
-                this.Log(LogTypes.Info, "<<Assembly>> " + item.Name);
-
-            var resourceNames = new List<string>();
-            foreach (var item in this.moduleDefinition.Resources)
-            {
-                this.Log(LogTypes.Info, "<<Resource>> " + item.Name + " " + item.ResourceType);
-                if (item.ResourceType == ResourceType.Embedded)
-                {
-                    var embeddedResource = item as EmbeddedResource;
-                    using (var stream = embeddedResource.GetResourceStream())
-                    {
-                        var bytes = new byte[stream.Length];
-                        stream.Read(bytes, 0, bytes.Length);
-                        if (bytes[0] == 0xce && bytes[1] == 0xca && bytes[2] == 0xef && bytes[3] == 0xbe)
-                        {
-                            var resourceCount = BitConverter.ToInt16(bytes.GetBytes(160, 2).Reverse().ToArray(), 0);
-
-                            if (resourceCount > 0)
-                            {
-                                var startPoint = resourceCount * 8 + 180;
-
-                                for (int i = 0; i < resourceCount; i++)
-                                {
-                                    var length = (int)bytes[startPoint];
-                                    var data = Encoding.Unicode.GetString(bytes, startPoint + 1, length).Trim();
-                                    startPoint += length + 5;
-                                    resourceNames.Add(data);
-                                    this.Log("             " + data);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            this.ResourceNames = resourceNames.ToArray();
-
-            this.allTypes = this.ReferencedAssemblies
-                .SelectMany(x => x.Modules)
-                .Where(x => x != null)
-                .SelectMany(x => x.Types)
-                .Where(x => x != null)
-                .Concat(this.moduleDefinition.Types)
-                .Where(x => x.Module != null && x.Module.Assembly != null)
-                .Select(x => new { Prio = GetAssemblyPrio(x), Type = x })
-                .OrderBy(x => x.Prio)
-                .ThenBy(x => x.Type.FullName)
-                .Select(x => x.Type)
-                .Distinct(new TypeDefinitionEqualityComparer())
-                .ToList();
-            this.Log("-----------------------------------------------------------------------------");
-            WeaverBase.AllTypes = this.allTypes;
-
-            this.Identification = CodeBlocks.GenerateName();
-        }
-
-        internal CecilatorBase(CecilatorBase builderBase)
-        {
-            this.Initialize(builderBase);
-
-            this.moduleDefinition = builderBase.moduleDefinition;
-            this.ReferencedAssemblies = builderBase.ReferencedAssemblies;
-            this.allTypes = builderBase.allTypes;
-            this.ResourceNames = builderBase.ResourceNames;
-
+            this.logging = Builder.logging;
+            this.ModuleDefinition = Builder.Parameters.ModuleDefinition;
             this.Identification = CodeBlocks.GenerateName();
         }
 
@@ -125,60 +23,59 @@ namespace Cauldron.Interception.Cecilator
         public virtual string Identification { get; private set; }
 
         /// <summary>
-        /// Gets a value that indicates if the weaved assembly is an UWP assembly or not.
+        /// An instance of <see cref="ModuleDefinition"/> for processing.
         /// </summary>
-        public bool IsUWP => this.IsReferenced("Windows.Foundation.UniversalApiContract");
+        public ModuleDefinition ModuleDefinition { get; }
+
+        #region logging
 
         /// <summary>
-        /// Gets an array of all the references marked as copy-local.
+        /// Logs a string as <see cref="LogTypes.Info"/>.
         /// </summary>
-        public AssemblyDefinition[] ReferenceCopyLocal { get; private set; }
+        /// <param name="arg">The information to log.</param>
+        public void Log(object arg) => this.logging.Log(arg);
 
         /// <summary>
-        /// Gets an array of referenced assemblies including the assemblies referenced by it's references.
-        /// The array will include <see cref="CecilatorBase.ReferenceCopyLocal"/> assemblies as default.
-        /// To deactivate this the attribute "ReferenceCopyLocal" in FodyWeaver.xml can be set to false.
+        /// Logs a method using <see cref="Instruction"/> information.
         /// </summary>
-        public AssemblyDefinition[] ReferencedAssemblies { get; private set; }
+        /// <param name="logTypes">Any value of <see cref="LogTypes"/>.</param>
+        /// <param name="instruction">The instruction in the <paramref name="methodDefinition"/>'s body.</param>
+        /// <param name="methodDefinition">The <see cref="MethodDefinition"/> to log.</param>
+        /// <param name="arg">The message to log.</param>
+        public void Log(LogTypes logTypes, Instruction instruction, MethodDefinition methodDefinition, object arg) =>
+            this.logging.Log(logTypes, instruction, methodDefinition, arg);
 
         /// <summary>
-        /// Gets a list of names of all resources embedded in the assembly.
+        /// Logs an exception.
         /// </summary>
-        public string[] ResourceNames { get; private set; }
+        /// <param name="e">The exception to log.</param>
+        public void Log(Exception e) => this.logging.Log(e);
 
         /// <summary>
-        /// Checks if the assembly described by <paramref name="assemblyName"/> is referenced or not.
+        /// Logs a method.
         /// </summary>
-        /// <param name="assemblyName">The name of the assembly to check.</param>
-        /// <returns>Return true if the assembly is referenced; otherwise false.</returns>
-        public bool IsReferenced(string assemblyName) => this.ReferencedAssemblies.Any(x => x.Name.Name == assemblyName);
+        /// <param name="logTypes">Any value of <see cref="LogTypes"/>.</param>
+        /// <param name="methodDefinition">The <see cref="MethodDefinition"/> to log.</param>
+        /// <param name="arg">The message to log.</param>
+        public void Log(LogTypes logTypes, MethodDefinition methodDefinition, object arg) =>
+            this.logging.Log(logTypes, methodDefinition, arg);
 
-        private int GetAssemblyPrio(TypeDefinition typeDefinition)
-        {
-            switch (typeDefinition.Module.Assembly.Name.Name)
-            {
-                case "netstandard": return 1;
-                case "mscorlib": return 2;
-                default: return 0;
-            }
-        }
+        /// <summary>
+        /// Logs using the <see cref="SequencePoint"/>'s information.
+        /// </summary>
+        /// <param name="logTypes">Any value of <see cref="LogTypes"/>.</param>
+        /// <param name="sequencePoint">The sequencepoint to log.</param>
+        /// <param name="arg">The message to log.</param>
+        public void Log(LogTypes logTypes, SequencePoint sequencePoint, object arg) =>
+            this.logging.Log(logTypes, sequencePoint, arg);
 
-        private AssemblyDefinition LoadAssembly(string path)
-        {
-            try
-            {
-                return AssemblyDefinition.ReadAssembly(path);
-            }
-            catch (BadImageFormatException)
-            {
-                this.Log(LogTypes.Info, $"Info: a BadImageFormatException has occured while trying to retrieve information from '{path}'");
-                return null;
-            }
-            catch (Exception e)
-            {
-                this.Log(e);
-                return null;
-            }
-        }
+        /// <summary>
+        /// Logs an exception with an additional error message.
+        /// </summary>
+        /// <param name="e">The exception to log.</param>
+        /// <param name="message">The message to log.</param>
+        public void Log(Exception e, string message) => this.logging.Log(e, message);
+
+        #endregion logging
     }
 }

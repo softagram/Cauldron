@@ -11,7 +11,7 @@ namespace Cauldron.Interception.Cecilator.Coders
 
         protected CoderBase(InstructionBlock instructionBlock) => this.instructions = instructionBlock;
 
-        public void InstructionDebug() => this.instructions.associatedMethod.Log(LogTypes.Info, this.instructions);
+        public void InstructionDebug() => Builder.logging.Log(this.instructions);
 
         public override string ToString() => this.instructions.associatedMethod.Fullname;
 
@@ -24,7 +24,7 @@ namespace Cauldron.Interception.Cecilator.Coders
         }
 
         protected void InternalCall(object instance, Method method) =>
-            InternalCall(instance, method, new object[0]);
+            this.InternalCall(instance, method, new object[0]);
 
         protected void InternalCall(object instance, Method method, object[] parameters) =>
             this.instructions.Append(InstructionBlock.Call(this.instructions, instance, method, parameters));
@@ -149,7 +149,7 @@ namespace Cauldron.Interception.Cecilator.Coders
 
         public TSelf Append(TSelf coder)
         {
-            this.instructions.Append(instructions);
+            this.instructions.Append(this.instructions);
             return this as TSelf;
         }
 

@@ -23,10 +23,20 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DocumentationFile>bin\Release\netstandard2.0\Cauldron.Activator.xml</DocumentationFile>
+    <DefineConstants>TRACE;PUBLIC</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>bin\Debug\netstandard2.0\Cauldron.Activator.xml</DocumentationFile>
+    <DefineConstants>TRACE;PUBLIC</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release.Net45|AnyCPU'">
+    <DefineConstants>TRACE;PUBLIC</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release.451|AnyCPU'">
+    <DefineConstants>TRACE;PUBLIC</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
@@ -39,4 +49,6 @@
   <Import Project="..\..\Shared\Cauldron.Activator\Cauldron.Activator.projitems" Label="Shared" />
 
   <Import Project="..\..\Shared\Cauldron.Shared\Cauldron.Shared.projitems" Label="Shared" />
+
+  <Import Project="..\..\Shared\Cauldron.Collections.2\Cauldron.Collections.2.projitems" Label="Shared" />
 </Project>

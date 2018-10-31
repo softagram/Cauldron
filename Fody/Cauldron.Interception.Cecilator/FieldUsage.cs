@@ -3,7 +3,6 @@ using Mono.Cecil.Cil;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Linq;
 
 namespace Cauldron.Interception.Cecilator
 {
@@ -12,7 +11,7 @@ namespace Cauldron.Interception.Cecilator
         [EditorBrowsable(EditorBrowsableState.Never), DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly Instruction instruction;
 
-        internal FieldUsage(Field field, Method method, Instruction instruction) : base(field)
+        internal FieldUsage(Field field, Method method, Instruction instruction)
         {
             this.Field = field;
             this.Method = method;

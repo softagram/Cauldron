@@ -16,7 +16,7 @@ public static class ComponentCacheWeaver
     public static int Priority = int.MaxValue;
 
     [Display("Creating Component Cache and Inject Attribute")]
-    public static void Implement(Builder builder)
+    public static void Implement(BuilderOld builder)
     {
         builder.Log(LogTypes.Info, "Creating Cauldron Cache");
 
@@ -133,7 +133,7 @@ public static class ComponentCacheWeaver
         ReplaceFactoryCreate(builder);
     }
 
-    private static void AddComponentAttribute(Builder builder, IEnumerable<BuilderType> builderTypes, Func<BuilderType, BuilderType> contractNameDelegate = null)
+    private static void AddComponentAttribute(BuilderOld builder, IEnumerable<BuilderType> builderTypes, Func<BuilderType, BuilderType> contractNameDelegate = null)
     {
         var componentConstructorAttribute = BuilderTypes.ComponentConstructorAttribute;
         var componentAttribute = BuilderTypes.ComponentAttribute.BuilderType;
@@ -243,7 +243,7 @@ public static class ComponentCacheWeaver
 
                         if (assignProperty.Getter != null) then.Load(variable).StoreElement(then.NewCoder().Call(assignProperty.Getter), i);
                         else if (assignProperty.BackingField != null) then.Load(variable).StoreElement(assignProperty.BackingField, i);
-                        else Builder.Current.Log(LogTypes.Error, $"The property '{assignProperty}' does not have a getter and a backing field.");
+                        else Builder.Log(LogTypes.Error, $"The property '{assignProperty}' does not have a getter and a backing field.");
 
                         continue;
                     }
@@ -383,7 +383,7 @@ public static class ComponentCacheWeaver
         }
     }
 
-    private static void ImplementInjectField(Builder builder, AttributedField[] fields)
+    private static void ImplementInjectField(BuilderOld builder, AttributedField[] fields)
     {
         foreach (var member in fields)
         {
@@ -421,7 +421,7 @@ public static class ComponentCacheWeaver
         }
     }
 
-    private static void ImplementInjectProperties(Builder builder, AttributedProperty[] properties)
+    private static void ImplementInjectProperties(BuilderOld builder, AttributedProperty[] properties)
     {
         foreach (var member in properties)
         {
@@ -505,46 +505,46 @@ public static class ComponentCacheWeaver
         }).Insert(InsertionPosition.Beginning);
     }
 
-    private static void ReplaceFactoryCreate(Builder builder)
+    private static void ReplaceFactoryCreate(BuilderOld builder)
     {
         foreach (var item in FactoryCreateUsages.createMethodUsages)
         {
-            Builder.Current.Log(LogTypes.Info, $"{item}");
-            ((Instruction)item).Operand = Builder.Current.Import((MethodReference)BuilderTypes.Factory.GetMethod_____Create().MakeGeneric(item.GetGenericArgument(0)));
+            Builder.Log(LogTypes.Info, $"{item}");
+            ((Instruction)item).Operand = Builder.Import((MethodReference)BuilderTypes.Factory.GetMethod_____Create().MakeGeneric(item.GetGenericArgument(0)));
             item.HostMethod.NewCoder().Load(item.HostMethod.DeclaringType).End.Insert(InsertionAction.Before, item.Position);
         }
 
         foreach (var item in FactoryCreateUsages.createTypeMethodUsages)
         {
-            Builder.Current.Log(LogTypes.Info, $"{item}");
+            Builder.Log(LogTypes.Info, $"{item}");
             item.Replace(BuilderTypes.Factory.GetMethod_____Create(BuilderTypes.Type, BuilderTypes.Type));
             item.HostMethod.NewCoder().Load(item.HostMethod.DeclaringType).End.Insert(InsertionAction.Before, item.Position);
         }
 
         foreach (var item in FactoryCreateUsages.createStringMethodUsages)
         {
-            Builder.Current.Log(LogTypes.Info, $"{item}");
+            Builder.Log(LogTypes.Info, $"{item}");
             item.Replace(BuilderTypes.Factory.GetMethod_____Create(BuilderTypes.String, BuilderTypes.Type));
             item.HostMethod.NewCoder().Load(item.HostMethod.DeclaringType).End.Insert(InsertionAction.Before, item.Position);
         }
 
         foreach (var item in FactoryCreateUsages.createGenericMethodUsages)
         {
-            Builder.Current.Log(LogTypes.Info, $"{item}");
-            ((Instruction)item).Operand = Builder.Current.Import((MethodReference)BuilderTypes.Factory.GetMethod_____Create_Generic().MakeGeneric(item.GetGenericArgument(0)));
+            Builder.Log(LogTypes.Info, $"{item}");
+            ((Instruction)item).Operand = Builder.Import((MethodReference)BuilderTypes.Factory.GetMethod_____Create_Generic().MakeGeneric(item.GetGenericArgument(0)));
             item.HostMethod.NewCoder().Load(item.HostMethod.DeclaringType).End.Insert(InsertionAction.Before, item.Position);
         }
 
         foreach (var item in FactoryCreateUsages.createTypeTypeMethodUsages)
         {
-            Builder.Current.Log(LogTypes.Info, $"{item}");
+            Builder.Log(LogTypes.Info, $"{item}");
             item.Replace(BuilderTypes.Factory.GetMethod_____Create(BuilderTypes.Type, FactoryCreateUsages.objectArray, BuilderTypes.Type));
             item.HostMethod.NewCoder().Load(item.HostMethod.DeclaringType).End.Insert(InsertionAction.Before, item.Position);
         }
 
         foreach (var item in FactoryCreateUsages.createStringTypeMethodUsages)
         {
-            Builder.Current.Log(LogTypes.Info, $"{item}");
+            Builder.Log(LogTypes.Info, $"{item}");
             item.Replace(BuilderTypes.Factory.GetMethod_____Create(BuilderTypes.String, FactoryCreateUsages.objectArray, BuilderTypes.Type));
             item.HostMethod.NewCoder().Load(item.HostMethod.DeclaringType).End.Insert(InsertionAction.Before, item.Position);
         }

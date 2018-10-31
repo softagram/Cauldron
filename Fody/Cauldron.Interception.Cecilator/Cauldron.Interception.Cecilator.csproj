@@ -1,174 +1,51 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{1645BDC0-C886-4F5C-BF14-7927356EFBD9}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Cauldron.Interception.Cecilator</RootNamespace>
-    <AssemblyName>Cauldron.Interception.Cecilator</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <TargetFrameworks>netstandard2.0;net46</TargetFrameworks>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\Cauldron.Interception.Cecilator.xml</DocumentationFile>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net46|AnyCPU'">
+    <DocumentationFile>E:\Eitu\Sources\Git\Cauldron\Fody\Cauldron.Interception.Cecilator\bin\Debug\net46\Cauldron.Interception.Cecilator.xml</DocumentationFile>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\Cauldron.Interception.Cecilator.xml</DocumentationFile>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net46|AnyCPU'">
+    <DocumentationFile>E:\Eitu\Sources\Git\Cauldron\Fody\Cauldron.Interception.Cecilator\bin\Release\net46\Cauldron.Interception.Cecilator.xml</DocumentationFile>
   </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="FodyHelpers, Version=3.2.13.0, Culture=neutral, PublicKeyToken=1ca091877d12ca03, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\FodyHelpers.3.2.13\lib\net46\FodyHelpers.dll</HintPath>
-    </Reference>
-    <Reference Include="Mono.Cecil, Version=0.10.0.0, Culture=neutral, PublicKeyToken=1ca091877d12ca03, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\FodyHelpers.3.2.13\lib\net46\Mono.Cecil.dll</HintPath>
-    </Reference>
-    <Reference Include="Mono.Cecil.Mdb, Version=0.10.0.0, Culture=neutral, PublicKeyToken=1ca091877d12ca03, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\FodyHelpers.3.2.13\lib\net46\Mono.Cecil.Mdb.dll</HintPath>
-    </Reference>
-    <Reference Include="Mono.Cecil.Pdb, Version=0.10.0.0, Culture=neutral, PublicKeyToken=1ca091877d12ca03, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\FodyHelpers.3.2.13\lib\net46\Mono.Cecil.Pdb.dll</HintPath>
-    </Reference>
-    <Reference Include="Mono.Cecil.Rocks, Version=0.10.0.0, Culture=neutral, PublicKeyToken=1ca091877d12ca03, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\FodyHelpers.3.2.13\lib\net46\Mono.Cecil.Rocks.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
+    <DocumentationFile>E:\Eitu\Sources\Git\Cauldron\Fody\Cauldron.Interception.Cecilator\bin\Debug\netstandard2.0\Cauldron.Interception.Cecilator.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
+    <DocumentationFile>E:\Eitu\Sources\Git\Cauldron\Fody\Cauldron.Interception.Cecilator\bin\Release\netstandard2.0\Cauldron.Interception.Cecilator.xml</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup Condition="$(TargetFramework) == 'net46'">
+    <Reference Include="Mono.Cecil" HintPath="..\Lib\Cecil\net40\Mono.Cecil.dll" />
+    <Reference Include="Mono.Cecil.Mdb" HintPath="..\Lib\Cecil\net40\Mono.Cecil.Mdb.dll" />
+    <Reference Include="Mono.Cecil.Pdb" HintPath="..\Lib\Cecil\net40\Mono.Cecil.Pdb.dll" />
+    <Reference Include="Mono.Cecil.Rocks" HintPath="..\Lib\Cecil\net40\Mono.Cecil.Rocks.dll" />
+  </ItemGroup>
+  <ItemGroup Condition="$(TargetFramework) == 'netstandard2.0'">
+    <Reference Include="Mono.Cecil" HintPath="..\Lib\Cecil\netstandard1.3\Mono.Cecil.dll" />
+    <Reference Include="Mono.Cecil.Mdb" HintPath="..\Lib\Cecil\netstandard1.3\Mono.Cecil.Mdb.dll" />
+    <Reference Include="Mono.Cecil.Pdb" HintPath="..\Lib\Cecil\netstandard1.3\Mono.Cecil.Pdb.dll" />
+    <Reference Include="Mono.Cecil.Rocks" HintPath="..\Lib\Cecil\netstandard1.3\Mono.Cecil.Rocks.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssemblyDefinitionEqualityComparer.cs" />
-    <Compile Include="AsyncMethodHelper.cs" />
-    <Compile Include="AsyncStateMachineMoveNextMethod.cs" />
-    <Compile Include="AsyncStateMachinePositions.cs" />
-    <Compile Include="AttributedField.cs" />
-    <Compile Include="AttributedMethod.cs" />
-    <Compile Include="AttributedProperty.cs" />
-    <Compile Include="AttributedType.cs" />
-    <Compile Include="Builder.cs" />
-    <Compile Include="BuilderCustomAttribute.cs" />
-    <Compile Include="BuilderCustomAttributeCollection.cs" />
-    <Compile Include="BuilderTypeEqualityComparer.cs" />
-    <Compile Include="BuilderTypes.cs" />
-    <Compile Include="BuilderTypes.generated.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
+    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="BuilderTypes.generated.cs">
       <DependentUpon>BuilderTypes.generated.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
-    <Compile Include="CecilatorBase.cs" />
-    <Compile Include="CecilatorCancellationToken.cs" />
-    <Compile Include="CecilatorObject.cs" />
-    <Compile Include="Coders\BooleanExpression\BooleanExpressionCoderBase.cs" />
-    <Compile Include="Coders\BooleanExpression\BooleanExpressionArgCoder.cs" />
-    <Compile Include="Coders\BooleanExpression\BooleanExpressionCallCoder.cs" />
-    <Compile Include="Coders\BooleanExpression\BooleanExpressionResultCoder.cs" />
-    <Compile Include="Coders\BooleanExpression\BooleanExpressionVariableCoder.cs" />
-    <Compile Include="Coders\Default\ArgCoder.cs" />
-    <Compile Include="Coders\Default\CallCoder.cs" />
-    <Compile Include="Coders\CoderBase.cs" />
-    <Compile Include="Coders\BooleanExpression\BooleanExpressionFieldCoder.cs" />
-    <Compile Include="Coders\Default\FieldCoder.cs" />
-    <Compile Include="Coders\IBinaryOperators.cs" />
-    <Compile Include="Coders\IArgOperations.cs" />
-    <Compile Include="Coders\ICallMethod.cs" />
-    <Compile Include="Coders\ICasting.cs" />
-    <Compile Include="Coders\IConditionalLogicalOperators.cs" />
-    <Compile Include="Coders\IExitOperators.cs" />
-    <Compile Include="Coders\IFieldOperations.cs" />
-    <Compile Include="Coders\ILoadValue.cs" />
-    <Compile Include="Coders\IMathOperators.cs" />
-    <Compile Include="Coders\INewObj.cs" />
-    <Compile Include="Coders\InstructionPoints.cs" />
-    <Compile Include="Coders\IVariableOperations.cs" />
-    <Compile Include="Coders\InstructionBlock.cs" />
-    <Compile Include="Coders\IRelationalOperators.cs" />
-    <Compile Include="Coders\Default\VariableCoder.cs" />
-    <Compile Include="Coders\TryCatchCoder\CatchCoder.cs" />
-    <Compile Include="Coders\TryCatchCoder\FinallyCoder.cs" />
-    <Compile Include="Coders\TryCatchCoder\InstructionMarker.cs" />
-    <Compile Include="Coders\TryCatchCoder\MarkerType.cs" />
-    <Compile Include="Coders\TryCatchCoder\TryCatchFinallyCoderBase.cs" />
-    <Compile Include="Coders\TryCatchCoder\TryCoder.cs" />
-    <Compile Include="CustomAttributeEqualityComparer.cs" />
-    <Compile Include="Extension.cs" />
-    <Compile Include="Coders\BooleanExpression\BooleanExpressionCoder.cs" />
-    <Compile Include="Coders\Default\Coder.cs" />
-    <Compile Include="Coders\CodeBlock.cs" />
-    <Compile Include="Field.cs" />
-    <Compile Include="FieldCollection.cs" />
-    <Compile Include="FieldUsage.cs" />
-    <Compile Include="ICecilatorObject.cs" />
-    <Compile Include="IlHelper.cs" />
-    <Compile Include="InsertionAction.cs" />
-    <Compile Include="InsertionPosition.cs" />
-    <Compile Include="InstructionBucket.cs" />
-    <Compile Include="ListEx.cs" />
-    <Compile Include="LogTypes.cs" />
-    <Compile Include="MethodDefinitionAndReference.cs" />
-    <Compile Include="Positions.cs" />
-    <Compile Include="PropertySetterCreationOption.cs" />
-    <Compile Include="TypeDefinitionEqualityComparer.cs" />
-    <Compile Include="TypeResolveException.cs" />
-    <Compile Include="WeaverBase.cs" />
-    <Compile Include="BuilderType.cs" />
-    <Compile Include="LocalVariable.cs" />
-    <Compile Include="Method.cs" />
-    <Compile Include="MethodNotFoundException.cs" />
-    <Compile Include="MethodUsage.cs" />
-    <Compile Include="Modifiers.cs" />
-    <Compile Include="ParamResult.cs" />
-    <Compile Include="Position.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Property.cs" />
-    <Compile Include="PropertyUsage.cs" />
-    <Compile Include="SearchContext.cs" />
-    <Compile Include="TypeReferenceEqualityComparer.cs" />
-    <Compile Include="TypeNotFoundException.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
+    <None Update="BuilderTypes.generated.tt">
+      <LastGenOutput>BuilderTypes.generated.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="BuilderTypes.generated.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>BuilderTypes.generated.cs</LastGenOutput>
-    </Content>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
   </ItemGroup>
-  <ItemGroup>
-    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+  <Import Project="..\..\Shared\Cauldron.Collections.2\Cauldron.Collections.2.projitems" Label="Shared" />
 </Project>

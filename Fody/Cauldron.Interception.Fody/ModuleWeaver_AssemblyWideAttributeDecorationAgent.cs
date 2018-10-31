@@ -13,7 +13,7 @@ namespace Cauldron.Interception.Fody
     {
         private const string ModuleName = "<Module>";
 
-        public void AddAssemblyWideAttributes(Builder builder)
+        public void AddAssemblyWideAttributes(BuilderOld builder)
         {
             /*
                  We will allow multiple configuration files to allow different nuget packages to add its own conifg
@@ -42,7 +42,7 @@ namespace Cauldron.Interception.Fody
             }
         }
 
-        private static object ConvertPropertyType(Builder builder, string typeName, string value)
+        private static object ConvertPropertyType(BuilderOld builder, string typeName, string value)
         {
             switch (typeName)
             {
@@ -159,7 +159,7 @@ namespace Cauldron.Interception.Fody
             });
         }
 
-        private static void ImplementDecorator(Builder builder, AssemblyWideAttributeConfig config)
+        private static void ImplementDecorator(BuilderOld builder, AssemblyWideAttributeConfig config)
         {
             foreach (var decorator in config.Decorator)
             {
@@ -208,7 +208,7 @@ namespace Cauldron.Interception.Fody
             }
         }
 
-        private static void ImplementDecorator(Builder builder, DecoratorDecription decorator, IEnumerable<BuilderType> classes)
+        private static void ImplementDecorator(BuilderOld builder, DecoratorDecription decorator, IEnumerable<BuilderType> classes)
         {
             var attribute = builder.GetType(decorator.TypeName);
             var attributeTarget = attribute.CustomAttributes.FirstOrDefault(x => x.Fullname == "System.AttributeUsageAttribute");

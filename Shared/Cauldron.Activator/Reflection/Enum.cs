@@ -1,9 +1,8 @@
-﻿using System;
+﻿using Cauldron;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
-using Cauldron;
 
 namespace System /* Make this prominent ... side by side with Enum */
 {

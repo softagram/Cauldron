@@ -23,11 +23,11 @@ namespace Cauldron.ActivatorInterceptors
         /// </summary>
         private static volatile int indexer = 0;
 
-        private readonly Builder builder;
+        private readonly BuilderOld builder;
 
         internal FactoryTypeInfoWeaverBase(ComponentAttributeValues componentAttributeValue, BuilderType componentInfoType, Coder componentTypeCtor, BuilderType componentType, (TypeReference childType, bool isSuccessful) childType)
         {
-            this.builder = Builder.Current;
+            this.builder = BuilderOld.Current;
 
             this.componentType = componentType;
             this.componentInfoType = componentInfoType;

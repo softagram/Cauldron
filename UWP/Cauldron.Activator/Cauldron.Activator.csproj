@@ -138,6 +138,7 @@
   </ItemGroup>
   <Import Project="..\..\Shared\Cauldron.Activator\Cauldron.Activator.projitems" Label="Shared" />
   <Import Project="..\..\Shared\Cauldron.Shared\Cauldron.Shared.projitems" Label="Shared" />
+  <Import Project="..\..\Shared\Cauldron.Collections.2\Cauldron.Collections.2.projitems" Label="Shared" />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

@@ -8,8 +8,8 @@ namespace Cauldron.Interception.Cecilator
 {
     public class AsyncMethodHelper : CecilatorBase
     {
+        private static readonly BuilderType iAsyncStateMachine;
         private static BuilderType asyncStateMachineAttribute;
-        private static BuilderType iAsyncStateMachine;
         private readonly Method method;
 
         private Method asyncMethod;
@@ -17,11 +17,11 @@ namespace Cauldron.Interception.Cecilator
 
         static AsyncMethodHelper()
         {
-            asyncStateMachineAttribute = Builder.Current.GetType("System.Runtime.CompilerServices.AsyncStateMachineAttribute");
-            iAsyncStateMachine = Builder.Current.GetType("System.Runtime.CompilerServices.IAsyncStateMachine");
+            asyncStateMachineAttribute = Builder.GetType("System.Runtime.CompilerServices.AsyncStateMachineAttribute");
+            iAsyncStateMachine = Builder.GetType("System.Runtime.CompilerServices.IAsyncStateMachine");
         }
 
-        internal AsyncMethodHelper(Method method) : base(method) => this.method = method;
+        internal AsyncMethodHelper(Method method) => this.method = method;
 
         /// <summary>
         /// Gets the async state machine
@@ -113,12 +113,12 @@ namespace Cauldron.Interception.Cecilator
 
                 if (this.moveNextMethod == null)
                 {
-                    Builder.Current.Log(LogTypes.Info, $"The method has the following attributes.");
+                    Builder.logging.Log($"The method has the following attributes.");
 
                     foreach (var item in this.method.CustomAttributes)
-                        Builder.Current.Log(LogTypes.Info, $"  {item.Type.Assembly.FullName} | {item.Type}");
+                        Builder.logging.Log($"  {item.Type.Assembly.FullName} | {item.Type}");
 
-                    Builder.Current.Log(LogTypes.Info, $"AsyncStateMachineAttribute: {asyncStateMachineAttribute.Assembly.FullName} {asyncStateMachineAttribute.Fullname}");
+                    Builder.logging.Log($"AsyncStateMachineAttribute: {asyncStateMachineAttribute.Assembly.FullName} {asyncStateMachineAttribute.Fullname}");
 
                     throw new NullReferenceException(string.Join("\r\n", new string[]{
                         "Unable to detect current method:",

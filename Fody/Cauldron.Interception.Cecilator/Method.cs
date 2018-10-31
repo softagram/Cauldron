@@ -22,28 +22,28 @@ namespace Cauldron.Interception.Cecilator
 
         private Method _asyncMethod;
 
-        internal Method(BuilderType type, MethodReference methodReference, MethodDefinition methodDefinition) : base(type)
+        internal Method(BuilderType type, MethodReference methodReference, MethodDefinition methodDefinition)
         {
             this.type = type;
             this.methodDefinition = methodDefinition;
             this.methodReference = methodReference;
         }
 
-        internal Method(Builder builder, MethodReference methodReference, MethodDefinition methodDefinition) : base(builder)
+        internal Method(MethodReference methodReference, MethodDefinition methodDefinition)
         {
-            this.type = new BuilderType(builder, methodReference.DeclaringType);
+            this.type = new BuilderType(methodReference.DeclaringType);
             this.methodDefinition = methodDefinition;
             this.methodReference = methodReference;
         }
 
-        internal Method(BuilderType type, MethodDefinition methodDefinition) : base(type)
+        internal Method(BuilderType type, MethodDefinition methodDefinition)
         {
             this.type = type;
             this.methodDefinition = methodDefinition;
             this.methodReference = methodDefinition.CreateMethodReference();
         }
 
-        internal Method(MethodDefinition methodDefinition) : base(Builder.Current)
+        internal Method(MethodDefinition methodDefinition)
         {
             this.type = methodDefinition.DeclaringType.ToBuilderType();
             this.methodDefinition = methodDefinition;
@@ -55,7 +55,7 @@ namespace Cauldron.Interception.Cecilator
             get
             {
                 if (this._asyncMethod == null)
-                    this._asyncMethod = this.type.Builder.GetAsyncMethod(this);
+                    this._asyncMethod = this.GetAsyncMethod();
 
                 return this._asyncMethod;
             }
@@ -74,15 +74,13 @@ namespace Cauldron.Interception.Cecilator
             }
         }
 
-        public BuilderCustomAttributeCollection CustomAttributes => new BuilderCustomAttributeCollection(this.type.Builder, this.methodDefinition);
+        public BuilderCustomAttributeCollection CustomAttributes => new BuilderCustomAttributeCollection(this.methodDefinition);
 
         public string Fullname => this.methodReference.FullName;
 
         public override string Identification => $"{this.methodDefinition.DeclaringType.Name}-{this.methodDefinition.Name}-{this.methodDefinition.DeclaringType.MetadataToken.RID}-{this.methodDefinition.MetadataToken.RID}";
 
         public bool IsAsync => this.AsyncMethodHelper.HasAsyncStateMachineAttribute || this.AsyncMethodHelper.ImplementsIAsyncStateMachineInterface;
-
-        public bool IsCCtor => this.methodDefinition.Name == ".cctor";
 
         /// <summary>
         /// True if the method is a .ctor or .cctor
@@ -117,7 +115,6 @@ namespace Cauldron.Interception.Cecilator
                             this.type.typeDefinition.FullName.IndexOf('<') >= 0 ||
                             this.type.typeDefinition.FullName.IndexOf('>') >= 0;
 
-        public bool IsInternal => this.methodDefinition.Attributes.HasFlag(MethodAttributes.Assembly);
         public bool IsOverride => this.methodDefinition.IsVirtual && this.methodDefinition.IsHideBySig && !this.methodDefinition.IsStatic;
         public bool IsPropertyGetterSetter => (this.methodDefinition.Name.StartsWith("get_") || this.methodDefinition.Name.StartsWith("set_")) && this.methodDefinition.IsSpecialName;
         public bool IsProtected => this.methodDefinition.Attributes.HasFlag(MethodAttributes.Family);
@@ -139,6 +136,12 @@ namespace Cauldron.Interception.Cecilator
         }
 
         public string Name { get => this.methodDefinition.Name; set => this.methodDefinition.Name = value; }
+
+        /// <summary>
+        /// Gets the type that inherited the method.
+        /// </summary>
+        public BuilderType OriginType => this.type;
+
         public int ParametersCount => this.methodReference.Parameters.Count;
 
         /// <summary>
@@ -162,31 +165,28 @@ namespace Cauldron.Interception.Cecilator
         /// <summary>
         /// Gets the type that contains the method.
         /// </summary>
-        public BuilderType DeclaringType => new BuilderType(this.type.Builder, this.methodReference.DeclaringType);
+        public BuilderType DeclaringType => new BuilderType(this.methodReference.DeclaringType);
 
         public Mono.Collections.Generic.Collection<GenericParameter> GenericParameters => this.methodDefinition?.GenericParameters;
         public bool HasGenericParameters => this.methodDefinition.HasGenericParameters;
         public bool IsAbstract => this.methodDefinition.IsAbstract && this.methodDefinition.IsHideBySig && this.methodDefinition.IsNewSlot && this.methodDefinition.IsVirtual;
+        public bool IsCCtor => this.methodDefinition.Name == ".cctor";
+        public bool IsInternal => this.methodDefinition.Attributes.HasFlag(MethodAttributes.Assembly);
         public bool IsPrivate => this.methodDefinition.IsPrivate;
         public bool IsPublic => this.methodDefinition.IsPublic;
         public bool IsSpecialName => this.methodDefinition.IsSpecialName;
 
         public bool IsStatic => this.methodDefinition.IsStatic;
 
-        /// <summary>
-        /// Gets the type that inherited the method.
-        /// </summary>
-        public BuilderType OriginType => this.type;
-
         public BuilderType[] Parameters =>
-            this.methodReference.Parameters.Select(x => new BuilderType(this.OriginType.Builder, x.ParameterType.ResolveType(this.type.typeReference, this.methodReference))).ToArray();
+            this.methodReference.Parameters.Select(x => new BuilderType(x.ParameterType.ResolveType(this.type.typeReference, this.methodReference))).ToArray();
 
         public BuilderType ReturnType => new BuilderType(this.type, this.methodReference.ReturnType);
 
         public Method Copy() => this.NewCoder().Copy(Modifiers.Private, $"<{this.Name}>m__original");
 
         public Field CreateField(Type fieldType, string name) =>
-            this.CreateField(this.moduleDefinition.ImportReference(fieldType.GetTypeDefinition().ResolveType(this.OriginType.typeReference)), name);
+            this.CreateField(this.ModuleDefinition.ImportReference(fieldType.GetTypeDefinition().ResolveType(this.OriginType.typeReference)), name);
 
         public Field CreateField(Field field, string name) => this.CreateField(field.fieldRef.FieldType, name);
 
@@ -219,7 +219,7 @@ namespace Cauldron.Interception.Cecilator
         /// <param name="name">The name of the variable</param>
         /// <returns></returns>
         public LocalVariable GetOrCreateVariable(Type type, string name = null) =>
-            this.GetOrCreateVariable(this.moduleDefinition.ImportReference(type.GetTypeDefinition().ResolveType(this.OriginType.typeReference)), name);
+            this.GetOrCreateVariable(this.ModuleDefinition.ImportReference(type.GetTypeDefinition().ResolveType(this.OriginType.typeReference)), name);
 
         /// <summary>
         /// Gets or creates a local variable
@@ -248,7 +248,7 @@ namespace Cauldron.Interception.Cecilator
                     return new LocalVariable(this.type, existingVariable.variable, name);
             }
 
-            var newVariable = new VariableDefinition(this.moduleDefinition.ImportReference(type));
+            var newVariable = new VariableDefinition(this.ModuleDefinition.ImportReference(type));
             this.AddLocalVariable(name, newVariable);
 
             return new LocalVariable(this.type, newVariable, name);
@@ -325,11 +325,11 @@ namespace Cauldron.Interception.Cecilator
 
             try
             {
-                result = this.moduleDefinition.ImportReference(this.methodReference);
+                result = this.ModuleDefinition.ImportReference(this.methodReference);
             }
             catch (NullReferenceException)
             {
-                result = this.moduleDefinition.ImportReference(this.methodReference, this.type.typeReference);
+                result = this.ModuleDefinition.ImportReference(this.methodReference, this.type.typeReference);
             }
 
             return new Method(this.type, result, this.methodDefinition);
@@ -338,19 +338,19 @@ namespace Cauldron.Interception.Cecilator
         public Method MakeGeneric(params Type[] types)
         {
             if (this.methodDefinition.GenericParameters.Count == 0)
-                return new Method(this.type.Builder, this.methodDefinition.MakeHostInstanceGeneric(types.Select(x => this.moduleDefinition.ImportReference(x)).ToArray()), this.methodDefinition);
+                return new Method(this.methodDefinition.MakeHostInstanceGeneric(types.Select(x => this.ModuleDefinition.ImportReference(x)).ToArray()), this.methodDefinition);
             else
-                return new Method(this.type.Builder, this.methodDefinition.MakeGeneric(null, types.Select(x => this.moduleDefinition.ImportReference(x)).ToArray()), this.methodDefinition);
+                return new Method(this.methodDefinition.MakeGeneric(null, types.Select(x => this.ModuleDefinition.ImportReference(x)).ToArray()), this.methodDefinition);
         }
 
         public Method MakeGeneric(params TypeReference[] types)
         {
             if (this.methodDefinition.GenericParameters.Count == 0)
-                return new Method(this.type.Builder, this.methodDefinition.MakeHostInstanceGeneric(types.Select(x => this.moduleDefinition.ImportReference(x)).ToArray()), this.methodDefinition);
+                return new Method(this.methodDefinition.MakeHostInstanceGeneric(types.Select(x => this.ModuleDefinition.ImportReference(x)).ToArray()), this.methodDefinition);
             else if (this.methodDefinition.ContainsGenericParameter)
-                return new Method(this.type.Builder, this.methodDefinition.MakeGeneric(null, types.Select(x => this.moduleDefinition.ImportReference(x)).ToArray()), this.methodDefinition);
+                return new Method(this.methodDefinition.MakeGeneric(null, types.Select(x => this.ModuleDefinition.ImportReference(x)).ToArray()), this.methodDefinition);
             else
-                return new Method(this.type.Builder, this.methodDefinition.MakeGeneric(null, types.Select(x => this.moduleDefinition.ImportReference(x)).ToArray()), this.methodDefinition);
+                return new Method(this.methodDefinition.MakeGeneric(null, types.Select(x => this.ModuleDefinition.ImportReference(x)).ToArray()), this.methodDefinition);
         }
 
         public Method MakeGeneric(params BuilderType[] types) => this.MakeGeneric(types.Select(x => x.typeReference).ToArray());
@@ -358,9 +358,9 @@ namespace Cauldron.Interception.Cecilator
         public Method MakeGeneric(params string[] types)
         {
             if (this.methodDefinition.GenericParameters.Count == 0)
-                return new Method(this.type.Builder, this.methodDefinition.MakeHostInstanceGeneric(types.Select(x => this.moduleDefinition.ImportReference(this.type.Builder.GetType(x).typeReference)).ToArray()), this.methodDefinition);
+                return new Method(this.methodDefinition.MakeHostInstanceGeneric(types.Select(x => this.ModuleDefinition.ImportReference(Builder.GetType(x).typeReference)).ToArray()), this.methodDefinition);
             else
-                return new Method(this.type.Builder, this.methodDefinition.MakeGeneric(null, types.Select(x => this.moduleDefinition.ImportReference(this.type.Builder.GetType(x).typeReference)).ToArray()), this.methodDefinition);
+                return new Method(this.methodDefinition.MakeGeneric(null, types.Select(x => this.ModuleDefinition.ImportReference(Builder.GetType(x).typeReference)).ToArray()), this.methodDefinition);
         }
 
         public void Overrides(Method method) => this.methodDefinition.Overrides.Add(method.methodReference);

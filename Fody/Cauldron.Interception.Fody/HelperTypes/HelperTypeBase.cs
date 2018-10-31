@@ -20,13 +20,13 @@ namespace Cauldron.Interception.Fody.HelperTypes
 
         public static T Instance => new T();
 
-        public static bool IsReferenced => Builder.Current.TypeExists(Name);
+        public static bool IsReferenced => Builder.TypeExists(Name);
 
         public static string Name
         {
             get
             {
-                var builder = Builder.Current;
+                var builder = BuilderOld.Current;
                 var type = typeof(T);
                 var attrib = type.GetCustomAttribute<HelperTypeNameAttribute>();
 
@@ -44,7 +44,7 @@ namespace Cauldron.Interception.Fody.HelperTypes
         {
             get
             {
-                var builder = Builder.Current;
+                var builder = BuilderOld.Current;
                 var result = Name;
 
                 if (builder.TypeExists(result))

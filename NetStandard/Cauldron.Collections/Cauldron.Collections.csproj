@@ -32,4 +32,5 @@
   </PropertyGroup>
 
   <Import Project="..\..\Shared\Cauldron.Collections\Cauldron.Collections.projitems" Label="Shared" />
+  <Import Project="..\..\Shared\Cauldron.Collections.2\Cauldron.Collections.2.projitems" Label="Shared" />
 </Project>

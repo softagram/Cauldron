@@ -15,11 +15,11 @@ namespace Cauldron.Interception.Cecilator
         [EditorBrowsable(EditorBrowsableState.Never), DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly ICustomAttributeProvider customAttributeProvider;
 
-        internal BuilderCustomAttribute(Builder builder, ICustomAttributeProvider customAttributeProvider, CustomAttribute attribute) : base(builder)
+        internal BuilderCustomAttribute(ICustomAttributeProvider customAttributeProvider, CustomAttribute attribute)
         {
             this.customAttributeProvider = customAttributeProvider;
             this.attribute = attribute;
-            this.Type = new BuilderType(builder, attribute.AttributeType);
+            this.Type = new BuilderType(attribute.AttributeType);
         }
 
         public string Fullname => this.attribute.AttributeType.FullName;
@@ -85,7 +85,7 @@ namespace Cauldron.Interception.Cecilator
                 switch (value)
                 {
                     case Type systemtype:
-                        return Builder.Current.Import(systemtype.ToBuilderType().typeReference);
+                        return Builder.Import(systemtype.ToBuilderType().typeReference);
 
                     default: return value;
                 }
@@ -123,14 +123,14 @@ namespace Cauldron.Interception.Cecilator
             if (ctor == null)
                 throw new ArgumentException($"Unable to find matching ctor in '{attributeType.Name}' for parameters: '{ string.Join(", ", parameters.Select(x => x?.Item1?.FullName ?? "null"))}'.");
 
-            var attribute = new CustomAttribute(Builder.Current.Import(ctor.methodReference));
+            var attribute = new CustomAttribute(Builder.Import(ctor.methodReference));
             var ctorMethodReference = ctor.methodReference;
 
             if (ctorMethodReference.Parameters.Count > 0)
                 for (int i = 0; i < ctorMethodReference.Parameters.Count; i++)
-                    attribute.ConstructorArguments.Add(new CustomAttributeArgument(Builder.Current.Import(ctorMethodReference.Parameters[i].ParameterType), ConvertToAttributeParameter(parameters[i].Item2)));
+                    attribute.ConstructorArguments.Add(new CustomAttributeArgument(Builder.Import(ctorMethodReference.Parameters[i].ParameterType), ConvertToAttributeParameter(parameters[i].Item2)));
 
-            return new BuilderCustomAttribute(type.Builder, null, attribute);
+            return new BuilderCustomAttribute(null, attribute);
         }
 
         private static TypeReference GetTypeReference(object o)
@@ -141,7 +141,7 @@ namespace Cauldron.Interception.Cecilator
                 case BuilderType builderType:
                 case TypeReference typeReference:
                 case Type type: return BuilderTypes.Type;
-                default: return Builder.Current.Import(o.GetType());
+                default: return Builder.Import(o.GetType());
             }
         }
 

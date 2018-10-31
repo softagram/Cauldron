@@ -12,11 +12,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Reflection\ActivatorKey.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ApplicationData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CloneIgnoreAttribute.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Collections\FastDictionaryEnumerator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ComponentAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ComponentConstructorAttribute.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Collections\FastDictionary.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Collections\FastDictionaryEntry.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Disposable\DisposableBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Disposable\IDisposableObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ActivatorExtensions.cs" />

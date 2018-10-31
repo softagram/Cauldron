@@ -16,7 +16,7 @@ public static class Weaver_Property
 
     static Weaver_Property()
     {
-        PropertyInterceptingAttributes = Builder.Current.FindAttributesByInterfaces(
+        PropertyInterceptingAttributes = Builder.FindAttributesByInterfaces(
             "Cauldron.Interception.IPropertyInterceptor",
             "Cauldron.Interception.IPropertyGetterInterceptor",
             "Cauldron.Interception.IPropertySetterInterceptor");
@@ -25,7 +25,7 @@ public static class Weaver_Property
     internal static IEnumerable<BuilderType> PropertyInterceptingAttributes { get; private set; }
 
     [Display("Type-Wide Property Interception")]
-    public static void ImplementTypeWidePropertyInterception(Builder builder)
+    public static void ImplementTypeWidePropertyInterception(BuilderOld builder)
     {
         if (!PropertyInterceptingAttributes.Any())
             return;
@@ -56,7 +56,7 @@ public static class Weaver_Property
     }
 
     [Display("Property Interception")]
-    public static void InterceptProperties(Builder builder)
+    public static void InterceptProperties(BuilderOld builder)
     {
         if (!PropertyInterceptingAttributes.Any())
             return;
@@ -137,7 +137,7 @@ public static class Weaver_Property
     }
 
     private static void AddPropertyGetterInterception(
-        Builder builder,
+        BuilderOld builder,
         BuilderTypePropertyInterceptionInfo propertyInterceptionInfo,
         PropertyBuilderInfo member,
         Field propertyField,
@@ -261,7 +261,7 @@ public static class Weaver_Property
     }
 
     private static void AddPropertyInitializeInterception(
-        Builder builder,
+        BuilderOld builder,
         BuilderTypePropertyInterceptionInfo propertyInterceptionInfo,
         PropertyBuilderInfo member,
         Field propertyField,
@@ -317,7 +317,7 @@ public static class Weaver_Property
     }
 
     private static void AddPropertySetterInterception(
-        Builder builder,
+        BuilderOld builder,
         BuilderTypePropertyInterceptionInfo propertyInterceptionInfo,
         PropertyBuilderInfo member,
         Field propertyField,
@@ -450,7 +450,7 @@ public static class Weaver_Property
             .Replace();
     }
 
-    private static void CreatePropertySetterDelegate(Builder builder, PropertyBuilderInfo member, Method propertySetter)
+    private static void CreatePropertySetterDelegate(BuilderOld builder, PropertyBuilderInfo member, Method propertySetter)
     {
         // If we don't have a backing field and we don't have a setter and getter
         // don't bother creating a setter delegate
@@ -483,7 +483,7 @@ public static class Weaver_Property
             propertySetter.NewCoder().SetValue(member.Property.BackingField, CodeBlocks.GetParameter(0)).Return().Replace();
     }
 
-    private static void CreateSetterDelegate(Builder builder, Method setterDelegateMethod, BuilderType propertyType, object value)
+    private static void CreateSetterDelegate(BuilderOld builder, Method setterDelegateMethod, BuilderType propertyType, object value)
     {
         var setterCode = setterDelegateMethod.NewCoder();
 

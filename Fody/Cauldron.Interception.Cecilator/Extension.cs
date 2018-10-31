@@ -246,8 +246,11 @@ namespace Cauldron.Interception.Cecilator
             {
                 var position = value.FullName.IndexOf('<');
                 var name = value.FullName.Substring(0, position < 0 ? value.FullName.Length : position);
-                var result = WeaverBase.AllTypes.FirstOrDefault(x => x.FullName.StartsWith(name));
-                return result;
+
+                if (Builder.allTypes.TryGetValue(name, out TypeDefinition result))
+                    return result;
+
+                return Builder.allTypes.Values.FirstOrDefault(x => x.FullName.StartsWith(name));
             }
 
             TypeDefinition threadSafeResolve()
@@ -344,15 +347,6 @@ namespace Cauldron.Interception.Cecilator
                 yield return genericParameters[i].Clone(typeDefinition);
         }
 
-        public static Builder CreateBuilder(this WeaverBase weaver)
-        {
-            if (weaver == null)
-                throw new ArgumentNullException(nameof(weaver), $"Argument '{nameof(weaver)}' cannot be null");
-
-            Builder.Current = new Builder(weaver);
-            return Builder.Current;
-        }
-
         public static bool EqualsEx(this string me, string other) => me.GetHashCode() == other.GetHashCode() && me == other;
 
         public static CustomAttribute Get(this Mono.Collections.Generic.Collection<CustomAttribute> collection, string name)
@@ -381,6 +375,7 @@ namespace Cauldron.Interception.Cecilator
 
         public static T Get<T>(this IEnumerable<T> source, string name) where T : MemberReference
         {
+            // TODO
             var collection = source.ToArray();
             if (name.IndexOf('.') > 0)
             {
@@ -565,7 +560,7 @@ namespace Cauldron.Interception.Cecilator
                 }
                 catch (Exception e)
                 {
-                    Builder.Current.Log(LogTypes.Info, $"Error in getting interfaces of '{type}'\r\n" + e.GetStackTrace());
+                    Builder.logging.Log($"Error in getting interfaces of '{type}'\r\n" + e.GetStackTrace());
                     break;
                 }
             };
@@ -619,7 +614,7 @@ namespace Cauldron.Interception.Cecilator
         public static BuilderType GetNestedTypeParent(this BuilderType builderType)
         {
             var pos = builderType.typeReference.FullName.IndexOf('/');
-            return Builder.Current.GetType(builderType.typeReference.FullName.Substring(0, pos));
+            return Builder.GetType(builderType.typeReference.FullName.Substring(0, pos));
         }
 
         public static IEnumerable<TypeReference> GetNestedTypes(this TypeReference type)
@@ -677,12 +672,21 @@ namespace Cauldron.Interception.Cecilator
 
         public static TypeDefinition GetTypeDefinition(this Type type)
         {
-            var result = WeaverBase.AllTypes.Get(type.FullName);
+            try
+            {
+                var result = Builder.Import(type).Resolve();
+                if (result != null)
+                    return result;
+            }
+            catch
+            {
+                // Swallow this because we will try to resolve it with out type list.
+            }
 
-            if (result == null)
-                throw new Exception($"Unable to proceed. The type '{type.FullName}' was not found.");
+            if (Builder.allTypes.TryGetValue(type.FullName, out TypeDefinition typeDefinition))
+                return typeDefinition;
 
-            return Builder.Current.Import(type).Resolve() ?? result;
+            throw new Exception($"Unable to proceed. The type '{type.FullName}' was not found.");
         }
 
         public static string GetValidName(this string name) => name?
@@ -826,31 +830,22 @@ namespace Cauldron.Interception.Cecilator
         {
             if (type.IsGenericType && type.GetGenericTypeDefinition() != type)
             {
-                var builder = Builder.Current;
                 var definition = type.GetGenericTypeDefinition();
-                var typeDefinition = WeaverBase.AllTypes.Get(definition.FullName);
+                var typeDefinition = definition.GetTypeDefinition();
                 var typeReference = typeDefinition.MakeGenericInstanceType(type.GetGenericArguments().Select(x => x.ToBuilderType().typeReference).ToArray());
 
-                return new BuilderType(Builder.Current, typeReference);
+                return new BuilderType(typeReference);
             }
 
-            try
-            {
-                var result = Builder.Current.Import(type);
+            if (Builder.allTypes.TryGetValue(type.FullName, out TypeDefinition value))
+                return value.ToBuilderType();
 
-                if (result != null)
-                    return result.ToBuilderType();
-            }
-            catch
-            {
-            }
-
-            return new BuilderType(Builder.Current, WeaverBase.AllTypes.Get(type.FullName));
+            return Builder.Import(type).ToBuilderType();
         }
 
-        public static BuilderType ToBuilderType(this TypeDefinition value) => new BuilderType(Builder.Current, value);
+        public static BuilderType ToBuilderType(this TypeDefinition value) => new BuilderType(value);
 
-        public static BuilderType ToBuilderType(this TypeReference value) => new BuilderType(Builder.Current, value);
+        public static BuilderType ToBuilderType(this TypeReference value) => new BuilderType(value);
 
         public static Type ToType(this TypeReference typeReference) => Type.GetType(typeReference.FullName + ", " + typeReference.Module.Assembly.FullName);
 
@@ -872,9 +867,9 @@ namespace Cauldron.Interception.Cecilator
         public static IEnumerable<Instruction> TypeOf(this ILProcessor processor, TypeReference type)
         {
             return new Instruction[] {
-                processor.Create(OpCodes.Ldtoken, Builder.Current.Import(type)),
+                processor.Create(OpCodes.Ldtoken, Builder.Import(type)),
                 processor.Create(OpCodes.Call,
-                    Builder.Current.Import(
+                    Builder.Import(
                         typeof(Type).GetTypeDefinition()
                             .Methods.FirstOrDefault(x=>x.Name == "GetTypeFromHandle" && x.Parameters.Count == 1)))
             };
@@ -976,13 +971,13 @@ namespace Cauldron.Interception.Cecilator
                         if (item is BuilderType builderType)
                             builderType.Display();
                         else
-                            Builder.Current.Log(LogTypes.Info, $"Display: {item}");
+                            Builder.logging.Log($"Display: {item}");
                     }
 
                     return obj;
 
                 default:
-                    Builder.Current.Log(LogTypes.Info, $"Display: {obj}");
+                    Builder.logging.Log($"Display: {obj}");
                     return obj;
             }
         }
@@ -991,49 +986,49 @@ namespace Cauldron.Interception.Cecilator
         {
             foreach (var item in handlers)
             {
-                Builder.Current.Log(LogTypes.Info, $"IL_{item.TryStart.Offset.ToString("X4")} <-> IL_{item.TryEnd.Offset.ToString("X4")} : {item.HandlerType}");
+                Builder.logging.Log($"IL_{item.TryStart.Offset.ToString("X4")} <-> IL_{item.TryEnd.Offset.ToString("X4")} : {item.HandlerType}");
 
                 if (item.HandlerStart != null)
-                    Builder.Current.Log(LogTypes.Info, $"IL_{item.HandlerStart.Offset.ToString("X4")} <-> IL_{item.HandlerEnd.Offset.ToString("X4")}");
+                    Builder.logging.Log($"IL_{item.HandlerStart.Offset.ToString("X4")} <-> IL_{item.HandlerEnd.Offset.ToString("X4")}");
             }
         }
 
         internal static void Display(this Type type)
         {
-            Builder.Current.Log(LogTypes.Info, $"### {type?.Module.Assembly.FullName} {type?.FullName}");
-            Builder.Current.Log(LogTypes.Info, $"### {type?.Module.Assembly.FullName} {type?.FullName}");
+            Builder.logging.Log($"### {type?.Module.Assembly.FullName} {type?.FullName}");
+            Builder.logging.Log($"### {type?.Module.Assembly.FullName} {type?.FullName}");
         }
 
         internal static void Display(this BuilderType type) => type.typeReference.Display();
 
         internal static void Display(this TypeReference type)
         {
-            Builder.Current.Log(LogTypes.Info, $"### {type?.Module.Assembly.FullName} {type?.FullName}");
-            Builder.Current.Log(LogTypes.Info, $"### {type?.Resolve()?.Module.Assembly.FullName} {type?.Resolve()?.FullName}");
+            Builder.logging.Log($"### {type?.Module.Assembly.FullName} {type?.FullName}");
+            Builder.logging.Log($"### {type?.Resolve()?.Module.Assembly.FullName} {type?.Resolve()?.FullName}");
         }
 
-        internal static void Display(this Method method) => Builder.Current.Log(LogTypes.Info, $"### {method}");
+        internal static void Display(this Method method) => Builder.logging.Log($"### {method}");
 
         internal static void Display(this Instruction instruction) =>
-                Builder.Current.Log(LogTypes.Info, $"IL_{instruction.Offset.ToString("X4")}: {instruction.OpCode.ToString()} { (instruction.Operand is Instruction ? "IL_" + (instruction.Operand as Instruction).Offset.ToString("X4") : instruction.Operand?.ToString())} ");
+                 Builder.logging.Log($"IL_{instruction.Offset.ToString("X4")}: {instruction.OpCode.ToString()} { (instruction.Operand is Instruction ? "IL_" + (instruction.Operand as Instruction).Offset.ToString("X4") : instruction.Operand?.ToString())} ");
 
         internal static void Display(this MethodBody body)
         {
-            Builder.Current.Log(LogTypes.Info, $"### {body.Method.FullName}");
+            Builder.logging.Log($"### {body.Method.FullName}");
             body.ExceptionHandlers.Display();
 
             foreach (var item in body.Instructions)
                 item.Display();
         }
 
-        internal static Method GetAsyncMethod(this Builder builder, Method method)
+        internal static Method GetAsyncMethod(this Method method)
         {
-            var result = (builder as CecilatorObject).GetAsyncMethod(method.methodDefinition);
+            var result = method.methodDefinition.GetAsyncMethod();
 
             if (result == null)
                 return null;
 
-            return new AsyncStateMachineMoveNextMethod(new BuilderType(builder, result.Item2), result.Item1, method);
+            return new AsyncStateMachineMoveNextMethod(new BuilderType(result.Item2), result.Item1, method);
         }
 
         /// <summary>
@@ -1463,7 +1458,7 @@ namespace Cauldron.Interception.Cecilator
                 var current = stack.Pop();
 
                 if (current == null)
-                    Builder.Current.Log(LogTypes.Info, $"-------------------> '{root}'\r\n");
+                    Builder.logging.Log($"-------------------> '{root}'\r\n");
 
                 var childrenOfCurrent = children(current);
 
@@ -1535,7 +1530,7 @@ namespace Cauldron.Interception.Cecilator
 
                     if (type.ContainsGenericParameter)
                     {
-                        Builder.Current.Log(LogTypes.Info, $"--->  '{ownerMethod}' resolving '{type.FullName}'");
+                        Builder.logging.Log($"--->  '{ownerMethod}' resolving '{type.FullName}'");
                         var genericParameters = genericInstanceMethod.GetGenericResolvedTypeNames();
 
                         if (type.GenericParameters.Count == 0 && type.IsGenericParameter)
@@ -1642,7 +1637,7 @@ namespace Cauldron.Interception.Cecilator
             return false;
         }
 
-        private static Tuple<MethodDefinition, TypeReference> GetAsyncMethod(this CecilatorObject cecilatorObject, MethodDefinition method)
+        private static Tuple<MethodDefinition, TypeReference> GetAsyncMethod(this MethodDefinition method)
         {
             var asyncStateMachine = method.CustomAttributes.Get("System.Runtime.CompilerServices.AsyncStateMachineAttribute");
 
@@ -1653,7 +1648,7 @@ namespace Cauldron.Interception.Cecilator
 
                 if (asyncTypeMethod == null)
                 {
-                    cecilatorObject.Log(LogTypes.Error, method, "Unable to find the method MoveNext of async method " + method.Name);
+                    Builder.logging.Log(LogTypes.Error, method, "Unable to find the method MoveNext of async method " + method.Name);
                     throw new Exception("Unable to find the method MoveNext of async method " + method.Name);
                 }
 

@@ -1,27 +1,125 @@
-﻿using Mono.Cecil;
+﻿using Cauldron.Collections;
+using Mono.Cecil;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Cauldron.Interception.Cecilator
 {
-    public sealed class Builder : CecilatorBase
+    /// <summary>
+    /// Provides properties and methods for weaving.
+    /// </summary>
+    public static partial class Builder
     {
-        internal Builder(WeaverBase weaver) : base(weaver)
+        internal static FastDictionary<string, TypeDefinition> allTypes;
+        internal static ICecilatorLogging logging;
+        internal static FastDictionary<string, TypeDefinition> moduleTypes;
+        internal static FastDictionary<string, TypeDefinition> moduleTypesNoGenerated;
+        internal static FastDictionary<string, AssemblyDefinition> referencedAssemblies;
+
+        private static ICecilatorParameters parameters;
+
+        /// <summary>
+        /// Gets a collection of all types
+        /// </summary>
+        public static IEnumerable<TypeDefinition> AllTypes => allTypes;
+
+        /// <summary>
+        /// Gets the custom attributes of the module.
+        /// </summary>
+        public static BuilderCustomAttributeCollection CustomAttributes => new BuilderCustomAttributeCollection(parameters.ModuleDefinition);
+
+        /// <summary>
+        /// Gets a value that indicates if the weaved assembly is an UWP assembly or not.
+        /// </summary>
+        public static bool IsUWP => IsReferenced("Windows.Foundation.UniversalApiContract");
+
+        /// <summary>
+        /// Gets the parameters of the weaver
+        /// </summary>
+        public static ICecilatorParameters Parameters => parameters;
+
+        /// <summary>
+        /// Gets an array of all the references marked as copy-local.
+        /// </summary>
+        public static AssemblyDefinition[] ReferenceCopyLocal { get; private set; }
+
+        /// <summary>
+        /// Gets an collection of referenced assemblies including the assemblies referenced by it's references.
+        /// </summary>
+        public static IEnumerable<AssemblyDefinition> ReferencedAssemblies => referencedAssemblies;
+
+        /// <summary>
+        /// Gets a list of names of all resources embedded in the assembly.
+        /// </summary>
+        public static string[] ResourceNames { get; private set; }
+
+        /// <summary>
+        /// Gets the name of the module.
+        /// </summary>
+        public static string Name => parameters.ModuleDefinition.Name;
+
+        /// <summary>
+        /// Cancels all operations in the weaver.
+        /// </summary>
+        public static void Cancel() => CecilatorCancellationToken.Current.Cancel();
+
+        /// <summary>
+        /// Returns all assemblies that is referenced by the defined assemblies <paramref name="assemblyDefinitions"/> and its reference assemblies recursively.
+        /// </summary>
+        /// <returns>A collection of <see cref="AssemblyDefinition"/>.</returns>
+        public static IEnumerable<AssemblyDefinition> GetAllReferencedAssemblies(this IEnumerable<AssemblyDefinition> assemblyDefinitions)
         {
+            foreach (var item in assemblyDefinitions)
+                foreach (var result in item.GetAllReferencedAssemblies())
+                    yield return result;
         }
 
-        public static Builder Current { get; internal set; }
+        /// <summary>
+        /// Returns all assemblies that is referenced by the defined assembly <paramref name="assemblyDefinition"/> and its reference assemblies recursively.
+        /// </summary>
+        /// <returns>A collection of <see cref="AssemblyDefinition"/>.</returns>
+        public static IEnumerable<AssemblyDefinition> GetAllReferencedAssemblies(this AssemblyDefinition assemblyDefinition)
+        {
+            var result = new Collection<AssemblyDefinition>();
 
-        public BuilderCustomAttributeCollection CustomAttributes => new BuilderCustomAttributeCollection(this, this.moduleDefinition);
+            void getAssemblyDefinition(IEnumerable<AssemblyNameReference> assemblyNameReferences)
+            {
+                if (assemblyNameReferences == null)
+                    return;
 
-        public string Name => this.moduleDefinition.Name;
+                foreach (var assemblyNameReference in assemblyNameReferences)
+                    addAssemblyDefinition(assemblyNameReference);
+            }
 
-        public override bool Equals(object obj) => this.moduleDefinition.Assembly.FullName.Equals(obj?.ToString());
+            void addAssemblyDefinition(AssemblyNameReference assemblyNameReference)
+            {
+                var resolvedAssembly = Resolve(assemblyNameReference);
+                if (resolvedAssembly != null && !result.Contains(resolvedAssembly, new AssemblyDefinitionEqualityComparer()))
+                {
+                    result.Add(resolvedAssembly);
+
+                    if (resolvedAssembly.MainModule != null)
+                        getAssemblyDefinition(resolvedAssembly.MainModule.AssemblyReferences);
+                }
+            }
+
+            if (assemblyDefinition != null && !result.Contains(assemblyDefinition, new AssemblyDefinitionEqualityComparer()))
+            {
+                result.Add(assemblyDefinition);
+
+                if (assemblyDefinition.MainModule != null)
+                    getAssemblyDefinition(assemblyDefinition.MainModule.AssemblyReferences);
+            }
+
+            return result;
+        }
 
         /// <summary>
         /// Tries to get the child type of an array of IEnumerable.
@@ -31,58 +129,193 @@ namespace Cauldron.Interception.Cecilator
         /// If the child type was successfully extracted, then <see cref="Tuple{T1, T2}.Item2"/> is true; otherwise false.
         /// <see cref="Tuple{T1, T2}.Item1"/> contains the child type; otherwise always <see cref="Object"/>
         /// </returns>
-        public (TypeReference childType, bool isSuccessful) GetChildrenType(TypeReference type) => this.moduleDefinition.GetChildrenType(type);
-
-        public override int GetHashCode() => this.moduleDefinition.Assembly.FullName.GetHashCode();
+        public static (TypeReference childType, bool isSuccessful) GetChildrenType(this TypeReference type) => parameters.ModuleDefinition.GetChildrenType(type);
 
         /// <summary>
         /// Returns the void Main method of a program. Returns null if there is non.
         /// </summary>
         /// <returns>Retruns an instance of <see cref="Method"/> representing the static void Main of the program; otherwise null</returns>
-        public Method GetMain() =>
-            this.FindMethodsByName(SearchContext.Module_NoGenerated, "Main", 1)
+        public static Method GetMain() =>
+           Builder.FindMethodsByName(SearchContext.Module_NoGenerated, "Main", 1)
                     .FirstOrDefault(x => x.ReturnType == BuilderTypes.Void && x.Parameters[0].ChildType == BuilderTypes.String);
 
-        public Method Import(System.Reflection.MethodBase value)
+        /// <summary>
+        /// Intializes the Cecilator
+        /// </summary>
+        /// <param name="parameters">Parameters for the weaver.</param>
+        /// <param name="logging">Logging implementation for the weaver.</param>
+        /// <param name="referencedAssemblies">A collection of referenced assemblies. If null; the default referenced assemblies are loaded.</param>
+        public static void Initialize(ICecilatorParameters parameters, ICecilatorLogging logging, IEnumerable<AssemblyDefinition> referencedAssemblies = null)
         {
-            var result = this.moduleDefinition.ImportReference(value);
-            return new Method(new BuilderType(this, result.DeclaringType), result, result.Resolve());
+            Builder.parameters = parameters;
+            Builder.logging = logging;
+
+            Builder.ReferenceCopyLocal = parameters.ReferenceCopyLocalPaths
+                .Where(x => x.EndsWith(".dll"))
+                .Select(x => LoadAssembly(x))
+                .Where(x => x != null)
+                .ToArray();
+
+            if (referencedAssemblies == null)
+            {
+                referencedAssemblies = parameters.ModuleDefinition.AssemblyReferences
+                    .Resolve()
+                    .Concat(parameters.References.Split(';').Select(x => LoadAssembly(x)))
+                    .Where(x => x != null).ToArray() as IEnumerable<AssemblyDefinition>;
+
+                referencedAssemblies = referencedAssemblies.Concat(ReferenceCopyLocal);
+            }
+
+            Builder.referencedAssemblies = referencedAssemblies
+                .Distinct(new AssemblyDefinitionEqualityComparer())
+                .ToFastDictionary(x => x.FullName, x => x);
+
+            logging.Log("-----------------------------------------------------------------------------");
+
+            foreach (var item in ReferencedAssemblies)
+                logging.Log("<<Assembly>> " + item.Name);
+
+            var resourceNames = new List<string>();
+            foreach (var item in parameters.ModuleDefinition.Resources)
+            {
+                logging.Log("<<Resource>> " + item.Name + " " + item.ResourceType);
+                if (item.ResourceType == ResourceType.Embedded)
+                {
+                    var embeddedResource = item as EmbeddedResource;
+                    using (var stream = embeddedResource.GetResourceStream())
+                    {
+                        var bytes = new byte[stream.Length];
+                        stream.Read(bytes, 0, bytes.Length);
+                        if (bytes[0] == 0xce && bytes[1] == 0xca && bytes[2] == 0xef && bytes[3] == 0xbe)
+                        {
+                            var resourceCount = BitConverter.ToInt16(bytes.GetBytes(160, 2).Reverse().ToArray(), 0);
+
+                            if (resourceCount > 0)
+                            {
+                                var startPoint = resourceCount * 8 + 180;
+
+                                for (int i = 0; i < resourceCount; i++)
+                                {
+                                    var length = (int)bytes[startPoint];
+                                    var data = Encoding.Unicode.GetString(bytes, startPoint + 1, length).Trim();
+                                    startPoint += length + 5;
+                                    resourceNames.Add(data);
+                                    logging.Log("             " + data);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            ResourceNames = resourceNames.ToArray();
+
+            allTypes = ReferencedAssemblies
+                .SelectMany(x => x.Modules)
+                .Where(x => x != null)
+                .SelectMany(x => x.Types)
+                .Where(x => x != null)
+                .Concat(parameters.ModuleDefinition.Types)
+                .Where(x => x.Module != null && x.Module.Assembly != null)
+                .Distinct(new TypeDefinitionEqualityComparer())
+                .ToFastDictionary(x => x.CreateKey(), x => x);
+
+            moduleTypes = parameters.ModuleDefinition.Types
+                .ToFastDictionary(x => x.CreateKey(), x => x);
+
+            moduleTypesNoGenerated = parameters.ModuleDefinition.Types
+                .Where(x => x.FullName?.IndexOf('<') < 0 && x.FullName?.IndexOf('>') < 0)
+                .ToFastDictionary(x => x.CreateKey(), x => x);
+
+            logging.Log("-----------------------------------------------------------------------------");
         }
 
-        public MethodReference Import(MethodReference methodReference) => this.moduleDefinition.ImportReference(methodReference);
+        /// <summary>
+        /// Checks if the assembly described by <paramref name="assemblyName"/> is referenced or not.
+        /// </summary>
+        /// <param name="assemblyName">The name of the assembly to check.</param>
+        /// <returns>Return true if the assembly is referenced; otherwise false.</returns>
+        public static bool IsReferenced(string assemblyName) => referencedAssemblies.ContainsKey(assemblyName);
 
-        public FieldReference Import(FieldReference fieldReference) => this.moduleDefinition.ImportReference(fieldReference);
-
-        public MethodReference Import(MethodReference method, IGenericParameterProvider context) => this.moduleDefinition.ImportReference(method, context);
-
-        public TypeReference Import(Type type) => this.moduleDefinition.ImportReference(type);
-
-        public TypeReference Import(TypeReference typeReference) => this.moduleDefinition.ImportReference(typeReference);
-
-        public Method Import(Method method)
+        /// <summary>
+        /// Tries to load a list of assemblies using <see cref="AssemblyDefinition.ReadAssembly(string)"/>.
+        /// </summary>
+        /// <param name="assemblyPaths">A list of assembly paths.</param>
+        /// <returns>A collection of <see cref="AssemblyDefinition"/>s that was successfuly loaded.</returns>
+        public static IEnumerable<AssemblyDefinition> LoadAssemblies(this IEnumerable<string> assemblyPaths)
         {
-            var result = this.moduleDefinition.ImportReference(method.methodReference);
-            return new Method(new BuilderType(this, result.DeclaringType), result, result.Resolve());
+            foreach (var item in assemblyPaths)
+                yield return LoadAssembly(item);
         }
 
-        public override string ToString() => this.moduleDefinition.Assembly.FullName;
+        /// <summary>
+        /// Loads the assembly using the Mono.Cecil default resolver.
+        /// </summary>
+        /// <param name="assemblyNameReferences">The assembly names of the assemblies to be resolved</param>
+        /// <returns>The <see cref="AssemblyDefinition"/> of the assembly.</returns>
+        public static IEnumerable<AssemblyDefinition> Resolve(this IEnumerable<AssemblyNameReference> assemblyNameReferences)
+        {
+            foreach (var item in assemblyNameReferences)
+            {
+                var result = item.Resolve();
+                if (result != null)
+                    yield return result;
+            }
+        }
+
+        /// <summary>
+        /// Loads the assembly using the Mono.Cecil default resolver.
+        /// </summary>
+        /// <param name="assemblyNameReference">The assembly name of the assembly to be resolved</param>
+        /// <returns>The <see cref="AssemblyDefinition"/> of the assembly.</returns>
+        public static AssemblyDefinition Resolve(this AssemblyNameReference assemblyNameReference)
+        {
+            try
+            {
+                return Builder.parameters.ModuleDefinition.AssemblyResolver.Resolve(assemblyNameReference);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        internal static string CreateKey(this TypeDefinition typeDefinition) => typeDefinition.FullName;
+
+        private static AssemblyDefinition LoadAssembly(string path)
+        {
+            try
+            {
+                return AssemblyDefinition.ReadAssembly(path);
+            }
+            catch (BadImageFormatException)
+            {
+                logging.Log($"Info: a BadImageFormatException has occured while trying to retrieve information from '{path}'");
+                return null;
+            }
+            catch (Exception e)
+            {
+                logging.Log(e);
+                return null;
+            }
+        }
 
         #region Type Finders
 
-        public IEnumerable<BuilderType> FindTypes(string regexPattern) => this.FindTypes(SearchContext.Module, regexPattern);
+        public static IEnumerable<BuilderType> FindTypes(string regexPattern) => FindTypes(SearchContext.Module, regexPattern);
 
-        public IEnumerable<BuilderType> FindTypes(SearchContext searchContext, string regexPattern) =>
-            this.GetTypesInternal(searchContext)
+        public static IEnumerable<BuilderType> FindTypes(SearchContext searchContext, string regexPattern) =>
+            GetTypesInternal(searchContext)
                 .Where(x => Regex.IsMatch(x.FullName, regexPattern, RegexOptions.Singleline))
-                .Select(x => new BuilderType(this, x));
+                .Select(x => new BuilderType(x));
 
-        public IEnumerable<AttributedType> FindTypesByAttribute(BuilderType attributeType) => this.FindTypesByAttribute(SearchContext.Module, attributeType);
+        public static IEnumerable<AttributedType> FindTypesByAttribute(BuilderType attributeType) => FindTypesByAttribute(SearchContext.Module, attributeType);
 
-        public IEnumerable<AttributedType> FindTypesByAttribute(SearchContext searchContext, BuilderType attributeType)
+        public static IEnumerable<AttributedType> FindTypesByAttribute(SearchContext searchContext, BuilderType attributeType)
         {
             var result = new ConcurrentBag<AttributedType>();
 
-            Parallel.ForEach(this.GetTypes(searchContext), CecilatorCancellationToken.Current, type =>
+            Parallel.ForEach(GetTypes(searchContext), CecilatorCancellationToken.Current, type =>
             {
                 for (int i = 0; i < type.typeDefinition.CustomAttributes.Count; i++)
                 {
@@ -90,20 +323,21 @@ namespace Cauldron.Interception.Cecilator
                     if (attributeType.Fullname.GetHashCode() == name.GetHashCode() && attributeType.Fullname == name)
                         result.Add(new AttributedType(type, type.typeDefinition.CustomAttributes[i]));
                 }
+
                 CecilatorCancellationToken.Current.ThrowIfCancellationRequested();
             });
 
             return result;
         }
 
-        public IEnumerable<AttributedType> FindTypesByAttributes(IEnumerable<BuilderType> types) => this.FindTypesByAttributes(SearchContext.Module, types);
+        public static IEnumerable<AttributedType> FindTypesByAttributes(IEnumerable<BuilderType> types) => FindTypesByAttributes(SearchContext.Module, types);
 
-        public IEnumerable<AttributedType> FindTypesByAttributes(SearchContext searchContext, IEnumerable<BuilderType> types)
+        public static IEnumerable<AttributedType> FindTypesByAttributes(SearchContext searchContext, IEnumerable<BuilderType> types)
         {
             var result = new ConcurrentBag<AttributedType>();
             var attributes = types.Select(x => x.Fullname).ToList();
 
-            Parallel.ForEach(this.GetTypes(searchContext), CecilatorCancellationToken.Current, type =>
+            Parallel.ForEach(GetTypes(searchContext), CecilatorCancellationToken.Current, type =>
             {
                 for (int i = 0; i < type.typeDefinition.CustomAttributes.Count; i++)
                 {
@@ -116,61 +350,61 @@ namespace Cauldron.Interception.Cecilator
             return result;
         }
 
-        public IEnumerable<BuilderType> FindTypesByBaseClass(string baseClassName) => this.FindTypesByBaseClass(SearchContext.Module, baseClassName);
+        public static IEnumerable<BuilderType> FindTypesByBaseClass(string baseClassName) => FindTypesByBaseClass(SearchContext.Module, baseClassName);
 
-        public IEnumerable<BuilderType> FindTypesByBaseClass(SearchContext searchContext, string baseClassName) => this.GetTypes(searchContext).Where(x => x.Inherits(baseClassName));
+        public static IEnumerable<BuilderType> FindTypesByBaseClass(SearchContext searchContext, string baseClassName) => GetTypes(searchContext).Where(x => x.Inherits(baseClassName));
 
-        public IEnumerable<BuilderType> FindTypesByBaseClass(Type baseClassType) => this.FindTypesByBaseClass(SearchContext.Module, baseClassType);
+        public static IEnumerable<BuilderType> FindTypesByBaseClass(Type baseClassType) => FindTypesByBaseClass(SearchContext.Module, baseClassType);
 
-        public IEnumerable<BuilderType> FindTypesByBaseClass(SearchContext searchContext, Type baseClassType)
+        public static IEnumerable<BuilderType> FindTypesByBaseClass(SearchContext searchContext, Type baseClassType)
         {
             if (!baseClassType.IsInterface)
                 throw new ArgumentException("Argument 'interfaceType' is not an interface");
 
-            return this.FindTypesByBaseClass(searchContext, baseClassType.FullName);
+            return FindTypesByBaseClass(searchContext, baseClassType.FullName);
         }
 
-        public IEnumerable<BuilderType> FindTypesByInterface(string interfaceName) => this.FindTypesByInterface(SearchContext.Module, interfaceName);
+        public static IEnumerable<BuilderType> FindTypesByInterface(string interfaceName) => FindTypesByInterface(SearchContext.Module, interfaceName);
 
-        public IEnumerable<BuilderType> FindTypesByInterface(SearchContext searchContext, string interfaceName) => this.GetTypes(searchContext).Where(x => x.Implements(interfaceName));
+        public static IEnumerable<BuilderType> FindTypesByInterface(SearchContext searchContext, string interfaceName) => GetTypes(searchContext).Where(x => x.Implements(interfaceName));
 
-        public IEnumerable<BuilderType> FindTypesByInterface(Type interfaceType) => this.FindTypesByInterface(SearchContext.Module, interfaceType);
+        public static IEnumerable<BuilderType> FindTypesByInterface(Type interfaceType) => FindTypesByInterface(SearchContext.Module, interfaceType);
 
-        public IEnumerable<BuilderType> FindTypesByInterface(SearchContext searchContext, Type interfaceType)
+        public static IEnumerable<BuilderType> FindTypesByInterface(SearchContext searchContext, Type interfaceType)
         {
             if (!interfaceType.IsInterface)
                 throw new ArgumentException("Argument 'interfaceType' is not an interface");
 
-            return this.FindTypesByInterface(searchContext, interfaceType.FullName);
+            return FindTypesByInterface(searchContext, interfaceType.FullName);
         }
 
-        public IEnumerable<BuilderType> FindTypesByInterfaces(params string[] interfaceNames) => this.FindTypesByInterfaces(SearchContext.Module, interfaceNames);
+        public static IEnumerable<BuilderType> FindTypesByInterfaces(params string[] interfaceNames) => FindTypesByInterfaces(SearchContext.Module, interfaceNames);
 
-        public IEnumerable<BuilderType> FindTypesByInterfaces(SearchContext searchContext, params string[] interfaceNames) => this.GetTypes(searchContext).Where(x => interfaceNames.Any(y => x.Implements(y)));
+        public static IEnumerable<BuilderType> FindTypesByInterfaces(SearchContext searchContext, params string[] interfaceNames) => GetTypes(searchContext).Where(x => interfaceNames.Any(y => x.Implements(y)));
 
-        public IEnumerable<BuilderType> FindTypesByInterfaces(params Type[] interfaceTypes) => this.FindTypesByInterfaces(SearchContext.Module, interfaceTypes);
+        public static IEnumerable<BuilderType> FindTypesByInterfaces(params Type[] interfaceTypes) => FindTypesByInterfaces(SearchContext.Module, interfaceTypes);
 
-        public IEnumerable<BuilderType> FindTypesByInterfaces(SearchContext searchContext, params Type[] interfaceTypes) => this.FindTypesByInterfaces(searchContext, interfaceTypes.Select(x => x.FullName).ToArray());
+        public static IEnumerable<BuilderType> FindTypesByInterfaces(SearchContext searchContext, params Type[] interfaceTypes) => FindTypesByInterfaces(searchContext, interfaceTypes.Select(x => x.FullName).ToArray());
 
         #endregion Type Finders
 
         #region Field Finders
 
-        public IEnumerable<Field> FindFields(string regexPattern) => this.FindFields(SearchContext.Module, regexPattern);
+        public static IEnumerable<Field> FindFields(string regexPattern) => FindFields(SearchContext.Module, regexPattern);
 
-        public IEnumerable<Field> FindFields(SearchContext searchContext, string regexPattern) => this.GetTypes(searchContext).SelectMany(x => x.Fields).Where(x => Regex.IsMatch(x.Name, regexPattern, RegexOptions.Singleline));
+        public static IEnumerable<Field> FindFields(SearchContext searchContext, string regexPattern) => GetTypes(searchContext).SelectMany(x => x.Fields).Where(x => Regex.IsMatch(x.Name, regexPattern, RegexOptions.Singleline));
 
-        public IEnumerable<AttributedField> FindFieldsByAttribute(Type attributeType) => this.FindFieldsByAttribute(SearchContext.Module, attributeType);
+        public static IEnumerable<AttributedField> FindFieldsByAttribute(Type attributeType) => FindFieldsByAttribute(SearchContext.Module, attributeType);
 
-        public IEnumerable<AttributedField> FindFieldsByAttribute(SearchContext searchContext, Type attributeType) => this.FindFieldsByAttribute(searchContext, attributeType.FullName);
+        public static IEnumerable<AttributedField> FindFieldsByAttribute(SearchContext searchContext, Type attributeType) => FindFieldsByAttribute(searchContext, attributeType.FullName);
 
-        public IEnumerable<AttributedField> FindFieldsByAttribute(string attributeName) => this.FindFieldsByAttribute(SearchContext.Module, attributeName);
+        public static IEnumerable<AttributedField> FindFieldsByAttribute(string attributeName) => FindFieldsByAttribute(SearchContext.Module, attributeName);
 
-        public IEnumerable<AttributedField> FindFieldsByAttribute(SearchContext searchContext, string attributeName)
+        public static IEnumerable<AttributedField> FindFieldsByAttribute(SearchContext searchContext, string attributeName)
         {
             var result = new ConcurrentBag<AttributedField>();
 
-            Parallel.ForEach(this.GetTypes(searchContext), CecilatorCancellationToken.Current, type =>
+            Parallel.ForEach(GetTypes(searchContext), CecilatorCancellationToken.Current, type =>
             {
                 foreach (var field in type.Fields.Where(x => x.fieldDef.HasCustomAttributes))
                 {
@@ -187,14 +421,14 @@ namespace Cauldron.Interception.Cecilator
             return result;
         }
 
-        public IEnumerable<AttributedField> FindFieldsByAttributes(IEnumerable<BuilderType> types) => this.FindFieldsByAttributes(SearchContext.Module, types);
+        public static IEnumerable<AttributedField> FindFieldsByAttributes(IEnumerable<BuilderType> types) => FindFieldsByAttributes(SearchContext.Module, types);
 
-        public IEnumerable<AttributedField> FindFieldsByAttributes(SearchContext searchContext, IEnumerable<BuilderType> types)
+        public static IEnumerable<AttributedField> FindFieldsByAttributes(SearchContext searchContext, IEnumerable<BuilderType> types)
         {
             var result = new ConcurrentBag<AttributedField>();
             var attributes = types.Select(x => x.Fullname).ToList();
 
-            Parallel.ForEach(this.GetTypes(searchContext), CecilatorCancellationToken.Current, type =>
+            Parallel.ForEach(GetTypes(searchContext), CecilatorCancellationToken.Current, type =>
             {
                 foreach (var field in type.Fields.Where(x => x.fieldDef.HasCustomAttributes))
                 {
@@ -210,17 +444,17 @@ namespace Cauldron.Interception.Cecilator
             return result;
         }
 
-        public IEnumerable<Field> FindFieldsByName(string fieldName) => this.FindFieldsByName(SearchContext.Module, fieldName);
+        public static IEnumerable<Field> FindFieldsByName(string fieldName) => FindFieldsByName(SearchContext.Module, fieldName);
 
-        public IEnumerable<Field> FindFieldsByName(SearchContext searchContext, string fieldName) => this.GetTypes(searchContext).SelectMany(x => x.Fields).Where(x => x.Name == fieldName);
+        public static IEnumerable<Field> FindFieldsByName(SearchContext searchContext, string fieldName) => GetTypes(searchContext).SelectMany(x => x.Fields).Where(x => x.Name == fieldName);
 
         #endregion Field Finders
 
         #region Property Finders
 
-        public IEnumerable<AttributedProperty> FindPropertiesByAttributes(IEnumerable<BuilderType> types) => this.FindPropertiesByAttributes(SearchContext.Module, types);
+        public static IEnumerable<AttributedProperty> FindPropertiesByAttributes(IEnumerable<BuilderType> types) => FindPropertiesByAttributes(SearchContext.Module, types);
 
-        public IEnumerable<AttributedProperty> FindPropertiesByAttributes(SearchContext searchContext, IEnumerable<BuilderType> types)
+        public static IEnumerable<AttributedProperty> FindPropertiesByAttributes(SearchContext searchContext, IEnumerable<BuilderType> types)
         {
             var result = new ConcurrentBag<AttributedProperty>();
             var attributes = types.Select(x => x.Fullname).ToList();
@@ -235,9 +469,9 @@ namespace Cauldron.Interception.Cecilator
                 }
             }
 
-            Parallel.ForEach(this.GetTypes(searchContext), CecilatorCancellationToken.Current, type =>
+            Parallel.ForEach(GetTypes(searchContext), CecilatorCancellationToken.Current, type =>
             {
-                var abstractProperties = this.GetAbtractPropertiesWithCustomAttributes(type).ToArray();
+                var abstractProperties = GetAbtractPropertiesWithCustomAttributes(type).ToArray();
 
                 foreach (var property in type.Properties)
                 {
@@ -262,7 +496,7 @@ namespace Cauldron.Interception.Cecilator
             return result;
         }
 
-        private IEnumerable<Property> GetAbtractPropertiesWithCustomAttributes(BuilderType builderType)
+        private static IEnumerable<Property> GetAbtractPropertiesWithCustomAttributes(BuilderType builderType)
         {
             foreach (var baseClass in builderType.BaseClasses)
                 foreach (var item in baseClass.typeDefinition.Properties)
@@ -274,23 +508,23 @@ namespace Cauldron.Interception.Cecilator
 
         #region Method Finders
 
-        public IEnumerable<Method> FindMethods(string regexPattern) => this.FindMethods(SearchContext.Module, regexPattern);
+        public static IEnumerable<Method> FindMethods(string regexPattern) => FindMethods(SearchContext.Module, regexPattern);
 
-        public IEnumerable<Method> FindMethods(SearchContext searchContext, string regexPattern) => this.GetTypes(searchContext).SelectMany(x => x.Methods).Where(x => Regex.IsMatch(x.Name, regexPattern, RegexOptions.Singleline));
+        public static IEnumerable<Method> FindMethods(SearchContext searchContext, string regexPattern) => GetTypes(searchContext).SelectMany(x => x.Methods).Where(x => Regex.IsMatch(x.Name, regexPattern, RegexOptions.Singleline));
 
-        public IEnumerable<AttributedMethod> FindMethodsByAttribute(Type attributeType) => this.FindMethodsByAttribute(SearchContext.Module, attributeType);
+        public static IEnumerable<AttributedMethod> FindMethodsByAttribute(Type attributeType) => FindMethodsByAttribute(SearchContext.Module, attributeType);
 
-        public IEnumerable<AttributedMethod> FindMethodsByAttribute(SearchContext searchContext, Type attributeType) => this.FindMethodsByAttribute(searchContext, attributeType.FullName);
+        public static IEnumerable<AttributedMethod> FindMethodsByAttribute(SearchContext searchContext, Type attributeType) => FindMethodsByAttribute(searchContext, attributeType.FullName);
 
-        public IEnumerable<AttributedMethod> FindMethodsByAttribute(string attributeName) => this.FindMethodsByAttribute(SearchContext.Module, attributeName);
+        public static IEnumerable<AttributedMethod> FindMethodsByAttribute(string attributeName) => FindMethodsByAttribute(SearchContext.Module, attributeName);
 
-        public IEnumerable<AttributedMethod> FindMethodsByAttribute(SearchContext searchContext, string attributeName)
+        public static IEnumerable<AttributedMethod> FindMethodsByAttribute(SearchContext searchContext, string attributeName)
         {
             var result = new ConcurrentBag<AttributedMethod>();
 
             IEnumerable<AttributedMethod> getRelevantAttributes(Method method, Method owningMethod)
             {
-                var asyncResult = this.GetAsyncMethod(method);
+                var asyncResult = method.GetAsyncMethod();
                 for (int i = 0; i < method.methodDefinition.CustomAttributes.Count; i++)
                 {
                     var fullname = method.methodDefinition.CustomAttributes[i].AttributeType.Resolve().FullName;
@@ -304,9 +538,9 @@ namespace Cauldron.Interception.Cecilator
                 }
             }
 
-            Parallel.ForEach(this.GetTypes(searchContext), CecilatorCancellationToken.Current, type =>
+            Parallel.ForEach(GetTypes(searchContext), CecilatorCancellationToken.Current, type =>
             {
-                var abstractMethods = this.GetAbtractMethodsWithCustomAttributes(type).ToArray();
+                var abstractMethods = GetAbtractMethodsWithCustomAttributes(type).ToArray();
                 foreach (var method in type.Methods)
                 {
                     if (method.IsOverride)
@@ -331,16 +565,16 @@ namespace Cauldron.Interception.Cecilator
             return result;
         }
 
-        public IEnumerable<AttributedMethod> FindMethodsByAttributes(IEnumerable<BuilderType> types) => this.FindMethodsByAttributes(SearchContext.Module, types);
+        public static IEnumerable<AttributedMethod> FindMethodsByAttributes(IEnumerable<BuilderType> types) => FindMethodsByAttributes(SearchContext.Module, types);
 
-        public IEnumerable<AttributedMethod> FindMethodsByAttributes(SearchContext searchContext, IEnumerable<BuilderType> types)
+        public static IEnumerable<AttributedMethod> FindMethodsByAttributes(SearchContext searchContext, IEnumerable<BuilderType> types)
         {
             var result = new ConcurrentBag<AttributedMethod>();
             var attributes = types.Select(x => x.Fullname).ToList();
 
             IEnumerable<AttributedMethod> getRelevantAttributes(Method method, Method owningMethod)
             {
-                var asyncResult = this.GetAsyncMethod(owningMethod);
+                var asyncResult = owningMethod.GetAsyncMethod();
                 for (int i = 0; i < method.methodDefinition.CustomAttributes.Count; i++)
                 {
                     if (attributes.Contains(method.methodDefinition.CustomAttributes[i].AttributeType.Resolve().FullName))
@@ -353,9 +587,9 @@ namespace Cauldron.Interception.Cecilator
                 }
             }
 
-            Parallel.ForEach(this.GetTypes(searchContext), CecilatorCancellationToken.Current, type =>
+            Parallel.ForEach(GetTypes(searchContext), CecilatorCancellationToken.Current, type =>
             {
-                var abstractMethods = this.GetAbtractMethodsWithCustomAttributes(type).ToArray();
+                var abstractMethods = GetAbtractMethodsWithCustomAttributes(type).ToArray();
 
                 foreach (var method in type.Methods)
                 {
@@ -381,15 +615,15 @@ namespace Cauldron.Interception.Cecilator
             return result;
         }
 
-        public IEnumerable<Method> FindMethodsByName(string methodName, int parameterCount) => this.FindMethodsByName(SearchContext.Module, methodName, parameterCount);
+        public static IEnumerable<Method> FindMethodsByName(string methodName, int parameterCount) => FindMethodsByName(SearchContext.Module, methodName, parameterCount);
 
-        public IEnumerable<Method> FindMethodsByName(SearchContext searchContext, string methodName, int parameterCount) => this.GetTypes(searchContext).SelectMany(x => x.GetMethods(methodName, parameterCount, false));
+        public static IEnumerable<Method> FindMethodsByName(SearchContext searchContext, string methodName, int parameterCount) => GetTypes(searchContext).SelectMany(x => x.GetMethods(methodName, parameterCount, false));
 
-        public IEnumerable<Method> FindMethodsByName(string methodName) => this.FindMethodsByName(SearchContext.Module, methodName);
+        public static IEnumerable<Method> FindMethodsByName(string methodName) => FindMethodsByName(SearchContext.Module, methodName);
 
-        public IEnumerable<Method> FindMethodsByName(SearchContext searchContext, string methodName) => this.GetTypes(searchContext).SelectMany(x => x.GetMethods(methodName, 0));
+        public static IEnumerable<Method> FindMethodsByName(SearchContext searchContext, string methodName) => GetTypes(searchContext).SelectMany(x => x.GetMethods(methodName, 0));
 
-        private IEnumerable<Method> GetAbtractMethodsWithCustomAttributes(BuilderType builderType)
+        private static IEnumerable<Method> GetAbtractMethodsWithCustomAttributes(BuilderType builderType)
         {
             foreach (var baseClass in builderType.BaseClasses)
                 foreach (var item in baseClass.typeDefinition.Methods)
@@ -401,23 +635,23 @@ namespace Cauldron.Interception.Cecilator
 
         #region Attribute Finders
 
-        private IEnumerable<BuilderType> findAttributesInModuleCache;
+        private static IEnumerable<BuilderType> findAttributesInModuleCache;
 
-        public IEnumerable<BuilderType> FindAttributesByBaseClass(string baseClassName) => this.FindAttributesInModule().Where(x => x.BaseClasses.Any(y => y.Fullname.GetHashCode() == baseClassName.GetHashCode() && y.Fullname == baseClassName));
+        public static IEnumerable<BuilderType> FindAttributesByBaseClass(string baseClassName) => FindAttributesInModule().Where(x => x.BaseClasses.Any(y => y.Fullname.GetHashCode() == baseClassName.GetHashCode() && y.Fullname == baseClassName));
 
-        public IEnumerable<BuilderType> FindAttributesByInterfaces(Type[] interfaceTypes) => this.FindAttributesByInterfaces(interfaceTypes.Select(x => x.FullName).ToArray());
+        public static IEnumerable<BuilderType> FindAttributesByInterfaces(Type[] interfaceTypes) => FindAttributesByInterfaces(interfaceTypes.Select(x => x.FullName).ToArray());
 
-        public IEnumerable<BuilderType> FindAttributesByInterfaces(IEnumerable<BuilderType> interfaceTypes) => this.FindAttributesInModule().Where(x => interfaceTypes.Any(y => x.Implements(y)));
+        public static IEnumerable<BuilderType> FindAttributesByInterfaces(IEnumerable<BuilderType> interfaceTypes) => FindAttributesInModule().Where(x => interfaceTypes.Any(y => x.Implements(y)));
 
-        public IEnumerable<BuilderType> FindAttributesByInterfaces(params string[] interfaceName) => this.FindAttributesInModule().Where(x => x != null && interfaceName.Any(y => x.Implements(y)));
+        public static IEnumerable<BuilderType> FindAttributesByInterfaces(params string[] interfaceName) => FindAttributesInModule().Where(x => x != null && interfaceName.Any(y => x.Implements(y)));
 
-        public IEnumerable<BuilderType> FindAttributesInModule()
+        public static IEnumerable<BuilderType> FindAttributesInModule()
         {
-            if (this.findAttributesInModuleCache == null)
+            if (findAttributesInModuleCache == null)
             {
                 var stopwatch = Stopwatch.StartNew();
 
-                this.findAttributesInModuleCache = this.GetTypesInternal(SearchContext.Module)
+                findAttributesInModuleCache = GetTypesInternal(SearchContext.Module)
                    .SelectMany(x =>
                    {
                        var type = x.Resolve();
@@ -427,43 +661,43 @@ namespace Cauldron.Interception.Cecilator
                                .Concat(type.Fields.SelectMany(y => y.CustomAttributes))
                                .Concat(type.Properties.SelectMany(y => y.CustomAttributes));
                    })
-                   .Concat(this.moduleDefinition.CustomAttributes)
-                   .Concat(this.moduleDefinition.Assembly.CustomAttributes)
+                   .Concat(parameters.ModuleDefinition.CustomAttributes)
+                   .Concat(parameters.ModuleDefinition.Assembly.CustomAttributes)
                    .Distinct(new CustomAttributeEqualityComparer())
-                   .Select(x => new BuilderType(this, x.AttributeType));
+                   .Select(x => new BuilderType(x.AttributeType));
 
                 stopwatch.Stop();
-                this.Log(LogTypes.Info, $"Finding attributes took {stopwatch.Elapsed.TotalMilliseconds}ms");
 
-                this.findAttributesInModuleCache = this.findAttributesInModuleCache.OrderBy(x => x.ToString()).Distinct(new BuilderTypeEqualityComparer()).ToArray();
+                logging.Log($"Finding attributes took {stopwatch.Elapsed.TotalMilliseconds}ms");
+
+                findAttributesInModuleCache = findAttributesInModuleCache.OrderBy(x => x.ToString()).Distinct(new BuilderTypeEqualityComparer()).ToArray();
             }
 
-            return this.findAttributesInModuleCache;
+            return findAttributesInModuleCache;
         }
 
         #endregion Attribute Finders
 
         #region Getting types
 
-        public BuilderType GetType(Type type, bool throwExceptionIfNotFound = true)
+        public static BuilderType GetType(Type type, bool throwExceptionIfNotFound = true)
         {
             if (type.IsArray)
             {
                 var child = type.GetElementType();
-                var bt = this.GetType(child.FullName, throwExceptionIfNotFound);
-                return new BuilderType(this, new ArrayType(this.moduleDefinition.ImportReference(bt.typeReference)));
+                var bt = GetType(child.FullName, throwExceptionIfNotFound);
+                return new BuilderType(new ArrayType(parameters.ModuleDefinition.ImportReference(bt.typeReference)));
             }
 
             if (type.IsGenericType && type.GetGenericTypeDefinition() != type)
             {
-                var builder = Builder.Current;
                 var definition = type.GetGenericTypeDefinition();
-                var typeDefinition = this.GetType(definition.FullName, throwExceptionIfNotFound);
+                var typeDefinition = GetType(definition.FullName, throwExceptionIfNotFound);
 
                 return typeDefinition.MakeGeneric(type.GetGenericArguments().Select(x => x.ToBuilderType()).ToArray());
             }
 
-            return this.GetType(type.FullName, throwExceptionIfNotFound);
+            return GetType(type.FullName, throwExceptionIfNotFound);
         }
 
         /// <summary>
@@ -472,95 +706,107 @@ namespace Cauldron.Interception.Cecilator
         /// <param name="typeName"></param>
         /// <param name="throwExceptionIfNotFound"></param>
         /// <returns></returns>
-        public BuilderType GetType(string typeName, bool throwExceptionIfNotFound = true) => this.GetType(typeName, SearchContext.AllReferencedModules, throwExceptionIfNotFound);
+        public static BuilderType GetType(string typeName, bool throwExceptionIfNotFound = true) => GetType(typeName, SearchContext.AllReferencedModules, throwExceptionIfNotFound);
 
-        public BuilderType GetType(string typeName, SearchContext searchContext, bool throwExceptionIfNotFound = true)
+        public static BuilderType GetType(string typeName, SearchContext searchContext, bool throwExceptionIfNotFound = true)
         {
-            var result = this.GetTypesInternal(searchContext).Get(typeName);
+            var dictionary =  GetTypeSource(searchContext);
 
-            if (result == null && !throwExceptionIfNotFound)
-                throw new TypeNotFoundException($"The type '{typeName}' does not exist in any of the referenced assemblies.");
-            else if (result == null)
-                return null;
-
-            if (result.Module.FileName.GetHashCode() != this.moduleDefinition.FileName.GetHashCode() && result.Module.FileName != this.moduleDefinition.FileName)
-                result = this.moduleDefinition.ImportReference(result);
-
-            return new BuilderType(this, result);
-        }
-
-        public IEnumerable<BuilderType> GetTypes() => this.GetTypesInternal().Select(x => new BuilderType(this, x)).ToArray();
-
-        public IEnumerable<BuilderType> GetTypes(SearchContext searchContext) => this.GetTypesInternal(searchContext).Select(x => new BuilderType(this, x)).ToArray();
-
-        public IEnumerable<BuilderType> GetTypesInNamespace(string namespaceName) => this.GetTypesInNamespace(SearchContext.Module, namespaceName);
-
-        public IEnumerable<BuilderType> GetTypesInNamespace(SearchContext searchContext, string namespaceName) => this.GetTypes(searchContext).Where(x => x.Namespace == namespaceName);
-
-        public BuilderType MakeArray(BuilderType type) => new BuilderType(this, new ArrayType(this.moduleDefinition.ImportReference(type.typeReference)));
-
-        public bool TypeExists(string typeName) => this.allTypes.Get(typeName) != null;
-
-        public bool TypeExists(string typeName, SearchContext searchContext) => searchContext == SearchContext.AllReferencedModules ? this.allTypes.Get(typeName) != null : this.moduleDefinition.Types.Get(typeName) != null;
-
-        internal IEnumerable<TypeReference> GetTypesInternal() => this.GetTypesInternal(SearchContext.Module);
-
-        internal IEnumerable<TypeReference> GetTypesInternal(SearchContext searchContext)
-        {
-            IEnumerable<TypeDefinition> types = null;
-            var result = new ConcurrentBag<TypeReference>();
-
-            switch (searchContext)
+            if (dictionary.TryGetValue(typeName, out TypeDefinition type))
+                return new BuilderType(type);
+            else
             {
-                case SearchContext.Module:
-                    types = this.moduleDefinition.Types;
-                    break;
-
-                case SearchContext.Module_NoGenerated:
-                    types = this.moduleDefinition.Types.Where(x =>
-                                x.FullName?.IndexOf('<') < 0 &&
-                                x.FullName?.IndexOf('>') < 0);
-                    break;
-
-                case SearchContext.AllReferencedModules:
-                    types = this.allTypes;
-                    break;
+                var result = GetTypesInternal(searchContext).FirstOrDefault(x=> x.FullName == typeName);
+                if (result != null)
+                    return new BuilderType(result);
             }
 
-            Parallel.ForEach(types, CecilatorCancellationToken.Current, type =>
+            if (throwExceptionIfNotFound)
+                throw new TypeNotFoundException($"The type '{typeName}' does not exist in any of the referenced assemblies.");
+
+            return null;
+        }
+
+        public static IEnumerable<BuilderType> GetTypes() => allTypes.Values.Select(x => new BuilderType(x));
+
+        public static IEnumerable<BuilderType> GetTypes(SearchContext searchContext) => GetTypeSource(searchContext).Values.Select(x => new BuilderType(x));
+
+        public static IEnumerable<BuilderType> GetTypesInNamespace(string namespaceName) => GetTypesInNamespace(SearchContext.Module, namespaceName);
+
+        public static IEnumerable<BuilderType> GetTypesInNamespace(SearchContext searchContext, string namespaceName) => GetTypes(searchContext).Where(x => x.Namespace == namespaceName);
+
+        public static BuilderType MakeArray(BuilderType type) => new BuilderType(new ArrayType(parameters.ModuleDefinition.ImportReference(type.typeReference)));
+
+        public static bool TypeExists(string typeName) => allTypes.ContainsKey(typeName);
+
+        public static bool TypeExists(string typeName, SearchContext searchContext) => GetTypeSource(searchContext).ContainsKey(typeName);
+
+        internal static IEnumerable<TypeReference> GetTypesInternal() => GetTypesInternal(SearchContext.Module);
+
+        internal static IEnumerable<TypeReference> GetTypesInternal(SearchContext searchContext)
+        {
+            foreach (var item in GetTypeSource(searchContext))
+                yield return item.Value;
+        }
+
+        private static FastDictionary<string, TypeDefinition> GetTypeSource(SearchContext searchContext)
+        {
+            switch (searchContext)
             {
-                if (type.HasNestedTypes)
-                {
-                    foreach (var t in type.Recursive(x => x.NestedTypes))
-                        result.Add(t);
-                }
-                else
-                    result.Add(type);
+                case SearchContext.Module: return moduleTypes;
 
-                CecilatorCancellationToken.Current.ThrowIfCancellationRequested();
-            });
+                case SearchContext.Module_NoGenerated: return moduleTypesNoGenerated;
 
-            return result.Distinct(new TypeReferenceEqualityComparer());
+                case SearchContext.AllReferencedModules: return allTypes;
+            }
+
+            throw new InvalidOperationException("Unknown value of " + nameof(searchContext));
         }
 
         #endregion Getting types
 
         #region Create Type
 
-        public BuilderType CreateType(string namespaceName, string typeName) => this.CreateType(namespaceName, TypeAttributes.Public | TypeAttributes.Sealed | TypeAttributes.BeforeFieldInit | TypeAttributes.Serializable, typeName, this.moduleDefinition.TypeSystem.Object);
+        public static BuilderType CreateType(string namespaceName, string typeName) => CreateType(namespaceName, TypeAttributes.Public | TypeAttributes.Sealed | TypeAttributes.BeforeFieldInit | TypeAttributes.Serializable, typeName, parameters.ModuleDefinition.TypeSystem.Object);
 
-        public BuilderType CreateType(string namespaceName, TypeAttributes attributes, string typeName) => this.CreateType(namespaceName, attributes, typeName, this.moduleDefinition.TypeSystem.Object);
+        public static BuilderType CreateType(string namespaceName, TypeAttributes attributes, string typeName) => CreateType(namespaceName, attributes, typeName, parameters.ModuleDefinition.TypeSystem.Object);
 
-        public BuilderType CreateType(string namespaceName, TypeAttributes attributes, string typeName, BuilderType baseType) => this.CreateType(namespaceName, attributes, typeName, baseType.typeReference);
+        public static BuilderType CreateType(string namespaceName, TypeAttributes attributes, string typeName, BuilderType baseType) => CreateType(namespaceName, attributes, typeName, baseType.typeReference);
 
-        private BuilderType CreateType(string namespaceName, TypeAttributes attributes, string typeName, TypeReference baseType)
+        private static BuilderType CreateType(string namespaceName, TypeAttributes attributes, string typeName, TypeReference baseType)
         {
-            var newType = new TypeDefinition(namespaceName, typeName, attributes, this.moduleDefinition.ImportReference(baseType));
-            this.moduleDefinition.Types.Add(newType);
+            var newType = new TypeDefinition(namespaceName, typeName, attributes, parameters.ModuleDefinition.ImportReference(baseType));
+            parameters.ModuleDefinition.Types.Add(newType);
 
-            return new BuilderType(this, newType);
+            return new BuilderType(newType);
         }
 
         #endregion Create Type
+
+        #region Imports
+
+        public static Method Import(System.Reflection.MethodBase value)
+        {
+            var result = parameters.ModuleDefinition.ImportReference(value);
+            return new Method(new BuilderType(result.DeclaringType), result, result.Resolve());
+        }
+
+        public static MethodReference Import(MethodReference methodReference) => parameters.ModuleDefinition.ImportReference(methodReference);
+
+        public static FieldReference Import(FieldReference fieldReference) => parameters.ModuleDefinition.ImportReference(fieldReference);
+
+        public static MethodReference Import(MethodReference method, IGenericParameterProvider context) => parameters.ModuleDefinition.ImportReference(method, context);
+
+        public static TypeReference Import(Type type) => parameters.ModuleDefinition.ImportReference(type);
+
+        public static TypeReference Import(TypeReference typeReference) => parameters.ModuleDefinition.ImportReference(typeReference);
+
+        public static Method Import(Method method)
+        {
+            var result = parameters.ModuleDefinition.ImportReference(method.methodReference);
+            return new Method(new BuilderType(result.DeclaringType), result, result.Resolve());
+        }
+
+        #endregion Imports
     }
 }

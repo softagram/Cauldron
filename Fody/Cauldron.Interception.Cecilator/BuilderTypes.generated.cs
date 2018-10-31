@@ -33,7 +33,7 @@ namespace Cauldron.Interception.Cecilator
         {
             get
             {
-                if (_Void == null) _Void = Builder.Current.GetType("System.Void");
+                if (_Void == null) _Void = Builder.GetType("System.Void");
                 return _Void;
             }
         }
@@ -51,7 +51,7 @@ namespace Cauldron.Interception.Cecilator
         {
             get
             {
-                if (_application == null) _application = new BuilderTypeApplication(Builder.Current.GetType("System.Windows.Application").Import());
+                if (_application == null) _application = new BuilderTypeApplication(Builder.GetType("System.Windows.Application").Import());
                 return _application;
 			}
         }
@@ -68,7 +68,7 @@ namespace Cauldron.Interception.Cecilator
         {
             get
             {
-                if (_array == null) _array = new BuilderTypeArray(Builder.Current.GetType("System.Array").Import());
+                if (_array == null) _array = new BuilderTypeArray(Builder.GetType("System.Array").Import());
                 return _array;
 			}
         }
@@ -85,7 +85,7 @@ namespace Cauldron.Interception.Cecilator
         {
             get
             {
-                if (_asynctaskmethodbuilder == null) _asynctaskmethodbuilder = new BuilderTypeAsyncTaskMethodBuilder(Builder.Current.GetType("System.Runtime.CompilerServices.AsyncTaskMethodBuilder").Import());
+                if (_asynctaskmethodbuilder == null) _asynctaskmethodbuilder = new BuilderTypeAsyncTaskMethodBuilder(Builder.GetType("System.Runtime.CompilerServices.AsyncTaskMethodBuilder").Import());
                 return _asynctaskmethodbuilder;
 			}
         }
@@ -102,7 +102,7 @@ namespace Cauldron.Interception.Cecilator
         {
             get
             {
-                if (_asynctaskmethodbuilder_1 == null) _asynctaskmethodbuilder_1 = new BuilderTypeAsyncTaskMethodBuilder1(Builder.Current.GetType("System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1").Import());
+                if (_asynctaskmethodbuilder_1 == null) _asynctaskmethodbuilder_1 = new BuilderTypeAsyncTaskMethodBuilder1(Builder.GetType("System.Runtime.CompilerServices.AsyncTaskMethodBuilder`1").Import());
                 return _asynctaskmethodbuilder_1;
 			}
         }
@@ -119,7 +119,7 @@ namespace Cauldron.Interception.Cecilator
         {
             get
             {
-                if (_boolean == null) _boolean = new BuilderTypeBoolean(Builder.Current.GetType("System.Boolean").Import());
+                if (_boolean == null) _boolean = new BuilderTypeBoolean(Builder.GetType("System.Boolean").Import());
                 return _boolean;
 			}
         }
@@ -136,7 +136,7 @@ namespace Cauldron.Interception.Cecilator
         {
             get
             {
-                if (_byte == null) _byte = new BuilderTypeByte(Builder.Current.GetType("System.Byte").Import());
+                if (_byte == null) _byte = new BuilderTypeByte(Builder.GetType("System.Byte").Import());
                 return _byte;
 			}
         }
@@ -153,42 +153,8 @@ namespace Cauldron.Interception.Cecilator
         {
             get
             {
-                if (_char == null) _char = new BuilderTypeChar(Builder.Current.GetType("System.Char").Import());
+                if (_char == null) _char = new BuilderTypeChar(Builder.GetType("System.Char").Import());
                 return _char;
-			}
-        }
-
-		#endregion
-				
-		#region ComponentAttribute
-        private static BuilderTypeComponentAttribute _componentattribute;
-		
-        /// <summary>
-        /// Gets <see cref="BuilderType"/> representing <see cref="Cauldron.Activator.ComponentAttribute"/>. 
-        /// </summary>
-        public static BuilderTypeComponentAttribute ComponentAttribute
-        {
-            get
-            {
-                if (_componentattribute == null) _componentattribute = new BuilderTypeComponentAttribute(Builder.Current.GetType("Cauldron.Activator.ComponentAttribute").Import());
-                return _componentattribute;
-			}
-        }
-
-		#endregion
-				
-		#region ComponentConstructorAttribute
-        private static BuilderTypeComponentConstructorAttribute _componentconstructorattribute;
-		
-        /// <summary>
-        /// Gets <see cref="BuilderType"/> representing <see cref="Cauldron.Activator.ComponentConstructorAttribute"/>. 
-        /// </summary>
-        public static BuilderTypeComponentConstructorAttribute ComponentConstructorAttribute
-        {
-            get
-            {
-                if (_componentconstructorattribute == null) _componentconstructorattribute = new BuilderTypeComponentConstructorAttribute(Builder.Current.GetType("Cauldron.Activator.ComponentConstructorAttribute").Import());
-                return _componentconstructorattribute;
 			}
         }
 
@@ -204,7 +170,7 @@ namespace Cauldron.Interception.Cecilator
         {
             get
             {
-                if (_convert == null) _convert = new BuilderTypeConvert(Builder.Current.GetType("System.Convert").Import());
+                if (_convert == null) _convert = new BuilderTypeConvert(Builder.GetType("System.Convert").Import());
                 return _convert;
 			}
         }
@@ -221,7 +187,7 @@ namespace Cauldron.Interception.Cecilator
         {
             get
             {
-                if (_datetime == null) _datetime = new BuilderTypeDateTime(Builder.Current.GetType("System.DateTime").Import());
+                if (_datetime == null) _datetime = new BuilderTypeDateTime(Builder.GetType("System.DateTime").Import());
                 return _datetime;
 			}
         }
@@ -238,7 +204,7 @@ namespace Cauldron.Interception.Cecilator
         {
             get
             {
-                if (_decimal == null) _decimal = new BuilderTypeDecimal(Builder.Current.GetType("System.Decimal").Import());
+                if (_decimal == null) _decimal = new BuilderTypeDecimal(Builder.GetType("System.Decimal").Import());
                 return _decimal;
 			}
         }
@@ -255,7 +221,7 @@ namespace Cauldron.Interception.Cecilator
         {
             get
             {
-                if (_dictionary_2 == null) _dictionary_2 = new BuilderTypeDictionary2(Builder.Current.GetType("System.Collections.Generic.Dictionary`2").Import());
+                if (_dictionary_2 == null) _dictionary_2 = new BuilderTypeDictionary2(Builder.GetType("System.Collections.Generic.Dictionary`2").Import());
                 return _dictionary_2;
 			}
         }
@@ -272,7 +238,7 @@ namespace Cauldron.Interception.Cecilator
         {
             get
             {
-                if (_double == null) _double = new BuilderTypeDouble(Builder.Current.GetType("System.Double").Import());
+                if (_double == null) _double = new BuilderTypeDouble(Builder.GetType("System.Double").Import());
                 return _double;
 			}
         }
@@ -289,7 +255,7 @@ namespace Cauldron.Interception.Cecilator
         {
             get
             {
-                if (_enum == null) _enum = new BuilderTypeEnum(Builder.Current.GetType("System.Enum").Import());
+                if (_enum == null) _enum = new BuilderTypeEnum(Builder.GetType("System.Enum").Import());
                 return _enum;
 			}
         }
@@ -306,7 +272,7 @@ namespace Cauldron.Interception.Cecilator
         {
             get
             {
-                if (_enumerable == null) _enumerable = new BuilderTypeEnumerable(Builder.Current.GetType("System.Linq.Enumerable").Import());
+                if (_enumerable == null) _enumerable = new BuilderTypeEnumerable(Builder.GetType("System.Linq.Enumerable").Import());
                 return _enumerable;
 			}
         }
@@ -323,7 +289,7 @@ namespace Cauldron.Interception.Cecilator
         {
             get
             {
-                if (_eventargs == null) _eventargs = new BuilderTypeEventArgs(Builder.Current.GetType("System.EventArgs").Import());
+                if (_eventargs == null) _eventargs = new BuilderTypeEventArgs(Builder.GetType("System.EventArgs").Import());
                 return _eventargs;
 			}
         }
@@ -340,7 +306,7 @@ namespace Cauldron.Interception.Cecilator
         {
             get
             {
-                if (_eventhandler == null) _eventhandler = new BuilderTypeEventHandler(Builder.Current.GetType("System.EventHandler").Import());
+                if (_eventhandler == null) _eventhandler = new BuilderTypeEventHandler(Builder.GetType("System.EventHandler").Import());
                 return _eventhandler;
 			}
         }
@@ -357,7 +323,7 @@ namespace Cauldron.Interception.Cecilator
         {
             get
             {
-                if (_eventhandler_1 == null) _eventhandler_1 = new BuilderTypeEventHandler1(Builder.Current.GetType("System.EventHandler`1").Import());
+                if (_eventhandler_1 == null) _eventhandler_1 = new BuilderTypeEventHandler1(Builder.GetType("System.EventHandler`1").Import());
                 return _eventhandler_1;
 			}
         }
@@ -374,76 +340,8 @@ namespace Cauldron.Interception.Cecilator
         {
             get
             {
-                if (_exception == null) _exception = new BuilderTypeException(Builder.Current.GetType("System.Exception").Import());
+                if (_exception == null) _exception = new BuilderTypeException(Builder.GetType("System.Exception").Import());
                 return _exception;
-			}
-        }
-
-		#endregion
-				
-		#region ExtensionsInterception
-        private static BuilderTypeExtensionsInterception _extensionsinterception;
-		
-        /// <summary>
-        /// Gets <see cref="BuilderType"/> representing <see cref="Cauldron.Interception.ExtensionsInterception"/>. 
-        /// </summary>
-        public static BuilderTypeExtensionsInterception ExtensionsInterception
-        {
-            get
-            {
-                if (_extensionsinterception == null) _extensionsinterception = new BuilderTypeExtensionsInterception(Builder.Current.GetType("Cauldron.Interception.ExtensionsInterception").Import());
-                return _extensionsinterception;
-			}
-        }
-
-		#endregion
-				
-		#region ExtensionsReflection
-        private static BuilderTypeExtensionsReflection _extensionsreflection;
-		
-        /// <summary>
-        /// Gets <see cref="BuilderType"/> representing <see cref="Cauldron.ExtensionsReflection"/>. 
-        /// </summary>
-        public static BuilderTypeExtensionsReflection ExtensionsReflection
-        {
-            get
-            {
-                if (_extensionsreflection == null) _extensionsreflection = new BuilderTypeExtensionsReflection(Builder.Current.GetType("Cauldron.ExtensionsReflection").Import());
-                return _extensionsreflection;
-			}
-        }
-
-		#endregion
-				
-		#region Factory
-        private static BuilderTypeFactory _factory;
-		
-        /// <summary>
-        /// Gets <see cref="BuilderType"/> representing <see cref="Cauldron.Activator.Factory"/>. 
-        /// </summary>
-        public static BuilderTypeFactory Factory
-        {
-            get
-            {
-                if (_factory == null) _factory = new BuilderTypeFactory(Builder.Current.GetType("Cauldron.Activator.Factory").Import());
-                return _factory;
-			}
-        }
-
-		#endregion
-				
-		#region GenericComponentAttribute
-        private static BuilderTypeGenericComponentAttribute _genericcomponentattribute;
-		
-        /// <summary>
-        /// Gets <see cref="BuilderType"/> representing <see cref="Cauldron.Activator.GenericComponentAttribute"/>. 
-        /// </summary>
-        public static BuilderTypeGenericComponentAttribute GenericComponentAttribute
-        {
-            get
-            {
-                if (_genericcomponentattribute == null) _genericcomponentattribute = new BuilderTypeGenericComponentAttribute(Builder.Current.GetType("Cauldron.Activator.GenericComponentAttribute").Import());
-                return _genericcomponentattribute;
 			}
         }
 
@@ -459,25 +357,8 @@ namespace Cauldron.Interception.Cecilator
         {
             get
             {
-                if (_icollection_1 == null) _icollection_1 = new BuilderTypeICollection1(Builder.Current.GetType("System.Collections.Generic.ICollection`1").Import());
+                if (_icollection_1 == null) _icollection_1 = new BuilderTypeICollection1(Builder.GetType("System.Collections.Generic.ICollection`1").Import());
                 return _icollection_1;
-			}
-        }
-
-		#endregion
-				
-		#region IConstructorInterceptor
-        private static BuilderTypeIConstructorInterceptor _iconstructorinterceptor;
-		
-        /// <summary>
-        /// Gets <see cref="BuilderType"/> representing <see cref="Cauldron.Interception.IConstructorInterceptor"/>. 
-        /// </summary>
-        public static BuilderTypeIConstructorInterceptor IConstructorInterceptor
-        {
-            get
-            {
-                if (_iconstructorinterceptor == null) _iconstructorinterceptor = new BuilderTypeIConstructorInterceptor(Builder.Current.GetType("Cauldron.Interception.IConstructorInterceptor").Import());
-                return _iconstructorinterceptor;
 			}
         }
 
@@ -493,7 +374,7 @@ namespace Cauldron.Interception.Cecilator
         {
             get
             {
-                if (_idictionary == null) _idictionary = new BuilderTypeIDictionary(Builder.Current.GetType("System.Collections.IDictionary").Import());
+                if (_idictionary == null) _idictionary = new BuilderTypeIDictionary(Builder.GetType("System.Collections.IDictionary").Import());
                 return _idictionary;
 			}
         }
@@ -510,7 +391,7 @@ namespace Cauldron.Interception.Cecilator
         {
             get
             {
-                if (_idictionary_2 == null) _idictionary_2 = new BuilderTypeIDictionary2(Builder.Current.GetType("System.Collections.Generic.IDictionary`2").Import());
+                if (_idictionary_2 == null) _idictionary_2 = new BuilderTypeIDictionary2(Builder.GetType("System.Collections.Generic.IDictionary`2").Import());
                 return _idictionary_2;
 			}
         }
@@ -527,25 +408,8 @@ namespace Cauldron.Interception.Cecilator
         {
             get
             {
-                if (_idisposable == null) _idisposable = new BuilderTypeIDisposable(Builder.Current.GetType("System.IDisposable").Import());
+                if (_idisposable == null) _idisposable = new BuilderTypeIDisposable(Builder.GetType("System.IDisposable").Import());
                 return _idisposable;
-			}
-        }
-
-		#endregion
-				
-		#region IDisposableObject
-        private static BuilderTypeIDisposableObject _idisposableobject;
-		
-        /// <summary>
-        /// Gets <see cref="BuilderType"/> representing <see cref="Cauldron.IDisposableObject"/>. 
-        /// </summary>
-        public static BuilderTypeIDisposableObject IDisposableObject
-        {
-            get
-            {
-                if (_idisposableobject == null) _idisposableobject = new BuilderTypeIDisposableObject(Builder.Current.GetType("Cauldron.IDisposableObject").Import());
-                return _idisposableobject;
 			}
         }
 
@@ -561,7 +425,7 @@ namespace Cauldron.Interception.Cecilator
         {
             get
             {
-                if (_ienumerable == null) _ienumerable = new BuilderTypeIEnumerable(Builder.Current.GetType("System.Collections.IEnumerable").Import());
+                if (_ienumerable == null) _ienumerable = new BuilderTypeIEnumerable(Builder.GetType("System.Collections.IEnumerable").Import());
                 return _ienumerable;
 			}
         }
@@ -578,42 +442,8 @@ namespace Cauldron.Interception.Cecilator
         {
             get
             {
-                if (_ienumerable_1 == null) _ienumerable_1 = new BuilderTypeIEnumerable1(Builder.Current.GetType("System.Collections.Generic.IEnumerable`1").Import());
+                if (_ienumerable_1 == null) _ienumerable_1 = new BuilderTypeIEnumerable1(Builder.GetType("System.Collections.Generic.IEnumerable`1").Import());
                 return _ienumerable_1;
-			}
-        }
-
-		#endregion
-				
-		#region IFactoryExtension
-        private static BuilderTypeIFactoryExtension _ifactoryextension;
-		
-        /// <summary>
-        /// Gets <see cref="BuilderType"/> representing <see cref="Cauldron.Activator.IFactoryExtension"/>. 
-        /// </summary>
-        public static BuilderTypeIFactoryExtension IFactoryExtension
-        {
-            get
-            {
-                if (_ifactoryextension == null) _ifactoryextension = new BuilderTypeIFactoryExtension(Builder.Current.GetType("Cauldron.Activator.IFactoryExtension").Import());
-                return _ifactoryextension;
-			}
-        }
-
-		#endregion
-				
-		#region IFactoryTypeInfo
-        private static BuilderTypeIFactoryTypeInfo _ifactorytypeinfo;
-		
-        /// <summary>
-        /// Gets <see cref="BuilderType"/> representing <see cref="Cauldron.Activator.IFactoryTypeInfo"/>. 
-        /// </summary>
-        public static BuilderTypeIFactoryTypeInfo IFactoryTypeInfo
-        {
-            get
-            {
-                if (_ifactorytypeinfo == null) _ifactorytypeinfo = new BuilderTypeIFactoryTypeInfo(Builder.Current.GetType("Cauldron.Activator.IFactoryTypeInfo").Import());
-                return _ifactorytypeinfo;
 			}
         }
 
@@ -629,7 +459,7 @@ namespace Cauldron.Interception.Cecilator
         {
             get
             {
-                if (_ilist == null) _ilist = new BuilderTypeIList(Builder.Current.GetType("System.Collections.IList").Import());
+                if (_ilist == null) _ilist = new BuilderTypeIList(Builder.GetType("System.Collections.IList").Import());
                 return _ilist;
 			}
         }
@@ -646,42 +476,8 @@ namespace Cauldron.Interception.Cecilator
         {
             get
             {
-                if (_ilist_1 == null) _ilist_1 = new BuilderTypeIList1(Builder.Current.GetType("System.Collections.Generic.IList`1").Import());
+                if (_ilist_1 == null) _ilist_1 = new BuilderTypeIList1(Builder.GetType("System.Collections.Generic.IList`1").Import());
                 return _ilist_1;
-			}
-        }
-
-		#endregion
-				
-		#region IMethodInterceptor
-        private static BuilderTypeIMethodInterceptor _imethodinterceptor;
-		
-        /// <summary>
-        /// Gets <see cref="BuilderType"/> representing <see cref="Cauldron.Interception.IMethodInterceptor"/>. 
-        /// </summary>
-        public static BuilderTypeIMethodInterceptor IMethodInterceptor
-        {
-            get
-            {
-                if (_imethodinterceptor == null) _imethodinterceptor = new BuilderTypeIMethodInterceptor(Builder.Current.GetType("Cauldron.Interception.IMethodInterceptor").Import());
-                return _imethodinterceptor;
-			}
-        }
-
-		#endregion
-				
-		#region IMethodInterceptorOnExit
-        private static BuilderTypeIMethodInterceptorOnExit _imethodinterceptoronexit;
-		
-        /// <summary>
-        /// Gets <see cref="BuilderType"/> representing <see cref="Cauldron.Interception.IMethodInterceptorOnExit"/>. 
-        /// </summary>
-        public static BuilderTypeIMethodInterceptorOnExit IMethodInterceptorOnExit
-        {
-            get
-            {
-                if (_imethodinterceptoronexit == null) _imethodinterceptoronexit = new BuilderTypeIMethodInterceptorOnExit(Builder.Current.GetType("Cauldron.Interception.IMethodInterceptorOnExit").Import());
-                return _imethodinterceptoronexit;
 			}
         }
 
@@ -697,7 +493,7 @@ namespace Cauldron.Interception.Cecilator
         {
             get
             {
-                if (_int16 == null) _int16 = new BuilderTypeInt16(Builder.Current.GetType("System.Int16").Import());
+                if (_int16 == null) _int16 = new BuilderTypeInt16(Builder.GetType("System.Int16").Import());
                 return _int16;
 			}
         }
@@ -714,7 +510,7 @@ namespace Cauldron.Interception.Cecilator
         {
             get
             {
-                if (_int32 == null) _int32 = new BuilderTypeInt32(Builder.Current.GetType("System.Int32").Import());
+                if (_int32 == null) _int32 = new BuilderTypeInt32(Builder.GetType("System.Int32").Import());
                 return _int32;
 			}
         }
@@ -731,42 +527,8 @@ namespace Cauldron.Interception.Cecilator
         {
             get
             {
-                if (_int64 == null) _int64 = new BuilderTypeInt64(Builder.Current.GetType("System.Int64").Import());
+                if (_int64 == null) _int64 = new BuilderTypeInt64(Builder.GetType("System.Int64").Import());
                 return _int64;
-			}
-        }
-
-		#endregion
-				
-		#region InterceptionRuleAttribute
-        private static BuilderTypeInterceptionRuleAttribute _interceptionruleattribute;
-		
-        /// <summary>
-        /// Gets <see cref="BuilderType"/> representing <see cref="Cauldron.Interception.InterceptionRuleAttribute"/>. 
-        /// </summary>
-        public static BuilderTypeInterceptionRuleAttribute InterceptionRuleAttribute
-        {
-            get
-            {
-                if (_interceptionruleattribute == null) _interceptionruleattribute = new BuilderTypeInterceptionRuleAttribute(Builder.Current.GetType("Cauldron.Interception.InterceptionRuleAttribute").Import());
-                return _interceptionruleattribute;
-			}
-        }
-
-		#endregion
-				
-		#region InterceptorOptionsAttribute
-        private static BuilderTypeInterceptorOptionsAttribute _interceptoroptionsattribute;
-		
-        /// <summary>
-        /// Gets <see cref="BuilderType"/> representing <see cref="Cauldron.Interception.InterceptorOptionsAttribute"/>. 
-        /// </summary>
-        public static BuilderTypeInterceptorOptionsAttribute InterceptorOptionsAttribute
-        {
-            get
-            {
-                if (_interceptoroptionsattribute == null) _interceptoroptionsattribute = new BuilderTypeInterceptorOptionsAttribute(Builder.Current.GetType("Cauldron.Interception.InterceptorOptionsAttribute").Import());
-                return _interceptoroptionsattribute;
 			}
         }
 
@@ -782,93 +544,8 @@ namespace Cauldron.Interception.Cecilator
         {
             get
             {
-                if (_intptr == null) _intptr = new BuilderTypeIntPtr(Builder.Current.GetType("System.IntPtr").Import());
+                if (_intptr == null) _intptr = new BuilderTypeIntPtr(Builder.GetType("System.IntPtr").Import());
                 return _intptr;
-			}
-        }
-
-		#endregion
-				
-		#region IPropertyGetterInterceptor
-        private static BuilderTypeIPropertyGetterInterceptor _ipropertygetterinterceptor;
-		
-        /// <summary>
-        /// Gets <see cref="BuilderType"/> representing <see cref="Cauldron.Interception.IPropertyGetterInterceptor"/>. 
-        /// </summary>
-        public static BuilderTypeIPropertyGetterInterceptor IPropertyGetterInterceptor
-        {
-            get
-            {
-                if (_ipropertygetterinterceptor == null) _ipropertygetterinterceptor = new BuilderTypeIPropertyGetterInterceptor(Builder.Current.GetType("Cauldron.Interception.IPropertyGetterInterceptor").Import());
-                return _ipropertygetterinterceptor;
-			}
-        }
-
-		#endregion
-				
-		#region IPropertyInterceptorInitialize
-        private static BuilderTypeIPropertyInterceptorInitialize _ipropertyinterceptorinitialize;
-		
-        /// <summary>
-        /// Gets <see cref="BuilderType"/> representing <see cref="Cauldron.Interception.IPropertyInterceptorInitialize"/>. 
-        /// </summary>
-        public static BuilderTypeIPropertyInterceptorInitialize IPropertyInterceptorInitialize
-        {
-            get
-            {
-                if (_ipropertyinterceptorinitialize == null) _ipropertyinterceptorinitialize = new BuilderTypeIPropertyInterceptorInitialize(Builder.Current.GetType("Cauldron.Interception.IPropertyInterceptorInitialize").Import());
-                return _ipropertyinterceptorinitialize;
-			}
-        }
-
-		#endregion
-				
-		#region IPropertySetterInterceptor
-        private static BuilderTypeIPropertySetterInterceptor _ipropertysetterinterceptor;
-		
-        /// <summary>
-        /// Gets <see cref="BuilderType"/> representing <see cref="Cauldron.Interception.IPropertySetterInterceptor"/>. 
-        /// </summary>
-        public static BuilderTypeIPropertySetterInterceptor IPropertySetterInterceptor
-        {
-            get
-            {
-                if (_ipropertysetterinterceptor == null) _ipropertysetterinterceptor = new BuilderTypeIPropertySetterInterceptor(Builder.Current.GetType("Cauldron.Interception.IPropertySetterInterceptor").Import());
-                return _ipropertysetterinterceptor;
-			}
-        }
-
-		#endregion
-				
-		#region ISimpleMethodInterceptor
-        private static BuilderTypeISimpleMethodInterceptor _isimplemethodinterceptor;
-		
-        /// <summary>
-        /// Gets <see cref="BuilderType"/> representing <see cref="Cauldron.Interception.ISimpleMethodInterceptor"/>. 
-        /// </summary>
-        public static BuilderTypeISimpleMethodInterceptor ISimpleMethodInterceptor
-        {
-            get
-            {
-                if (_isimplemethodinterceptor == null) _isimplemethodinterceptor = new BuilderTypeISimpleMethodInterceptor(Builder.Current.GetType("Cauldron.Interception.ISimpleMethodInterceptor").Import());
-                return _isimplemethodinterceptor;
-			}
-        }
-
-		#endregion
-				
-		#region ISyncRoot
-        private static BuilderTypeISyncRoot _isyncroot;
-		
-        /// <summary>
-        /// Gets <see cref="BuilderType"/> representing <see cref="Cauldron.Interception.ISyncRoot"/>. 
-        /// </summary>
-        public static BuilderTypeISyncRoot ISyncRoot
-        {
-            get
-            {
-                if (_isyncroot == null) _isyncroot = new BuilderTypeISyncRoot(Builder.Current.GetType("Cauldron.Interception.ISyncRoot").Import());
-                return _isyncroot;
 			}
         }
 
@@ -884,7 +561,7 @@ namespace Cauldron.Interception.Cecilator
         {
             get
             {
-                if (_list_1 == null) _list_1 = new BuilderTypeList1(Builder.Current.GetType("System.Collections.Generic.List`1").Import());
+                if (_list_1 == null) _list_1 = new BuilderTypeList1(Builder.GetType("System.Collections.Generic.List`1").Import());
                 return _list_1;
 			}
         }
@@ -901,7 +578,7 @@ namespace Cauldron.Interception.Cecilator
         {
             get
             {
-                if (_methodbase == null) _methodbase = new BuilderTypeMethodBase(Builder.Current.GetType("System.Reflection.MethodBase").Import());
+                if (_methodbase == null) _methodbase = new BuilderTypeMethodBase(Builder.GetType("System.Reflection.MethodBase").Import());
                 return _methodbase;
 			}
         }
@@ -918,7 +595,7 @@ namespace Cauldron.Interception.Cecilator
         {
             get
             {
-                if (_monitor == null) _monitor = new BuilderTypeMonitor(Builder.Current.GetType("System.Threading.Monitor").Import());
+                if (_monitor == null) _monitor = new BuilderTypeMonitor(Builder.GetType("System.Threading.Monitor").Import());
                 return _monitor;
 			}
         }
@@ -935,7 +612,7 @@ namespace Cauldron.Interception.Cecilator
         {
             get
             {
-                if (_notsupportedexception == null) _notsupportedexception = new BuilderTypeNotSupportedException(Builder.Current.GetType("System.NotSupportedException").Import());
+                if (_notsupportedexception == null) _notsupportedexception = new BuilderTypeNotSupportedException(Builder.GetType("System.NotSupportedException").Import());
                 return _notsupportedexception;
 			}
         }
@@ -952,7 +629,7 @@ namespace Cauldron.Interception.Cecilator
         {
             get
             {
-                if (_nullable == null) _nullable = new BuilderTypeNullable(Builder.Current.GetType("System.Nullable").Import());
+                if (_nullable == null) _nullable = new BuilderTypeNullable(Builder.GetType("System.Nullable").Import());
                 return _nullable;
 			}
         }
@@ -969,7 +646,7 @@ namespace Cauldron.Interception.Cecilator
         {
             get
             {
-                if (_nullable_1 == null) _nullable_1 = new BuilderTypeNullable1(Builder.Current.GetType("System.Nullable`1").Import());
+                if (_nullable_1 == null) _nullable_1 = new BuilderTypeNullable1(Builder.GetType("System.Nullable`1").Import());
                 return _nullable_1;
 			}
         }
@@ -986,25 +663,8 @@ namespace Cauldron.Interception.Cecilator
         {
             get
             {
-                if (_object == null) _object = new BuilderTypeObject(Builder.Current.GetType("System.Object").Import());
+                if (_object == null) _object = new BuilderTypeObject(Builder.GetType("System.Object").Import());
                 return _object;
-			}
-        }
-
-		#endregion
-				
-		#region PropertyInterceptionInfo
-        private static BuilderTypePropertyInterceptionInfo _propertyinterceptioninfo;
-		
-        /// <summary>
-        /// Gets <see cref="BuilderType"/> representing <see cref="Cauldron.Interception.PropertyInterceptionInfo"/>. 
-        /// </summary>
-        public static BuilderTypePropertyInterceptionInfo PropertyInterceptionInfo
-        {
-            get
-            {
-                if (_propertyinterceptioninfo == null) _propertyinterceptioninfo = new BuilderTypePropertyInterceptionInfo(Builder.Current.GetType("Cauldron.Interception.PropertyInterceptionInfo").Import());
-                return _propertyinterceptioninfo;
 			}
         }
 
@@ -1020,7 +680,7 @@ namespace Cauldron.Interception.Cecilator
         {
             get
             {
-                if (_resourcedictionary == null) _resourcedictionary = new BuilderTypeResourceDictionary(Builder.Current.GetType("System.Windows.ResourceDictionary").Import());
+                if (_resourcedictionary == null) _resourcedictionary = new BuilderTypeResourceDictionary(Builder.GetType("System.Windows.ResourceDictionary").Import());
                 return _resourcedictionary;
 			}
         }
@@ -1037,7 +697,7 @@ namespace Cauldron.Interception.Cecilator
         {
             get
             {
-                if (_sbyte == null) _sbyte = new BuilderTypeSByte(Builder.Current.GetType("System.SByte").Import());
+                if (_sbyte == null) _sbyte = new BuilderTypeSByte(Builder.GetType("System.SByte").Import());
                 return _sbyte;
 			}
         }
@@ -1054,7 +714,7 @@ namespace Cauldron.Interception.Cecilator
         {
             get
             {
-                if (_single == null) _single = new BuilderTypeSingle(Builder.Current.GetType("System.Single").Import());
+                if (_single == null) _single = new BuilderTypeSingle(Builder.GetType("System.Single").Import());
                 return _single;
 			}
         }
@@ -1071,7 +731,7 @@ namespace Cauldron.Interception.Cecilator
         {
             get
             {
-                if (_string == null) _string = new BuilderTypeString(Builder.Current.GetType("System.String").Import());
+                if (_string == null) _string = new BuilderTypeString(Builder.GetType("System.String").Import());
                 return _string;
 			}
         }
@@ -1088,7 +748,7 @@ namespace Cauldron.Interception.Cecilator
         {
             get
             {
-                if (_task == null) _task = new BuilderTypeTask(Builder.Current.GetType("System.Threading.Tasks.Task").Import());
+                if (_task == null) _task = new BuilderTypeTask(Builder.GetType("System.Threading.Tasks.Task").Import());
                 return _task;
 			}
         }
@@ -1105,7 +765,7 @@ namespace Cauldron.Interception.Cecilator
         {
             get
             {
-                if (_task_1 == null) _task_1 = new BuilderTypeTask1(Builder.Current.GetType("System.Threading.Tasks.Task`1").Import());
+                if (_task_1 == null) _task_1 = new BuilderTypeTask1(Builder.GetType("System.Threading.Tasks.Task`1").Import());
                 return _task_1;
 			}
         }
@@ -1122,7 +782,7 @@ namespace Cauldron.Interception.Cecilator
         {
             get
             {
-                if (_type == null) _type = new BuilderTypeType(Builder.Current.GetType("System.Type").Import());
+                if (_type == null) _type = new BuilderTypeType(Builder.GetType("System.Type").Import());
                 return _type;
 			}
         }
@@ -1139,7 +799,7 @@ namespace Cauldron.Interception.Cecilator
         {
             get
             {
-                if (_uint16 == null) _uint16 = new BuilderTypeUInt16(Builder.Current.GetType("System.UInt16").Import());
+                if (_uint16 == null) _uint16 = new BuilderTypeUInt16(Builder.GetType("System.UInt16").Import());
                 return _uint16;
 			}
         }
@@ -1156,7 +816,7 @@ namespace Cauldron.Interception.Cecilator
         {
             get
             {
-                if (_uint32 == null) _uint32 = new BuilderTypeUInt32(Builder.Current.GetType("System.UInt32").Import());
+                if (_uint32 == null) _uint32 = new BuilderTypeUInt32(Builder.GetType("System.UInt32").Import());
                 return _uint32;
 			}
         }
@@ -1173,7 +833,7 @@ namespace Cauldron.Interception.Cecilator
         {
             get
             {
-                if (_uint64 == null) _uint64 = new BuilderTypeUInt64(Builder.Current.GetType("System.UInt64").Import());
+                if (_uint64 == null) _uint64 = new BuilderTypeUInt64(Builder.GetType("System.UInt64").Import());
                 return _uint64;
 			}
         }
@@ -1190,7 +850,7 @@ namespace Cauldron.Interception.Cecilator
         {
             get
             {
-                if (_uintptr == null) _uintptr = new BuilderTypeUIntPtr(Builder.Current.GetType("System.UIntPtr").Import());
+                if (_uintptr == null) _uintptr = new BuilderTypeUIntPtr(Builder.GetType("System.UIntPtr").Import());
                 return _uintptr;
 			}
         }
@@ -1207,7 +867,7 @@ namespace Cauldron.Interception.Cecilator
         {
             get
             {
-                if (_uri == null) _uri = new BuilderTypeUri(Builder.Current.GetType("System.Uri").Import());
+                if (_uri == null) _uri = new BuilderTypeUri(Builder.GetType("System.Uri").Import());
                 return _uri;
 			}
         }
@@ -1245,7 +905,7 @@ namespace Cauldron.Interception.Cecilator
 		public static implicit operator BuilderType(BuilderTypeApplication value) => value.builderType.Import();
 		
 		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeApplication value) => Builder.Current.Import((TypeReference)value.builderType);
+		public static implicit operator TypeReference(BuilderTypeApplication value) => Builder.Import((TypeReference)value.builderType);
 			
 				
 		private Method var_run_0_0;
@@ -2181,7 +1841,7 @@ namespace Cauldron.Interception.Cecilator
 		public static implicit operator BuilderType(BuilderTypeArray value) => value.builderType.Import();
 		
 		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeArray value) => Builder.Current.Import((TypeReference)value.builderType);
+		public static implicit operator TypeReference(BuilderTypeArray value) => Builder.Import((TypeReference)value.builderType);
 			
 				
 		private Method var_createinstance_0_2;
@@ -3300,7 +2960,7 @@ namespace Cauldron.Interception.Cecilator
 		public static implicit operator BuilderType(BuilderTypeAsyncTaskMethodBuilder value) => value.builderType.Import();
 		
 		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeAsyncTaskMethodBuilder value) => Builder.Current.Import((TypeReference)value.builderType);
+		public static implicit operator TypeReference(BuilderTypeAsyncTaskMethodBuilder value) => Builder.Import((TypeReference)value.builderType);
 			
 				
 		private Method var_create_0_0;
@@ -3453,7 +3113,7 @@ namespace Cauldron.Interception.Cecilator
 		public static implicit operator BuilderType(BuilderTypeAsyncTaskMethodBuilder1 value) => value.builderType.Import();
 		
 		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeAsyncTaskMethodBuilder1 value) => Builder.Current.Import((TypeReference)value.builderType);
+		public static implicit operator TypeReference(BuilderTypeAsyncTaskMethodBuilder1 value) => Builder.Import((TypeReference)value.builderType);
 			
 				
 		private Method var_equals_0_1;
@@ -3531,7 +3191,7 @@ namespace Cauldron.Interception.Cecilator
 		public static implicit operator BuilderType(BuilderTypeBoolean value) => value.builderType.Import();
 		
 		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeBoolean value) => Builder.Current.Import((TypeReference)value.builderType);
+		public static implicit operator TypeReference(BuilderTypeBoolean value) => Builder.Import((TypeReference)value.builderType);
 			
 				
 		private Method var_gethashcode_0_0;
@@ -3713,7 +3373,7 @@ namespace Cauldron.Interception.Cecilator
 		public static implicit operator BuilderType(BuilderTypeByte value) => value.builderType.Import();
 		
 		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeByte value) => Builder.Current.Import((TypeReference)value.builderType);
+		public static implicit operator TypeReference(BuilderTypeByte value) => Builder.Import((TypeReference)value.builderType);
 			
 				
 		private Method var_compareto_0_1;
@@ -3984,9 +3644,45 @@ namespace Cauldron.Interception.Cecilator
 		public static implicit operator BuilderType(BuilderTypeChar value) => value.builderType.Import();
 		
 		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeChar value) => Builder.Current.Import((TypeReference)value.builderType);
+		public static implicit operator TypeReference(BuilderTypeChar value) => Builder.Import((TypeReference)value.builderType);
 			
 				
+		private Method var_tolower_0_2;
+		
+		/// <summary>
+		/// Represents the following method:
+		/// <para />
+		/// Char ToLower(Char, System.Globalization.CultureInfo)<para/>
+		/// </summary>
+		public Method GetMethod_ToLower(TypeReference pc, TypeReference pculture)
+		{
+						
+						
+			if(this.var_tolower_0_2 == null)
+				this.var_tolower_0_2 = this.builderType.GetMethod("ToLower", true, pc, pculture);
+			
+			return this.var_tolower_0_2.Import();
+						
+		}
+						
+		private Method var_tolower_0_1;
+		
+		/// <summary>
+		/// Represents the following method:
+		/// <para />
+		/// Char ToLower(Char)<para/>
+		/// </summary>
+		public Method GetMethod_ToLower(TypeReference pc)
+		{
+						
+						
+			if(this.var_tolower_0_1 == null)
+				this.var_tolower_0_1 = this.builderType.GetMethod("ToLower", true, pc);
+			
+			return this.var_tolower_0_1.Import();
+						
+		}
+						
 		private Method var_gethashcode_0_0;
 		
 		/// <summary>
@@ -4438,42 +4134,6 @@ namespace Cauldron.Interception.Cecilator
 				this.var_toupperinvariant_0_1 = this.builderType.GetMethod("ToUpperInvariant", 1, true);
 
 			return this.var_toupperinvariant_0_1.Import();
-		}
-						
-		private Method var_tolower_0_2;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Char ToLower(Char, System.Globalization.CultureInfo)<para/>
-		/// </summary>
-		public Method GetMethod_ToLower(TypeReference pc, TypeReference pculture)
-		{
-						
-						
-			if(this.var_tolower_0_2 == null)
-				this.var_tolower_0_2 = this.builderType.GetMethod("ToLower", true, pc, pculture);
-			
-			return this.var_tolower_0_2.Import();
-						
-		}
-						
-		private Method var_tolower_0_1;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Char ToLower(Char)<para/>
-		/// </summary>
-		public Method GetMethod_ToLower(TypeReference pc)
-		{
-						
-						
-			if(this.var_tolower_0_1 == null)
-				this.var_tolower_0_1 = this.builderType.GetMethod("ToLower", true, pc);
-			
-			return this.var_tolower_0_1.Import();
-						
 		}
 						
 		private Method var_tolowerinvariant_0_1;
@@ -4931,410 +4591,6 @@ namespace Cauldron.Interception.Cecilator
 
 			
     /// <summary>
-    /// Provides a wrapper class for <see cref="Cauldron.Activator.ComponentAttribute"/>
-    /// </summary>
-    public partial class BuilderTypeComponentAttribute : TypeSystemExBase
-	{
-        internal BuilderTypeComponentAttribute(BuilderType builderType) : base(builderType)
-		{
-		}
-
-		/// <exclude />
-		public static implicit operator BuilderType(BuilderTypeComponentAttribute value) => value.builderType.Import();
-		
-		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeComponentAttribute value) => Builder.Current.Import((TypeReference)value.builderType);
-			
-				
-		private Method var_get_contractname_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// System.String get_ContractName()<para/>
-		/// </summary>
-		public Method GetMethod_get_ContractName()
-		{
-			if(this.var_get_contractname_0_0 == null)
-				this.var_get_contractname_0_0 = this.builderType.GetMethod("get_ContractName", 0, true);
-
-			return this.var_get_contractname_0_0.Import();
-		}
-						
-		private Method var_get_invokeonobjectcreationevent_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Boolean get_InvokeOnObjectCreationEvent()<para/>
-		/// </summary>
-		public Method GetMethod_get_InvokeOnObjectCreationEvent()
-		{
-			if(this.var_get_invokeonobjectcreationevent_0_0 == null)
-				this.var_get_invokeonobjectcreationevent_0_0 = this.builderType.GetMethod("get_InvokeOnObjectCreationEvent", 0, true);
-
-			return this.var_get_invokeonobjectcreationevent_0_0.Import();
-		}
-						
-		private Method var_set_invokeonobjectcreationevent_0_1;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Void set_InvokeOnObjectCreationEvent(Boolean)<para/>
-		/// </summary>
-		public Method GetMethod_set_InvokeOnObjectCreationEvent()
-		{
-			if(this.var_set_invokeonobjectcreationevent_0_1 == null)
-				this.var_set_invokeonobjectcreationevent_0_1 = this.builderType.GetMethod("set_InvokeOnObjectCreationEvent", 1, true);
-
-			return this.var_set_invokeonobjectcreationevent_0_1.Import();
-		}
-						
-		private Method var_get_policy_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Cauldron.Activator.FactoryCreationPolicy get_Policy()<para/>
-		/// </summary>
-		public Method GetMethod_get_Policy()
-		{
-			if(this.var_get_policy_0_0 == null)
-				this.var_get_policy_0_0 = this.builderType.GetMethod("get_Policy", 0, true);
-
-			return this.var_get_policy_0_0.Import();
-		}
-						
-		private Method var_get_priority_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// UInt32 get_Priority()<para/>
-		/// </summary>
-		public Method GetMethod_get_Priority()
-		{
-			if(this.var_get_priority_0_0 == null)
-				this.var_get_priority_0_0 = this.builderType.GetMethod("get_Priority", 0, true);
-
-			return this.var_get_priority_0_0.Import();
-		}
-						
-		private Method var_equals_0_1;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Boolean Equals(System.Object)<para/>
-		/// </summary>
-		public Method GetMethod_Equals()
-		{
-			if(this.var_equals_0_1 == null)
-				this.var_equals_0_1 = this.builderType.GetMethod("Equals", 1, true);
-
-			return this.var_equals_0_1.Import();
-		}
-						
-		private Method var_gethashcode_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Int32 GetHashCode()<para/>
-		/// </summary>
-		public Method GetMethod_GetHashCode()
-		{
-			if(this.var_gethashcode_0_0 == null)
-				this.var_gethashcode_0_0 = this.builderType.GetMethod("GetHashCode", 0, true);
-
-			return this.var_gethashcode_0_0.Import();
-		}
-						
-		private Method var_get_typeid_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// System.Object get_TypeId()<para/>
-		/// </summary>
-		public Method GetMethod_get_TypeId()
-		{
-			if(this.var_get_typeid_0_0 == null)
-				this.var_get_typeid_0_0 = this.builderType.GetMethod("get_TypeId", 0, true);
-
-			return this.var_get_typeid_0_0.Import();
-		}
-						
-		private Method var_match_0_1;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Boolean Match(System.Object)<para/>
-		/// </summary>
-		public Method GetMethod_Match()
-		{
-			if(this.var_match_0_1 == null)
-				this.var_match_0_1 = this.builderType.GetMethod("Match", 1, true);
-
-			return this.var_match_0_1.Import();
-		}
-						
-		private Method var_isdefaultattribute_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Boolean IsDefaultAttribute()<para/>
-		/// </summary>
-		public Method GetMethod_IsDefaultAttribute()
-		{
-			if(this.var_isdefaultattribute_0_0 == null)
-				this.var_isdefaultattribute_0_0 = this.builderType.GetMethod("IsDefaultAttribute", 0, true);
-
-			return this.var_isdefaultattribute_0_0.Import();
-		}
-						
-		private Method var_tostring_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// System.String ToString()<para/>
-		/// </summary>
-		public Method GetMethod_ToString()
-		{
-			if(this.var_tostring_0_0 == null)
-				this.var_tostring_0_0 = this.builderType.GetMethod("ToString", 0, true);
-
-			return this.var_tostring_0_0.Import();
-		}
-						
-		private Method var_gettype_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// System.Type GetType()<para/>
-		/// </summary>
-		public Method GetMethod_GetType()
-		{
-			if(this.var_gettype_0_0 == null)
-				this.var_gettype_0_0 = this.builderType.GetMethod("GetType", 0, true);
-
-			return this.var_gettype_0_0.Import();
-		}
-						
-		private Method var_ctor_0_2;
-				
-		private Method var_ctor_1_2;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Void .ctor(System.String, UInt32)<para/>
-		/// Void .ctor(System.Type, UInt32)<para/>
-		/// </summary>
-		public Method GetMethod_ctor(TypeReference pcontractName, TypeReference ppriority)
-		{
-						
-						
-			if(typeof(System.String).AreEqual(pcontractName) && typeof(System.UInt32).AreEqual(ppriority))
-			{
-				if(this.var_ctor_0_2 == null)
-					this.var_ctor_0_2 = this.builderType.GetMethod(".ctor", true, pcontractName, ppriority);
-			
-				return this.var_ctor_0_2.Import();
-			}
-			
-			if(typeof(System.Type).AreEqual(pcontractName) && typeof(System.UInt32).AreEqual(ppriority))
-			{
-				if(this.var_ctor_1_2 == null)
-					this.var_ctor_1_2 = this.builderType.GetMethod(".ctor", true, pcontractName, ppriority);
-			
-				return this.var_ctor_1_2.Import();
-			}
-			
-			throw new Exception("Method with defined parameters not found.");
-			
-		}
-						
-		private Method var_ctor_0_1;
-				
-		private Method var_ctor_1_1;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Void .ctor(System.String)<para/>
-		/// Void .ctor(System.Type)<para/>
-		/// </summary>
-		public Method GetMethod_ctor(TypeReference pcontractName)
-		{
-						
-						
-			if(typeof(System.String).AreEqual(pcontractName))
-			{
-				if(this.var_ctor_0_1 == null)
-					this.var_ctor_0_1 = this.builderType.GetMethod(".ctor", true, pcontractName);
-			
-				return this.var_ctor_0_1.Import();
-			}
-			
-			if(typeof(System.Type).AreEqual(pcontractName))
-			{
-				if(this.var_ctor_1_1 == null)
-					this.var_ctor_1_1 = this.builderType.GetMethod(".ctor", true, pcontractName);
-			
-				return this.var_ctor_1_1.Import();
-			}
-			
-			throw new Exception("Method with defined parameters not found.");
-			
-		}
-					}
-
-			
-    /// <summary>
-    /// Provides a wrapper class for <see cref="Cauldron.Activator.ComponentConstructorAttribute"/>
-    /// </summary>
-    public partial class BuilderTypeComponentConstructorAttribute : TypeSystemExBase
-	{
-        internal BuilderTypeComponentConstructorAttribute(BuilderType builderType) : base(builderType)
-		{
-		}
-
-		/// <exclude />
-		public static implicit operator BuilderType(BuilderTypeComponentConstructorAttribute value) => value.builderType.Import();
-		
-		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeComponentConstructorAttribute value) => Builder.Current.Import((TypeReference)value.builderType);
-			
-				
-		private Method var_equals_0_1;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Boolean Equals(System.Object)<para/>
-		/// </summary>
-		public Method GetMethod_Equals()
-		{
-			if(this.var_equals_0_1 == null)
-				this.var_equals_0_1 = this.builderType.GetMethod("Equals", 1, true);
-
-			return this.var_equals_0_1.Import();
-		}
-						
-		private Method var_gethashcode_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Int32 GetHashCode()<para/>
-		/// </summary>
-		public Method GetMethod_GetHashCode()
-		{
-			if(this.var_gethashcode_0_0 == null)
-				this.var_gethashcode_0_0 = this.builderType.GetMethod("GetHashCode", 0, true);
-
-			return this.var_gethashcode_0_0.Import();
-		}
-						
-		private Method var_get_typeid_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// System.Object get_TypeId()<para/>
-		/// </summary>
-		public Method GetMethod_get_TypeId()
-		{
-			if(this.var_get_typeid_0_0 == null)
-				this.var_get_typeid_0_0 = this.builderType.GetMethod("get_TypeId", 0, true);
-
-			return this.var_get_typeid_0_0.Import();
-		}
-						
-		private Method var_match_0_1;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Boolean Match(System.Object)<para/>
-		/// </summary>
-		public Method GetMethod_Match()
-		{
-			if(this.var_match_0_1 == null)
-				this.var_match_0_1 = this.builderType.GetMethod("Match", 1, true);
-
-			return this.var_match_0_1.Import();
-		}
-						
-		private Method var_isdefaultattribute_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Boolean IsDefaultAttribute()<para/>
-		/// </summary>
-		public Method GetMethod_IsDefaultAttribute()
-		{
-			if(this.var_isdefaultattribute_0_0 == null)
-				this.var_isdefaultattribute_0_0 = this.builderType.GetMethod("IsDefaultAttribute", 0, true);
-
-			return this.var_isdefaultattribute_0_0.Import();
-		}
-						
-		private Method var_tostring_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// System.String ToString()<para/>
-		/// </summary>
-		public Method GetMethod_ToString()
-		{
-			if(this.var_tostring_0_0 == null)
-				this.var_tostring_0_0 = this.builderType.GetMethod("ToString", 0, true);
-
-			return this.var_tostring_0_0.Import();
-		}
-						
-		private Method var_gettype_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// System.Type GetType()<para/>
-		/// </summary>
-		public Method GetMethod_GetType()
-		{
-			if(this.var_gettype_0_0 == null)
-				this.var_gettype_0_0 = this.builderType.GetMethod("GetType", 0, true);
-
-			return this.var_gettype_0_0.Import();
-		}
-						
-		private Method var_ctor_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Void .ctor()<para/>
-		/// </summary>
-		public Method GetMethod_ctor()
-		{
-			if(this.var_ctor_0_0 == null)
-				this.var_ctor_0_0 = this.builderType.GetMethod(".ctor", 0, true);
-
-			return this.var_ctor_0_0.Import();
-		}
-					}
-
-			
-    /// <summary>
     /// Provides a wrapper class for <see cref="System.Convert"/>
     /// </summary>
     public partial class BuilderTypeConvert : TypeSystemExBase
@@ -5347,7 +4603,7 @@ namespace Cauldron.Interception.Cecilator
 		public static implicit operator BuilderType(BuilderTypeConvert value) => value.builderType.Import();
 		
 		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeConvert value) => Builder.Current.Import((TypeReference)value.builderType);
+		public static implicit operator TypeReference(BuilderTypeConvert value) => Builder.Import((TypeReference)value.builderType);
 			
 				
 		private Method var_gettypecode_0_1;
@@ -9280,7 +8536,7 @@ namespace Cauldron.Interception.Cecilator
 		public static implicit operator BuilderType(BuilderTypeDateTime value) => value.builderType.Import();
 		
 		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeDateTime value) => Builder.Current.Import((TypeReference)value.builderType);
+		public static implicit operator TypeReference(BuilderTypeDateTime value) => Builder.Import((TypeReference)value.builderType);
 			
 				
 		private Method var_add_0_1;
@@ -10695,7 +9951,7 @@ namespace Cauldron.Interception.Cecilator
 		public static implicit operator BuilderType(BuilderTypeDecimal value) => value.builderType.Import();
 		
 		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeDecimal value) => Builder.Current.Import((TypeReference)value.builderType);
+		public static implicit operator TypeReference(BuilderTypeDecimal value) => Builder.Import((TypeReference)value.builderType);
 			
 				
 		private Method var_tooacurrency_0_1;
@@ -11997,7 +11253,7 @@ namespace Cauldron.Interception.Cecilator
 		public static implicit operator BuilderType(BuilderTypeDictionary2 value) => value.builderType.Import();
 		
 		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeDictionary2 value) => Builder.Current.Import((TypeReference)value.builderType);
+		public static implicit operator TypeReference(BuilderTypeDictionary2 value) => Builder.Import((TypeReference)value.builderType);
 			
 				
 		private Method var_tostring_0_0;
@@ -12075,7 +11331,7 @@ namespace Cauldron.Interception.Cecilator
 		public static implicit operator BuilderType(BuilderTypeDouble value) => value.builderType.Import();
 		
 		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeDouble value) => Builder.Current.Import((TypeReference)value.builderType);
+		public static implicit operator TypeReference(BuilderTypeDouble value) => Builder.Import((TypeReference)value.builderType);
 			
 				
 		private Method var_isinfinity_0_1;
@@ -12496,7 +11752,7 @@ namespace Cauldron.Interception.Cecilator
 		public static implicit operator BuilderType(BuilderTypeEnum value) => value.builderType.Import();
 		
 		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeEnum value) => Builder.Current.Import((TypeReference)value.builderType);
+		public static implicit operator TypeReference(BuilderTypeEnum value) => Builder.Import((TypeReference)value.builderType);
 			
 				
 		private Method var_parse_0_2;
@@ -12911,7 +12167,7 @@ namespace Cauldron.Interception.Cecilator
 		public static implicit operator BuilderType(BuilderTypeEnumerable value) => value.builderType.Import();
 		
 		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeEnumerable value) => Builder.Current.Import((TypeReference)value.builderType);
+		public static implicit operator TypeReference(BuilderTypeEnumerable value) => Builder.Import((TypeReference)value.builderType);
 			
 				
 		private Method var_min_0_1;
@@ -13492,7 +12748,7 @@ namespace Cauldron.Interception.Cecilator
 		public static implicit operator BuilderType(BuilderTypeEventArgs value) => value.builderType.Import();
 		
 		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeEventArgs value) => Builder.Current.Import((TypeReference)value.builderType);
+		public static implicit operator TypeReference(BuilderTypeEventArgs value) => Builder.Import((TypeReference)value.builderType);
 			
 				
 		private Method var_tostring_0_0;
@@ -13585,7 +12841,7 @@ namespace Cauldron.Interception.Cecilator
 		public static implicit operator BuilderType(BuilderTypeEventHandler value) => value.builderType.Import();
 		
 		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeEventHandler value) => Builder.Current.Import((TypeReference)value.builderType);
+		public static implicit operator TypeReference(BuilderTypeEventHandler value) => Builder.Import((TypeReference)value.builderType);
 			
 				
 		private Method var_invoke_0_2;
@@ -13813,7 +13069,7 @@ namespace Cauldron.Interception.Cecilator
 		public static implicit operator BuilderType(BuilderTypeEventHandler1 value) => value.builderType.Import();
 		
 		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeEventHandler1 value) => Builder.Current.Import((TypeReference)value.builderType);
+		public static implicit operator TypeReference(BuilderTypeEventHandler1 value) => Builder.Import((TypeReference)value.builderType);
 			
 				
 		private Method var_getobjectdata_0_2;
@@ -13981,7 +13237,7 @@ namespace Cauldron.Interception.Cecilator
 		public static implicit operator BuilderType(BuilderTypeException value) => value.builderType.Import();
 		
 		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeException value) => Builder.Current.Import((TypeReference)value.builderType);
+		public static implicit operator TypeReference(BuilderTypeException value) => Builder.Import((TypeReference)value.builderType);
 			
 				
 		private Method var_get_data_0_0;
@@ -14284,1502 +13540,6 @@ namespace Cauldron.Interception.Cecilator
 
 			
     /// <summary>
-    /// Provides a wrapper class for <see cref="Cauldron.Interception.ExtensionsInterception"/>
-    /// </summary>
-    public partial class BuilderTypeExtensionsInterception : TypeSystemExBase
-	{
-        internal BuilderTypeExtensionsInterception(BuilderType builderType) : base(builderType)
-		{
-		}
-
-		/// <exclude />
-		public static implicit operator BuilderType(BuilderTypeExtensionsInterception value) => value.builderType.Import();
-		
-		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeExtensionsInterception value) => Builder.Current.Import((TypeReference)value.builderType);
-			
-				
-		private Method var_getsha256hash_0_1;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// System.String GetSHA256Hash(System.String)<para/>
-		/// </summary>
-		public Method GetMethod_GetSHA256Hash()
-		{
-			if(this.var_getsha256hash_0_1 == null)
-				this.var_getsha256hash_0_1 = this.builderType.GetMethod("GetSHA256Hash", 1, true);
-
-			return this.var_getsha256hash_0_1.Import();
-		}
-						
-		private Method var_trydisposeinternal_0_1;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Void TryDisposeInternal(System.Object)<para/>
-		/// </summary>
-		public Method GetMethod_TryDisposeInternal()
-		{
-			if(this.var_trydisposeinternal_0_1 == null)
-				this.var_trydisposeinternal_0_1 = this.builderType.GetMethod("TryDisposeInternal", 1, true);
-
-			return this.var_trydisposeinternal_0_1.Import();
-		}
-						
-		private Method var_tostring_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// System.String ToString()<para/>
-		/// </summary>
-		public Method GetMethod_ToString()
-		{
-			if(this.var_tostring_0_0 == null)
-				this.var_tostring_0_0 = this.builderType.GetMethod("ToString", 0, true);
-
-			return this.var_tostring_0_0.Import();
-		}
-						
-		private Method var_equals_0_1;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Boolean Equals(System.Object)<para/>
-		/// </summary>
-		public Method GetMethod_Equals()
-		{
-			if(this.var_equals_0_1 == null)
-				this.var_equals_0_1 = this.builderType.GetMethod("Equals", 1, true);
-
-			return this.var_equals_0_1.Import();
-		}
-						
-		private Method var_gethashcode_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Int32 GetHashCode()<para/>
-		/// </summary>
-		public Method GetMethod_GetHashCode()
-		{
-			if(this.var_gethashcode_0_0 == null)
-				this.var_gethashcode_0_0 = this.builderType.GetMethod("GetHashCode", 0, true);
-
-			return this.var_gethashcode_0_0.Import();
-		}
-						
-		private Method var_gettype_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// System.Type GetType()<para/>
-		/// </summary>
-		public Method GetMethod_GetType()
-		{
-			if(this.var_gettype_0_0 == null)
-				this.var_gettype_0_0 = this.builderType.GetMethod("GetType", 0, true);
-
-			return this.var_gettype_0_0.Import();
-		}
-					}
-
-			
-    /// <summary>
-    /// Provides a wrapper class for <see cref="Cauldron.ExtensionsReflection"/>
-    /// </summary>
-    public partial class BuilderTypeExtensionsReflection : TypeSystemExBase
-	{
-        internal BuilderTypeExtensionsReflection(BuilderType builderType) : base(builderType)
-		{
-		}
-
-		/// <exclude />
-		public static implicit operator BuilderType(BuilderTypeExtensionsReflection value) => value.builderType.Import();
-		
-		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeExtensionsReflection value) => Builder.Current.Import((TypeReference)value.builderType);
-			
-				
-		private Method var_arereferenceassignable_0_2;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Boolean AreReferenceAssignable(System.Type, System.Type)<para/>
-		/// </summary>
-		public Method GetMethod_AreReferenceAssignable()
-		{
-			if(this.var_arereferenceassignable_0_2 == null)
-				this.var_arereferenceassignable_0_2 = this.builderType.GetMethod("AreReferenceAssignable", 2, true);
-
-			return this.var_arereferenceassignable_0_2.Import();
-		}
-						
-		private Method var_createinstance_0_2;
-				
-		private Method var_createinstance_1_2;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// System.Object CreateInstance(System.Type, System.Object[])<para/>
-		/// System.Object CreateInstance(System.Reflection.ConstructorInfo, System.Object[])<para/>
-		/// </summary>
-		public Method GetMethod_CreateInstance(TypeReference ptype, TypeReference pargs)
-		{
-						
-						
-			if(typeof(System.Type).AreEqual(ptype) && typeof(System.Object[]).AreEqual(pargs))
-			{
-				if(this.var_createinstance_0_2 == null)
-					this.var_createinstance_0_2 = this.builderType.GetMethod("CreateInstance", true, ptype, pargs);
-			
-				return this.var_createinstance_0_2.Import();
-			}
-			
-			if(typeof(System.Reflection.ConstructorInfo).AreEqual(ptype) && typeof(System.Object[]).AreEqual(pargs))
-			{
-				if(this.var_createinstance_1_2 == null)
-					this.var_createinstance_1_2 = this.builderType.GetMethod("CreateInstance", true, ptype, pargs);
-			
-				return this.var_createinstance_1_2.Import();
-			}
-			
-			throw new Exception("Method with defined parameters not found.");
-			
-		}
-						
-		private Method var_getchildrentype_0_1;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// System.Type GetChildrenType(System.Type)<para/>
-		/// </summary>
-		public Method GetMethod_GetChildrenType()
-		{
-			if(this.var_getchildrentype_0_1 == null)
-				this.var_getchildrentype_0_1 = this.builderType.GetMethod("GetChildrenType", 1, true);
-
-			return this.var_getchildrentype_0_1.Import();
-		}
-						
-		private Method var_getdefaultinstance_0_1;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// System.Object GetDefaultInstance(System.Type)<para/>
-		/// </summary>
-		public Method GetMethod_GetDefaultInstance()
-		{
-			if(this.var_getdefaultinstance_0_1 == null)
-				this.var_getdefaultinstance_0_1 = this.builderType.GetMethod("GetDefaultInstance", 1, true);
-
-			return this.var_getdefaultinstance_0_1.Import();
-		}
-						
-		private Method var_getdictionarykeyvaluetypes_0_1;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// System.Type[] GetDictionaryKeyValueTypes(System.Type)<para/>
-		/// </summary>
-		public Method GetMethod_GetDictionaryKeyValueTypes()
-		{
-			if(this.var_getdictionarykeyvaluetypes_0_1 == null)
-				this.var_getdictionarykeyvaluetypes_0_1 = this.builderType.GetMethod("GetDictionaryKeyValueTypes", 1, true);
-
-			return this.var_getdictionarykeyvaluetypes_0_1.Import();
-		}
-						
-		private Method var_getfieldsex_0_2;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// System.Collections.Generic.IEnumerable`1[System.Reflection.FieldInfo] GetFieldsEx(System.Type, System.Reflection.BindingFlags)<para/>
-		/// </summary>
-		public Method GetMethod_GetFieldsEx()
-		{
-			if(this.var_getfieldsex_0_2 == null)
-				this.var_getfieldsex_0_2 = this.builderType.GetMethod("GetFieldsEx", 2, true);
-
-			return this.var_getfieldsex_0_2.Import();
-		}
-						
-		private Method var_getmethod_0_4;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// System.Reflection.MethodInfo GetMethod(System.Type, System.String, System.Type[], System.Reflection.BindingFlags)<para/>
-		/// </summary>
-		public Method GetMethod_GetMethod()
-		{
-			if(this.var_getmethod_0_4 == null)
-				this.var_getmethod_0_4 = this.builderType.GetMethod("GetMethod", 4, true);
-
-			return this.var_getmethod_0_4.Import();
-		}
-						
-		private Method var_getmethodex_0_4;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// System.Reflection.MethodInfo GetMethodEx(System.Type, System.String, System.Type[], System.Reflection.BindingFlags)<para/>
-		/// </summary>
-		public Method GetMethod_GetMethodEx()
-		{
-			if(this.var_getmethodex_0_4 == null)
-				this.var_getmethodex_0_4 = this.builderType.GetMethod("GetMethodEx", 4, true);
-
-			return this.var_getmethodex_0_4.Import();
-		}
-						
-		private Method var_getmethodsex_0_2;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// System.Collections.Generic.IEnumerable`1[System.Reflection.MethodInfo] GetMethodsEx(System.Type, System.Reflection.BindingFlags)<para/>
-		/// </summary>
-		public Method GetMethod_GetMethodsEx()
-		{
-			if(this.var_getmethodsex_0_2 == null)
-				this.var_getmethodsex_0_2 = this.builderType.GetMethod("GetMethodsEx", 2, true);
-
-			return this.var_getmethodsex_0_2.Import();
-		}
-						
-		private Method var_getpropertiesex_0_2;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// System.Collections.Generic.IEnumerable`1[System.Reflection.PropertyInfo] GetPropertiesEx(System.Type, System.Reflection.BindingFlags)<para/>
-		/// </summary>
-		public Method GetMethod_GetPropertiesEx()
-		{
-			if(this.var_getpropertiesex_0_2 == null)
-				this.var_getpropertiesex_0_2 = this.builderType.GetMethod("GetPropertiesEx", 2, true);
-
-			return this.var_getpropertiesex_0_2.Import();
-		}
-						
-		private Method var_getpropertyex_0_3;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// System.Reflection.PropertyInfo GetPropertyEx(System.Type, System.String, System.Reflection.BindingFlags)<para/>
-		/// </summary>
-		public Method GetMethod_GetPropertyEx()
-		{
-			if(this.var_getpropertyex_0_3 == null)
-				this.var_getpropertyex_0_3 = this.builderType.GetMethod("GetPropertyEx", 3, true);
-
-			return this.var_getpropertyex_0_3.Import();
-		}
-						
-		private Method var_getpropertyfrompath_0_3;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// System.Reflection.PropertyInfo GetPropertyFromPath(System.Type, System.String, System.Reflection.BindingFlags)<para/>
-		/// </summary>
-		public Method GetMethod_GetPropertyFromPath()
-		{
-			if(this.var_getpropertyfrompath_0_3 == null)
-				this.var_getpropertyfrompath_0_3 = this.builderType.GetMethod("GetPropertyFromPath", 3, true);
-
-			return this.var_getpropertyfrompath_0_3.Import();
-		}
-						
-		private Method var_getpropertyvalue_0_3;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// System.Object GetPropertyValue(System.Object, System.String, System.Reflection.BindingFlags)<para/>
-		/// </summary>
-		public Method GetMethod_GetPropertyValue(TypeReference pobj, TypeReference ppropertyName, TypeReference pbindingFlags)
-		{
-						
-						
-			if(this.var_getpropertyvalue_0_3 == null)
-				this.var_getpropertyvalue_0_3 = this.builderType.GetMethod("GetPropertyValue", true, pobj, ppropertyName, pbindingFlags);
-			
-			return this.var_getpropertyvalue_0_3.Import();
-						
-		}
-						
-		private Method var_implementsinterface_0_2;
-				
-		private Method var_implementsinterface_1_2;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Boolean ImplementsInterface(System.Type, System.Type)<para/>
-		/// Boolean ImplementsInterface(System.Reflection.TypeInfo, System.Type)<para/>
-		/// </summary>
-		public Method GetMethod_ImplementsInterface(TypeReference ptype, TypeReference ptypeOfInterface)
-		{
-						
-						
-			if(typeof(System.Type).AreEqual(ptype) && typeof(System.Type).AreEqual(ptypeOfInterface))
-			{
-				if(this.var_implementsinterface_0_2 == null)
-					this.var_implementsinterface_0_2 = this.builderType.GetMethod("ImplementsInterface", true, ptype, ptypeOfInterface);
-			
-				return this.var_implementsinterface_0_2.Import();
-			}
-			
-			if(typeof(System.Reflection.TypeInfo).AreEqual(ptype) && typeof(System.Type).AreEqual(ptypeOfInterface))
-			{
-				if(this.var_implementsinterface_1_2 == null)
-					this.var_implementsinterface_1_2 = this.builderType.GetMethod("ImplementsInterface", true, ptype, ptypeOfInterface);
-			
-				return this.var_implementsinterface_1_2.Import();
-			}
-			
-			throw new Exception("Method with defined parameters not found.");
-			
-		}
-						
-		private Method var_iscollectionorlist_0_1;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Boolean IsCollectionOrList(System.Type)<para/>
-		/// </summary>
-		public Method GetMethod_IsCollectionOrList()
-		{
-			if(this.var_iscollectionorlist_0_1 == null)
-				this.var_iscollectionorlist_0_1 = this.builderType.GetMethod("IsCollectionOrList", 1, true);
-
-			return this.var_iscollectionorlist_0_1.Import();
-		}
-						
-		private Method var_isnullable_0_1;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Boolean IsNullable(System.Type)<para/>
-		/// </summary>
-		public Method GetMethod_IsNullable()
-		{
-			if(this.var_isnullable_0_1 == null)
-				this.var_isnullable_0_1 = this.builderType.GetMethod("IsNullable", 1, true);
-
-			return this.var_isnullable_0_1.Import();
-		}
-						
-		private Method var_matchesargumenttypes_0_2;
-				
-		private Method var_matchesargumenttypes_1_2;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Boolean MatchesArgumentTypes(System.Reflection.MethodBase, System.Type[])<para/>
-		/// Boolean MatchesArgumentTypes(System.Reflection.ParameterInfo[], System.Type[])<para/>
-		/// </summary>
-		public Method GetMethod_MatchesArgumentTypes(TypeReference pmethod, TypeReference pargumentTypes)
-		{
-						
-						
-			if(typeof(System.Reflection.MethodBase).AreEqual(pmethod) && typeof(System.Type[]).AreEqual(pargumentTypes))
-			{
-				if(this.var_matchesargumenttypes_0_2 == null)
-					this.var_matchesargumenttypes_0_2 = this.builderType.GetMethod("MatchesArgumentTypes", true, pmethod, pargumentTypes);
-			
-				return this.var_matchesargumenttypes_0_2.Import();
-			}
-			
-			if(typeof(System.Reflection.ParameterInfo[]).AreEqual(pmethod) && typeof(System.Type[]).AreEqual(pargumentTypes))
-			{
-				if(this.var_matchesargumenttypes_1_2 == null)
-					this.var_matchesargumenttypes_1_2 = this.builderType.GetMethod("MatchesArgumentTypes", true, pmethod, pargumentTypes);
-			
-				return this.var_matchesargumenttypes_1_2.Import();
-			}
-			
-			throw new Exception("Method with defined parameters not found.");
-			
-		}
-						
-		private Method var_tostring_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// System.String ToString()<para/>
-		/// </summary>
-		public Method GetMethod_ToString()
-		{
-			if(this.var_tostring_0_0 == null)
-				this.var_tostring_0_0 = this.builderType.GetMethod("ToString", 0, true);
-
-			return this.var_tostring_0_0.Import();
-		}
-						
-		private Method var_equals_0_1;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Boolean Equals(System.Object)<para/>
-		/// </summary>
-		public Method GetMethod_Equals()
-		{
-			if(this.var_equals_0_1 == null)
-				this.var_equals_0_1 = this.builderType.GetMethod("Equals", 1, true);
-
-			return this.var_equals_0_1.Import();
-		}
-						
-		private Method var_gethashcode_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Int32 GetHashCode()<para/>
-		/// </summary>
-		public Method GetMethod_GetHashCode()
-		{
-			if(this.var_gethashcode_0_0 == null)
-				this.var_gethashcode_0_0 = this.builderType.GetMethod("GetHashCode", 0, true);
-
-			return this.var_gethashcode_0_0.Import();
-		}
-						
-		private Method var_gettype_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// System.Type GetType()<para/>
-		/// </summary>
-		public Method GetMethod_GetType()
-		{
-			if(this.var_gettype_0_0 == null)
-				this.var_gettype_0_0 = this.builderType.GetMethod("GetType", 0, true);
-
-			return this.var_gettype_0_0.Import();
-		}
-					}
-
-			
-    /// <summary>
-    /// Provides a wrapper class for <see cref="Cauldron.Activator.Factory"/>
-    /// </summary>
-    public partial class BuilderTypeFactory : TypeSystemExBase
-	{
-        internal BuilderTypeFactory(BuilderType builderType) : base(builderType)
-		{
-		}
-
-		/// <exclude />
-		public static implicit operator BuilderType(BuilderTypeFactory value) => value.builderType.Import();
-		
-		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeFactory value) => Builder.Current.Import((TypeReference)value.builderType);
-			
-				
-		private Method var_add_objectcreated_0_1;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Void add_ObjectCreated(System.EventHandler`1[Cauldron.Activator.FactoryObjectCreatedEventArgs])<para/>
-		/// </summary>
-		public Method GetMethod_add_ObjectCreated()
-		{
-			if(this.var_add_objectcreated_0_1 == null)
-				this.var_add_objectcreated_0_1 = this.builderType.GetMethod("add_ObjectCreated", 1, true);
-
-			return this.var_add_objectcreated_0_1.Import();
-		}
-						
-		private Method var_remove_objectcreated_0_1;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Void remove_ObjectCreated(System.EventHandler`1[Cauldron.Activator.FactoryObjectCreatedEventArgs])<para/>
-		/// </summary>
-		public Method GetMethod_remove_ObjectCreated()
-		{
-			if(this.var_remove_objectcreated_0_1 == null)
-				this.var_remove_objectcreated_0_1 = this.builderType.GetMethod("remove_ObjectCreated", 1, true);
-
-			return this.var_remove_objectcreated_0_1.Import();
-		}
-						
-		private Method var_add_rebuilt_0_1;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Void add_Rebuilt(System.EventHandler)<para/>
-		/// </summary>
-		public Method GetMethod_add_Rebuilt()
-		{
-			if(this.var_add_rebuilt_0_1 == null)
-				this.var_add_rebuilt_0_1 = this.builderType.GetMethod("add_Rebuilt", 1, true);
-
-			return this.var_add_rebuilt_0_1.Import();
-		}
-						
-		private Method var_remove_rebuilt_0_1;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Void remove_Rebuilt(System.EventHandler)<para/>
-		/// </summary>
-		public Method GetMethod_remove_Rebuilt()
-		{
-			if(this.var_remove_rebuilt_0_1 == null)
-				this.var_remove_rebuilt_0_1 = this.builderType.GetMethod("remove_Rebuilt", 1, true);
-
-			return this.var_remove_rebuilt_0_1.Import();
-		}
-						
-		private Method var_get_canraiseexceptions_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Boolean get_CanRaiseExceptions()<para/>
-		/// </summary>
-		public Method GetMethod_get_CanRaiseExceptions()
-		{
-			if(this.var_get_canraiseexceptions_0_0 == null)
-				this.var_get_canraiseexceptions_0_0 = this.builderType.GetMethod("get_CanRaiseExceptions", 0, true);
-
-			return this.var_get_canraiseexceptions_0_0.Import();
-		}
-						
-		private Method var_set_canraiseexceptions_0_1;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Void set_CanRaiseExceptions(Boolean)<para/>
-		/// </summary>
-		public Method GetMethod_set_CanRaiseExceptions()
-		{
-			if(this.var_set_canraiseexceptions_0_1 == null)
-				this.var_set_canraiseexceptions_0_1 = this.builderType.GetMethod("set_CanRaiseExceptions", 1, true);
-
-			return this.var_set_canraiseexceptions_0_1.Import();
-		}
-						
-		private Method var_get_factorytypes_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// System.Collections.Generic.IEnumerable`1[Cauldron.Activator.IFactoryTypeInfo] get_FactoryTypes()<para/>
-		/// </summary>
-		public Method GetMethod_get_FactoryTypes()
-		{
-			if(this.var_get_factorytypes_0_0 == null)
-				this.var_get_factorytypes_0_0 = this.builderType.GetMethod("get_FactoryTypes", 0, true);
-
-			return this.var_get_factorytypes_0_0.Import();
-		}
-						
-		private Method var_get_registeredtypes_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// System.Collections.Generic.IEnumerable`1[Cauldron.Activator.IFactoryTypeInfo] get_RegisteredTypes()<para/>
-		/// </summary>
-		public Method GetMethod_get_RegisteredTypes()
-		{
-			if(this.var_get_registeredtypes_0_0 == null)
-				this.var_get_registeredtypes_0_0 = this.builderType.GetMethod("get_RegisteredTypes", 0, true);
-
-			return this.var_get_registeredtypes_0_0.Import();
-		}
-						
-		private Method var_get_resolvers_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Cauldron.Activator.FactoryResolver get_Resolvers()<para/>
-		/// </summary>
-		public Method GetMethod_get_Resolvers()
-		{
-			if(this.var_get_resolvers_0_0 == null)
-				this.var_get_resolvers_0_0 = this.builderType.GetMethod("get_Resolvers", 0, true);
-
-			return this.var_get_resolvers_0_0.Import();
-		}
-						
-		private Method var_addtypes_0_1;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Void AddTypes(System.Collections.Generic.IEnumerable`1[Cauldron.Activator.IFactoryTypeInfo])<para/>
-		/// </summary>
-		public Method GetMethod_AddTypes()
-		{
-			if(this.var_addtypes_0_1 == null)
-				this.var_addtypes_0_1 = this.builderType.GetMethod("AddTypes", 1, true);
-
-			return this.var_addtypes_0_1.Import();
-		}
-						
-		private Method var_create_0_1;
-				
-		private Method var_create_1_1;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// System.Object Create(System.String)<para/>
-		/// System.Object Create(System.Type)<para/>
-		/// </summary>
-		public Method GetMethod_Create(TypeReference pcontractName)
-		{
-						
-						
-			if(typeof(System.String).AreEqual(pcontractName))
-			{
-				if(this.var_create_0_1 == null)
-					this.var_create_0_1 = this.builderType.GetMethod("Create", true, pcontractName);
-			
-				return this.var_create_0_1.Import();
-			}
-			
-			if(typeof(System.Type).AreEqual(pcontractName))
-			{
-				if(this.var_create_1_1 == null)
-					this.var_create_1_1 = this.builderType.GetMethod("Create", true, pcontractName);
-			
-				return this.var_create_1_1.Import();
-			}
-			
-			throw new Exception("Method with defined parameters not found.");
-			
-		}
-						
-		private Method var_create_0_2;
-				
-		private Method var_create_1_2;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// System.Object Create(System.String, System.Object[])<para/>
-		/// System.Object Create(System.Type, System.Object[])<para/>
-		/// </summary>
-		public Method GetMethod_Create(TypeReference pcontractName, TypeReference pparameters)
-		{
-						
-						
-			if(typeof(System.String).AreEqual(pcontractName) && typeof(System.Object[]).AreEqual(pparameters))
-			{
-				if(this.var_create_0_2 == null)
-					this.var_create_0_2 = this.builderType.GetMethod("Create", true, pcontractName, pparameters);
-			
-				return this.var_create_0_2.Import();
-			}
-			
-			if(typeof(System.Type).AreEqual(pcontractName) && typeof(System.Object[]).AreEqual(pparameters))
-			{
-				if(this.var_create_1_2 == null)
-					this.var_create_1_2 = this.builderType.GetMethod("Create", true, pcontractName, pparameters);
-			
-				return this.var_create_1_2.Import();
-			}
-			
-			throw new Exception("Method with defined parameters not found.");
-			
-		}
-						
-		private Method var_____create_0_2;
-				
-		private Method var_____create_1_2;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// System.Object <>__Create(System.String, System.Type)<para/>
-		/// System.Object <>__Create(System.Type, System.Type)<para/>
-		/// </summary>
-		public Method GetMethod_____Create(TypeReference pcontractName, TypeReference pcallingType)
-		{
-						
-						
-			if(typeof(System.String).AreEqual(pcontractName) && typeof(System.Type).AreEqual(pcallingType))
-			{
-				if(this.var_____create_0_2 == null)
-					this.var_____create_0_2 = this.builderType.GetMethod("<>__Create", true, pcontractName, pcallingType);
-			
-				return this.var_____create_0_2.Import();
-			}
-			
-			if(typeof(System.Type).AreEqual(pcontractName) && typeof(System.Type).AreEqual(pcallingType))
-			{
-				if(this.var_____create_1_2 == null)
-					this.var_____create_1_2 = this.builderType.GetMethod("<>__Create", true, pcontractName, pcallingType);
-			
-				return this.var_____create_1_2.Import();
-			}
-			
-			throw new Exception("Method with defined parameters not found.");
-			
-		}
-						
-		private Method var_____create_0_3;
-				
-		private Method var_____create_1_3;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// System.Object <>__Create(System.String, System.Object[], System.Type)<para/>
-		/// System.Object <>__Create(System.Type, System.Object[], System.Type)<para/>
-		/// </summary>
-		public Method GetMethod_____Create(TypeReference pcontractName, TypeReference pparameters, TypeReference pcallingType)
-		{
-						
-						
-			if(typeof(System.String).AreEqual(pcontractName) && typeof(System.Object[]).AreEqual(pparameters) && typeof(System.Type).AreEqual(pcallingType))
-			{
-				if(this.var_____create_0_3 == null)
-					this.var_____create_0_3 = this.builderType.GetMethod("<>__Create", true, pcontractName, pparameters, pcallingType);
-			
-				return this.var_____create_0_3.Import();
-			}
-			
-			if(typeof(System.Type).AreEqual(pcontractName) && typeof(System.Object[]).AreEqual(pparameters) && typeof(System.Type).AreEqual(pcallingType))
-			{
-				if(this.var_____create_1_3 == null)
-					this.var_____create_1_3 = this.builderType.GetMethod("<>__Create", true, pcontractName, pparameters, pcallingType);
-			
-				return this.var_____create_1_3.Import();
-			}
-			
-			throw new Exception("Method with defined parameters not found.");
-			
-		}
-						
-		private Method var_createfirst_0_1;
-				
-		private Method var_createfirst_1_1;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// System.Object CreateFirst(System.Type)<para/>
-		/// System.Object CreateFirst(System.String)<para/>
-		/// </summary>
-		public Method GetMethod_CreateFirst(TypeReference pcontractType)
-		{
-						
-						
-			if(typeof(System.Type).AreEqual(pcontractType))
-			{
-				if(this.var_createfirst_0_1 == null)
-					this.var_createfirst_0_1 = this.builderType.GetMethod("CreateFirst", true, pcontractType);
-			
-				return this.var_createfirst_0_1.Import();
-			}
-			
-			if(typeof(System.String).AreEqual(pcontractType))
-			{
-				if(this.var_createfirst_1_1 == null)
-					this.var_createfirst_1_1 = this.builderType.GetMethod("CreateFirst", true, pcontractType);
-			
-				return this.var_createfirst_1_1.Import();
-			}
-			
-			throw new Exception("Method with defined parameters not found.");
-			
-		}
-						
-		private Method var_createfirst_0_2;
-				
-		private Method var_createfirst_1_2;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// System.Object CreateFirst(System.Type, System.Object[])<para/>
-		/// System.Object CreateFirst(System.String, System.Object[])<para/>
-		/// </summary>
-		public Method GetMethod_CreateFirst(TypeReference pcontractType, TypeReference pparameters)
-		{
-						
-						
-			if(typeof(System.Type).AreEqual(pcontractType) && typeof(System.Object[]).AreEqual(pparameters))
-			{
-				if(this.var_createfirst_0_2 == null)
-					this.var_createfirst_0_2 = this.builderType.GetMethod("CreateFirst", true, pcontractType, pparameters);
-			
-				return this.var_createfirst_0_2.Import();
-			}
-			
-			if(typeof(System.String).AreEqual(pcontractType) && typeof(System.Object[]).AreEqual(pparameters))
-			{
-				if(this.var_createfirst_1_2 == null)
-					this.var_createfirst_1_2 = this.builderType.GetMethod("CreateFirst", true, pcontractType, pparameters);
-			
-				return this.var_createfirst_1_2.Import();
-			}
-			
-			throw new Exception("Method with defined parameters not found.");
-			
-		}
-						
-		private Method var_createmany_0_1;
-				
-		private Method var_createmany_1_1;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// System.Collections.IEnumerable CreateMany(System.String)<para/>
-		/// System.Collections.IEnumerable CreateMany(System.Type)<para/>
-		/// </summary>
-		public Method GetMethod_CreateMany(TypeReference pcontractName)
-		{
-						
-						
-			if(typeof(System.String).AreEqual(pcontractName))
-			{
-				if(this.var_createmany_0_1 == null)
-					this.var_createmany_0_1 = this.builderType.GetMethod("CreateMany", true, pcontractName);
-			
-				return this.var_createmany_0_1.Import();
-			}
-			
-			if(typeof(System.Type).AreEqual(pcontractName))
-			{
-				if(this.var_createmany_1_1 == null)
-					this.var_createmany_1_1 = this.builderType.GetMethod("CreateMany", true, pcontractName);
-			
-				return this.var_createmany_1_1.Import();
-			}
-			
-			throw new Exception("Method with defined parameters not found.");
-			
-		}
-						
-		private Method var_createmany_0_2;
-				
-		private Method var_createmany_1_2;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// System.Collections.IEnumerable CreateMany(System.String, System.Object[])<para/>
-		/// System.Collections.IEnumerable CreateMany(System.Type, System.Object[])<para/>
-		/// </summary>
-		public Method GetMethod_CreateMany(TypeReference pcontractName, TypeReference pparameters)
-		{
-						
-						
-			if(typeof(System.String).AreEqual(pcontractName) && typeof(System.Object[]).AreEqual(pparameters))
-			{
-				if(this.var_createmany_0_2 == null)
-					this.var_createmany_0_2 = this.builderType.GetMethod("CreateMany", true, pcontractName, pparameters);
-			
-				return this.var_createmany_0_2.Import();
-			}
-			
-			if(typeof(System.Type).AreEqual(pcontractName) && typeof(System.Object[]).AreEqual(pparameters))
-			{
-				if(this.var_createmany_1_2 == null)
-					this.var_createmany_1_2 = this.builderType.GetMethod("CreateMany", true, pcontractName, pparameters);
-			
-				return this.var_createmany_1_2.Import();
-			}
-			
-			throw new Exception("Method with defined parameters not found.");
-			
-		}
-						
-		private Method var_createmanyordered_0_1;
-				
-		private Method var_createmanyordered_1_1;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// System.Collections.IEnumerable CreateManyOrdered(System.String)<para/>
-		/// System.Collections.IEnumerable CreateManyOrdered(System.Type)<para/>
-		/// </summary>
-		public Method GetMethod_CreateManyOrdered(TypeReference pcontractName)
-		{
-						
-						
-			if(typeof(System.String).AreEqual(pcontractName))
-			{
-				if(this.var_createmanyordered_0_1 == null)
-					this.var_createmanyordered_0_1 = this.builderType.GetMethod("CreateManyOrdered", true, pcontractName);
-			
-				return this.var_createmanyordered_0_1.Import();
-			}
-			
-			if(typeof(System.Type).AreEqual(pcontractName))
-			{
-				if(this.var_createmanyordered_1_1 == null)
-					this.var_createmanyordered_1_1 = this.builderType.GetMethod("CreateManyOrdered", true, pcontractName);
-			
-				return this.var_createmanyordered_1_1.Import();
-			}
-			
-			throw new Exception("Method with defined parameters not found.");
-			
-		}
-						
-		private Method var_createmanyordered_0_2;
-				
-		private Method var_createmanyordered_1_2;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// System.Collections.IEnumerable CreateManyOrdered(System.String, System.Object[])<para/>
-		/// System.Collections.IEnumerable CreateManyOrdered(System.Type, System.Object[])<para/>
-		/// </summary>
-		public Method GetMethod_CreateManyOrdered(TypeReference pcontractName, TypeReference pparameters)
-		{
-						
-						
-			if(typeof(System.String).AreEqual(pcontractName) && typeof(System.Object[]).AreEqual(pparameters))
-			{
-				if(this.var_createmanyordered_0_2 == null)
-					this.var_createmanyordered_0_2 = this.builderType.GetMethod("CreateManyOrdered", true, pcontractName, pparameters);
-			
-				return this.var_createmanyordered_0_2.Import();
-			}
-			
-			if(typeof(System.Type).AreEqual(pcontractName) && typeof(System.Object[]).AreEqual(pparameters))
-			{
-				if(this.var_createmanyordered_1_2 == null)
-					this.var_createmanyordered_1_2 = this.builderType.GetMethod("CreateManyOrdered", true, pcontractName, pparameters);
-			
-				return this.var_createmanyordered_1_2.Import();
-			}
-			
-			throw new Exception("Method with defined parameters not found.");
-			
-		}
-						
-		private Method var_destroy_0_1;
-				
-		private Method var_destroy_1_1;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Void Destroy(System.Type)<para/>
-		/// Void Destroy(System.String)<para/>
-		/// </summary>
-		public Method GetMethod_Destroy(TypeReference pcontractType)
-		{
-						
-						
-			if(typeof(System.Type).AreEqual(pcontractType))
-			{
-				if(this.var_destroy_0_1 == null)
-					this.var_destroy_0_1 = this.builderType.GetMethod("Destroy", true, pcontractType);
-			
-				return this.var_destroy_0_1.Import();
-			}
-			
-			if(typeof(System.String).AreEqual(pcontractType))
-			{
-				if(this.var_destroy_1_1 == null)
-					this.var_destroy_1_1 = this.builderType.GetMethod("Destroy", true, pcontractType);
-			
-				return this.var_destroy_1_1.Import();
-			}
-			
-			throw new Exception("Method with defined parameters not found.");
-			
-		}
-						
-		private Method var_destroy_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Void Destroy()<para/>
-		/// </summary>
-		public Method GetMethod_Destroy()
-		{
-						
-			if(this.var_destroy_0_0 == null)
-				this.var_destroy_0_0 = this.builderType.GetMethod("Destroy", true);
-
-			return this.var_destroy_0_0.Import();
-						
-						
-		}
-						
-		private Method var_getfactorytypeinfo_0_2;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Cauldron.Activator.IFactoryTypeInfo GetFactoryTypeInfo(System.Type, System.String)<para/>
-		/// </summary>
-		public Method GetMethod_GetFactoryTypeInfo()
-		{
-			if(this.var_getfactorytypeinfo_0_2 == null)
-				this.var_getfactorytypeinfo_0_2 = this.builderType.GetMethod("GetFactoryTypeInfo", 2, true);
-
-			return this.var_getfactorytypeinfo_0_2.Import();
-		}
-						
-		private Method var_getfactorytypeinfofirst_0_1;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Cauldron.Activator.IFactoryTypeInfo GetFactoryTypeInfoFirst(System.String)<para/>
-		/// </summary>
-		public Method GetMethod_GetFactoryTypeInfoFirst()
-		{
-			if(this.var_getfactorytypeinfofirst_0_1 == null)
-				this.var_getfactorytypeinfofirst_0_1 = this.builderType.GetMethod("GetFactoryTypeInfoFirst", 1, true);
-
-			return this.var_getfactorytypeinfofirst_0_1.Import();
-		}
-						
-		private Method var_getfactorytypeinfomany_0_1;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Cauldron.Activator.IFactoryTypeInfo[] GetFactoryTypeInfoMany(System.String)<para/>
-		/// </summary>
-		public Method GetMethod_GetFactoryTypeInfoMany()
-		{
-			if(this.var_getfactorytypeinfomany_0_1 == null)
-				this.var_getfactorytypeinfomany_0_1 = this.builderType.GetMethod("GetFactoryTypeInfoMany", 1, true);
-
-			return this.var_getfactorytypeinfomany_0_1.Import();
-		}
-						
-		private Method var_getfactorytypeinfomanyordered_0_1;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Cauldron.Activator.IFactoryTypeInfo[] GetFactoryTypeInfoManyOrdered(System.String)<para/>
-		/// </summary>
-		public Method GetMethod_GetFactoryTypeInfoManyOrdered()
-		{
-			if(this.var_getfactorytypeinfomanyordered_0_1 == null)
-				this.var_getfactorytypeinfomanyordered_0_1 = this.builderType.GetMethod("GetFactoryTypeInfoManyOrdered", 1, true);
-
-			return this.var_getfactorytypeinfomanyordered_0_1.Import();
-		}
-						
-		private Method var_hascontract_0_1;
-				
-		private Method var_hascontract_1_1;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Boolean HasContract(System.String)<para/>
-		/// Boolean HasContract(System.Type)<para/>
-		/// </summary>
-		public Method GetMethod_HasContract(TypeReference pcontractName)
-		{
-						
-						
-			if(typeof(System.String).AreEqual(pcontractName))
-			{
-				if(this.var_hascontract_0_1 == null)
-					this.var_hascontract_0_1 = this.builderType.GetMethod("HasContract", true, pcontractName);
-			
-				return this.var_hascontract_0_1.Import();
-			}
-			
-			if(typeof(System.Type).AreEqual(pcontractName))
-			{
-				if(this.var_hascontract_1_1 == null)
-					this.var_hascontract_1_1 = this.builderType.GetMethod("HasContract", true, pcontractName);
-			
-				return this.var_hascontract_1_1.Import();
-			}
-			
-			throw new Exception("Method with defined parameters not found.");
-			
-		}
-						
-		private Method var_onobjectcreation_0_2;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Void OnObjectCreation(System.Object, Cauldron.Activator.IFactoryTypeInfo)<para/>
-		/// </summary>
-		public Method GetMethod_OnObjectCreation()
-		{
-			if(this.var_onobjectcreation_0_2 == null)
-				this.var_onobjectcreation_0_2 = this.builderType.GetMethod("OnObjectCreation", 2, true);
-
-			return this.var_onobjectcreation_0_2.Import();
-		}
-						
-		private Method var_removetype_0_2;
-				
-		private Method var_removetype_1_2;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Void RemoveType(System.Type, System.Type)<para/>
-		/// Void RemoveType(System.String, System.Type)<para/>
-		/// </summary>
-		public Method GetMethod_RemoveType(TypeReference pcontractType, TypeReference ptype)
-		{
-						
-						
-			if(typeof(System.Type).AreEqual(pcontractType) && typeof(System.Type).AreEqual(ptype))
-			{
-				if(this.var_removetype_0_2 == null)
-					this.var_removetype_0_2 = this.builderType.GetMethod("RemoveType", true, pcontractType, ptype);
-			
-				return this.var_removetype_0_2.Import();
-			}
-			
-			if(typeof(System.String).AreEqual(pcontractType) && typeof(System.Type).AreEqual(ptype))
-			{
-				if(this.var_removetype_1_2 == null)
-					this.var_removetype_1_2 = this.builderType.GetMethod("RemoveType", true, pcontractType, ptype);
-			
-				return this.var_removetype_1_2.Import();
-			}
-			
-			throw new Exception("Method with defined parameters not found.");
-			
-		}
-						
-		private Method var_tostring_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// System.String ToString()<para/>
-		/// </summary>
-		public Method GetMethod_ToString()
-		{
-			if(this.var_tostring_0_0 == null)
-				this.var_tostring_0_0 = this.builderType.GetMethod("ToString", 0, true);
-
-			return this.var_tostring_0_0.Import();
-		}
-						
-		private Method var_equals_0_1;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Boolean Equals(System.Object)<para/>
-		/// </summary>
-		public Method GetMethod_Equals()
-		{
-			if(this.var_equals_0_1 == null)
-				this.var_equals_0_1 = this.builderType.GetMethod("Equals", 1, true);
-
-			return this.var_equals_0_1.Import();
-		}
-						
-		private Method var_gethashcode_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Int32 GetHashCode()<para/>
-		/// </summary>
-		public Method GetMethod_GetHashCode()
-		{
-			if(this.var_gethashcode_0_0 == null)
-				this.var_gethashcode_0_0 = this.builderType.GetMethod("GetHashCode", 0, true);
-
-			return this.var_gethashcode_0_0.Import();
-		}
-						
-		private Method var_gettype_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// System.Type GetType()<para/>
-		/// </summary>
-		public Method GetMethod_GetType()
-		{
-			if(this.var_gettype_0_0 == null)
-				this.var_gettype_0_0 = this.builderType.GetMethod("GetType", 0, true);
-
-			return this.var_gettype_0_0.Import();
-		}
-					}
-
-			
-    /// <summary>
-    /// Provides a wrapper class for <see cref="Cauldron.Activator.GenericComponentAttribute"/>
-    /// </summary>
-    public partial class BuilderTypeGenericComponentAttribute : TypeSystemExBase
-	{
-        internal BuilderTypeGenericComponentAttribute(BuilderType builderType) : base(builderType)
-		{
-		}
-
-		/// <exclude />
-		public static implicit operator BuilderType(BuilderTypeGenericComponentAttribute value) => value.builderType.Import();
-		
-		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeGenericComponentAttribute value) => Builder.Current.Import((TypeReference)value.builderType);
-			
-				
-		private Method var_get_contractname_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// System.String get_ContractName()<para/>
-		/// </summary>
-		public Method GetMethod_get_ContractName()
-		{
-			if(this.var_get_contractname_0_0 == null)
-				this.var_get_contractname_0_0 = this.builderType.GetMethod("get_ContractName", 0, true);
-
-			return this.var_get_contractname_0_0.Import();
-		}
-						
-		private Method var_get_invokeonobjectcreationevent_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Boolean get_InvokeOnObjectCreationEvent()<para/>
-		/// </summary>
-		public Method GetMethod_get_InvokeOnObjectCreationEvent()
-		{
-			if(this.var_get_invokeonobjectcreationevent_0_0 == null)
-				this.var_get_invokeonobjectcreationevent_0_0 = this.builderType.GetMethod("get_InvokeOnObjectCreationEvent", 0, true);
-
-			return this.var_get_invokeonobjectcreationevent_0_0.Import();
-		}
-						
-		private Method var_set_invokeonobjectcreationevent_0_1;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Void set_InvokeOnObjectCreationEvent(Boolean)<para/>
-		/// </summary>
-		public Method GetMethod_set_InvokeOnObjectCreationEvent()
-		{
-			if(this.var_set_invokeonobjectcreationevent_0_1 == null)
-				this.var_set_invokeonobjectcreationevent_0_1 = this.builderType.GetMethod("set_InvokeOnObjectCreationEvent", 1, true);
-
-			return this.var_set_invokeonobjectcreationevent_0_1.Import();
-		}
-						
-		private Method var_get_policy_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Cauldron.Activator.FactoryCreationPolicy get_Policy()<para/>
-		/// </summary>
-		public Method GetMethod_get_Policy()
-		{
-			if(this.var_get_policy_0_0 == null)
-				this.var_get_policy_0_0 = this.builderType.GetMethod("get_Policy", 0, true);
-
-			return this.var_get_policy_0_0.Import();
-		}
-						
-		private Method var_get_priority_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// UInt32 get_Priority()<para/>
-		/// </summary>
-		public Method GetMethod_get_Priority()
-		{
-			if(this.var_get_priority_0_0 == null)
-				this.var_get_priority_0_0 = this.builderType.GetMethod("get_Priority", 0, true);
-
-			return this.var_get_priority_0_0.Import();
-		}
-						
-		private Method var_equals_0_1;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Boolean Equals(System.Object)<para/>
-		/// </summary>
-		public Method GetMethod_Equals()
-		{
-			if(this.var_equals_0_1 == null)
-				this.var_equals_0_1 = this.builderType.GetMethod("Equals", 1, true);
-
-			return this.var_equals_0_1.Import();
-		}
-						
-		private Method var_gethashcode_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Int32 GetHashCode()<para/>
-		/// </summary>
-		public Method GetMethod_GetHashCode()
-		{
-			if(this.var_gethashcode_0_0 == null)
-				this.var_gethashcode_0_0 = this.builderType.GetMethod("GetHashCode", 0, true);
-
-			return this.var_gethashcode_0_0.Import();
-		}
-						
-		private Method var_get_typeid_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// System.Object get_TypeId()<para/>
-		/// </summary>
-		public Method GetMethod_get_TypeId()
-		{
-			if(this.var_get_typeid_0_0 == null)
-				this.var_get_typeid_0_0 = this.builderType.GetMethod("get_TypeId", 0, true);
-
-			return this.var_get_typeid_0_0.Import();
-		}
-						
-		private Method var_match_0_1;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Boolean Match(System.Object)<para/>
-		/// </summary>
-		public Method GetMethod_Match()
-		{
-			if(this.var_match_0_1 == null)
-				this.var_match_0_1 = this.builderType.GetMethod("Match", 1, true);
-
-			return this.var_match_0_1.Import();
-		}
-						
-		private Method var_isdefaultattribute_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Boolean IsDefaultAttribute()<para/>
-		/// </summary>
-		public Method GetMethod_IsDefaultAttribute()
-		{
-			if(this.var_isdefaultattribute_0_0 == null)
-				this.var_isdefaultattribute_0_0 = this.builderType.GetMethod("IsDefaultAttribute", 0, true);
-
-			return this.var_isdefaultattribute_0_0.Import();
-		}
-						
-		private Method var_tostring_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// System.String ToString()<para/>
-		/// </summary>
-		public Method GetMethod_ToString()
-		{
-			if(this.var_tostring_0_0 == null)
-				this.var_tostring_0_0 = this.builderType.GetMethod("ToString", 0, true);
-
-			return this.var_tostring_0_0.Import();
-		}
-						
-		private Method var_gettype_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// System.Type GetType()<para/>
-		/// </summary>
-		public Method GetMethod_GetType()
-		{
-			if(this.var_gettype_0_0 == null)
-				this.var_gettype_0_0 = this.builderType.GetMethod("GetType", 0, true);
-
-			return this.var_gettype_0_0.Import();
-		}
-						
-		private Method var_ctor_0_2;
-				
-		private Method var_ctor_1_2;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Void .ctor(System.Type, System.Type)<para/>
-		/// Void .ctor(System.Type, System.String)<para/>
-		/// </summary>
-		public Method GetMethod_ctor(TypeReference ptype, TypeReference pcontractType)
-		{
-						
-						
-			if(typeof(System.Type).AreEqual(ptype) && typeof(System.Type).AreEqual(pcontractType))
-			{
-				if(this.var_ctor_0_2 == null)
-					this.var_ctor_0_2 = this.builderType.GetMethod(".ctor", true, ptype, pcontractType);
-			
-				return this.var_ctor_0_2.Import();
-			}
-			
-			if(typeof(System.Type).AreEqual(ptype) && typeof(System.String).AreEqual(pcontractType))
-			{
-				if(this.var_ctor_1_2 == null)
-					this.var_ctor_1_2 = this.builderType.GetMethod(".ctor", true, ptype, pcontractType);
-			
-				return this.var_ctor_1_2.Import();
-			}
-			
-			throw new Exception("Method with defined parameters not found.");
-			
-		}
-					}
-
-			
-    /// <summary>
     /// Provides a wrapper class for <see cref="System.Collections.Generic.ICollection{T}"/>
     /// </summary>
     public partial class BuilderTypeICollection1 : TypeSystemExBase
@@ -15792,87 +13552,9 @@ namespace Cauldron.Interception.Cecilator
 		public static implicit operator BuilderType(BuilderTypeICollection1 value) => value.builderType.Import();
 		
 		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeICollection1 value) => Builder.Current.Import((TypeReference)value.builderType);
+		public static implicit operator TypeReference(BuilderTypeICollection1 value) => Builder.Import((TypeReference)value.builderType);
 			
 			}
-
-			
-    /// <summary>
-    /// Provides a wrapper class for <see cref="Cauldron.Interception.IConstructorInterceptor"/>
-    /// </summary>
-    public partial class BuilderTypeIConstructorInterceptor : TypeSystemExBase
-	{
-        internal BuilderTypeIConstructorInterceptor(BuilderType builderType) : base(builderType)
-		{
-		}
-
-		/// <exclude />
-		public static implicit operator BuilderType(BuilderTypeIConstructorInterceptor value) => value.builderType.Import();
-		
-		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeIConstructorInterceptor value) => Builder.Current.Import((TypeReference)value.builderType);
-			
-				
-		private Method var_onbeforeinitialization_0_3;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Void OnBeforeInitialization(System.Type, System.Reflection.MethodBase, System.Object[])<para/>
-		/// </summary>
-		public Method GetMethod_OnBeforeInitialization()
-		{
-			if(this.var_onbeforeinitialization_0_3 == null)
-				this.var_onbeforeinitialization_0_3 = this.builderType.GetMethod("OnBeforeInitialization", 3, true);
-
-			return this.var_onbeforeinitialization_0_3.Import();
-		}
-						
-		private Method var_onenter_0_4;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Void OnEnter(System.Type, System.Object, System.Reflection.MethodBase, System.Object[])<para/>
-		/// </summary>
-		public Method GetMethod_OnEnter()
-		{
-			if(this.var_onenter_0_4 == null)
-				this.var_onenter_0_4 = this.builderType.GetMethod("OnEnter", 4, true);
-
-			return this.var_onenter_0_4.Import();
-		}
-						
-		private Method var_onexception_0_1;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Boolean OnException(System.Exception)<para/>
-		/// </summary>
-		public Method GetMethod_OnException()
-		{
-			if(this.var_onexception_0_1 == null)
-				this.var_onexception_0_1 = this.builderType.GetMethod("OnException", 1, true);
-
-			return this.var_onexception_0_1.Import();
-		}
-						
-		private Method var_onexit_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Void OnExit()<para/>
-		/// </summary>
-		public Method GetMethod_OnExit()
-		{
-			if(this.var_onexit_0_0 == null)
-				this.var_onexit_0_0 = this.builderType.GetMethod("OnExit", 0, true);
-
-			return this.var_onexit_0_0.Import();
-		}
-					}
 
 			
     /// <summary>
@@ -15888,9 +13570,24 @@ namespace Cauldron.Interception.Cecilator
 		public static implicit operator BuilderType(BuilderTypeIDictionary value) => value.builderType.Import();
 		
 		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeIDictionary value) => Builder.Current.Import((TypeReference)value.builderType);
+		public static implicit operator TypeReference(BuilderTypeIDictionary value) => Builder.Import((TypeReference)value.builderType);
 			
 				
+		private Method var_add_0_2;
+		
+		/// <summary>
+		/// Represents the following method:
+		/// <para />
+		/// Void Add(System.Object, System.Object)<para/>
+		/// </summary>
+		public Method GetMethod_Add()
+		{
+			if(this.var_add_0_2 == null)
+				this.var_add_0_2 = this.builderType.GetMethod("Add", 2, true);
+
+			return this.var_add_0_2.Import();
+		}
+						
 		private Method var_get_item_0_1;
 		
 		/// <summary>
@@ -15964,21 +13661,6 @@ namespace Cauldron.Interception.Cecilator
 				this.var_contains_0_1 = this.builderType.GetMethod("Contains", 1, true);
 
 			return this.var_contains_0_1.Import();
-		}
-						
-		private Method var_add_0_2;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Void Add(System.Object, System.Object)<para/>
-		/// </summary>
-		public Method GetMethod_Add()
-		{
-			if(this.var_add_0_2 == null)
-				this.var_add_0_2 = this.builderType.GetMethod("Add", 2, true);
-
-			return this.var_add_0_2.Import();
 		}
 						
 		private Method var_clear_0_0;
@@ -16071,7 +13753,7 @@ namespace Cauldron.Interception.Cecilator
 		public static implicit operator BuilderType(BuilderTypeIDictionary2 value) => value.builderType.Import();
 		
 		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeIDictionary2 value) => Builder.Current.Import((TypeReference)value.builderType);
+		public static implicit operator TypeReference(BuilderTypeIDictionary2 value) => Builder.Import((TypeReference)value.builderType);
 			
 			}
 
@@ -16089,7 +13771,7 @@ namespace Cauldron.Interception.Cecilator
 		public static implicit operator BuilderType(BuilderTypeIDisposable value) => value.builderType.Import();
 		
 		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeIDisposable value) => Builder.Current.Import((TypeReference)value.builderType);
+		public static implicit operator TypeReference(BuilderTypeIDisposable value) => Builder.Import((TypeReference)value.builderType);
 			
 				
 		private Method var_dispose_0_0;
@@ -16110,69 +13792,6 @@ namespace Cauldron.Interception.Cecilator
 
 			
     /// <summary>
-    /// Provides a wrapper class for <see cref="Cauldron.IDisposableObject"/>
-    /// </summary>
-    public partial class BuilderTypeIDisposableObject : TypeSystemExBase
-	{
-        internal BuilderTypeIDisposableObject(BuilderType builderType) : base(builderType)
-		{
-		}
-
-		/// <exclude />
-		public static implicit operator BuilderType(BuilderTypeIDisposableObject value) => value.builderType.Import();
-		
-		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeIDisposableObject value) => Builder.Current.Import((TypeReference)value.builderType);
-			
-				
-		private Method var_add_disposed_0_1;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Void add_Disposed(System.EventHandler)<para/>
-		/// </summary>
-		public Method GetMethod_add_Disposed()
-		{
-			if(this.var_add_disposed_0_1 == null)
-				this.var_add_disposed_0_1 = this.builderType.GetMethod("add_Disposed", 1, true);
-
-			return this.var_add_disposed_0_1.Import();
-		}
-						
-		private Method var_remove_disposed_0_1;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Void remove_Disposed(System.EventHandler)<para/>
-		/// </summary>
-		public Method GetMethod_remove_Disposed()
-		{
-			if(this.var_remove_disposed_0_1 == null)
-				this.var_remove_disposed_0_1 = this.builderType.GetMethod("remove_Disposed", 1, true);
-
-			return this.var_remove_disposed_0_1.Import();
-		}
-						
-		private Method var_get_isdisposed_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Boolean get_IsDisposed()<para/>
-		/// </summary>
-		public Method GetMethod_get_IsDisposed()
-		{
-			if(this.var_get_isdisposed_0_0 == null)
-				this.var_get_isdisposed_0_0 = this.builderType.GetMethod("get_IsDisposed", 0, true);
-
-			return this.var_get_isdisposed_0_0.Import();
-		}
-					}
-
-			
-    /// <summary>
     /// Provides a wrapper class for <see cref="System.Collections.IEnumerable"/>
     /// </summary>
     public partial class BuilderTypeIEnumerable : TypeSystemExBase
@@ -16185,7 +13804,7 @@ namespace Cauldron.Interception.Cecilator
 		public static implicit operator BuilderType(BuilderTypeIEnumerable value) => value.builderType.Import();
 		
 		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeIEnumerable value) => Builder.Current.Import((TypeReference)value.builderType);
+		public static implicit operator TypeReference(BuilderTypeIEnumerable value) => Builder.Import((TypeReference)value.builderType);
 			
 				
 		private Method var_getenumerator_0_0;
@@ -16218,246 +13837,9 @@ namespace Cauldron.Interception.Cecilator
 		public static implicit operator BuilderType(BuilderTypeIEnumerable1 value) => value.builderType.Import();
 		
 		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeIEnumerable1 value) => Builder.Current.Import((TypeReference)value.builderType);
+		public static implicit operator TypeReference(BuilderTypeIEnumerable1 value) => Builder.Import((TypeReference)value.builderType);
 			
 			}
-
-			
-    /// <summary>
-    /// Provides a wrapper class for <see cref="Cauldron.Activator.IFactoryExtension"/>
-    /// </summary>
-    public partial class BuilderTypeIFactoryExtension : TypeSystemExBase
-	{
-        internal BuilderTypeIFactoryExtension(BuilderType builderType) : base(builderType)
-		{
-		}
-
-		/// <exclude />
-		public static implicit operator BuilderType(BuilderTypeIFactoryExtension value) => value.builderType.Import();
-		
-		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeIFactoryExtension value) => Builder.Current.Import((TypeReference)value.builderType);
-			
-				
-		private Method var_get_isinitialized_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Boolean get_IsInitialized()<para/>
-		/// </summary>
-		public Method GetMethod_get_IsInitialized()
-		{
-			if(this.var_get_isinitialized_0_0 == null)
-				this.var_get_isinitialized_0_0 = this.builderType.GetMethod("get_IsInitialized", 0, true);
-
-			return this.var_get_isinitialized_0_0.Import();
-		}
-						
-		private Method var_initialize_0_1;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Void Initialize(System.Collections.Generic.IEnumerable`1[Cauldron.Activator.IFactoryTypeInfo])<para/>
-		/// </summary>
-		public Method GetMethod_Initialize()
-		{
-			if(this.var_initialize_0_1 == null)
-				this.var_initialize_0_1 = this.builderType.GetMethod("Initialize", 1, true);
-
-			return this.var_initialize_0_1.Import();
-		}
-					}
-
-			
-    /// <summary>
-    /// Provides a wrapper class for <see cref="Cauldron.Activator.IFactoryTypeInfo"/>
-    /// </summary>
-    public partial class BuilderTypeIFactoryTypeInfo : TypeSystemExBase
-	{
-        internal BuilderTypeIFactoryTypeInfo(BuilderType builderType) : base(builderType)
-		{
-		}
-
-		/// <exclude />
-		public static implicit operator BuilderType(BuilderTypeIFactoryTypeInfo value) => value.builderType.Import();
-		
-		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeIFactoryTypeInfo value) => Builder.Current.Import((TypeReference)value.builderType);
-			
-				
-		private Method var_get_childtype_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// System.Type get_ChildType()<para/>
-		/// </summary>
-		public Method GetMethod_get_ChildType()
-		{
-			if(this.var_get_childtype_0_0 == null)
-				this.var_get_childtype_0_0 = this.builderType.GetMethod("get_ChildType", 0, true);
-
-			return this.var_get_childtype_0_0.Import();
-		}
-						
-		private Method var_get_contractname_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// System.String get_ContractName()<para/>
-		/// </summary>
-		public Method GetMethod_get_ContractName()
-		{
-			if(this.var_get_contractname_0_0 == null)
-				this.var_get_contractname_0_0 = this.builderType.GetMethod("get_ContractName", 0, true);
-
-			return this.var_get_contractname_0_0.Import();
-		}
-						
-		private Method var_get_contracttype_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// System.Type get_ContractType()<para/>
-		/// </summary>
-		public Method GetMethod_get_ContractType()
-		{
-			if(this.var_get_contracttype_0_0 == null)
-				this.var_get_contracttype_0_0 = this.builderType.GetMethod("get_ContractType", 0, true);
-
-			return this.var_get_contracttype_0_0.Import();
-		}
-						
-		private Method var_get_creationpolicy_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Cauldron.Activator.FactoryCreationPolicy get_CreationPolicy()<para/>
-		/// </summary>
-		public Method GetMethod_get_CreationPolicy()
-		{
-			if(this.var_get_creationpolicy_0_0 == null)
-				this.var_get_creationpolicy_0_0 = this.builderType.GetMethod("get_CreationPolicy", 0, true);
-
-			return this.var_get_creationpolicy_0_0.Import();
-		}
-						
-		private Method var_get_instance_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// System.Object get_Instance()<para/>
-		/// </summary>
-		public Method GetMethod_get_Instance()
-		{
-			if(this.var_get_instance_0_0 == null)
-				this.var_get_instance_0_0 = this.builderType.GetMethod("get_Instance", 0, true);
-
-			return this.var_get_instance_0_0.Import();
-		}
-						
-		private Method var_set_instance_0_1;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Void set_Instance(System.Object)<para/>
-		/// </summary>
-		public Method GetMethod_set_Instance()
-		{
-			if(this.var_set_instance_0_1 == null)
-				this.var_set_instance_0_1 = this.builderType.GetMethod("set_Instance", 1, true);
-
-			return this.var_set_instance_0_1.Import();
-		}
-						
-		private Method var_get_isenumerable_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Boolean get_IsEnumerable()<para/>
-		/// </summary>
-		public Method GetMethod_get_IsEnumerable()
-		{
-			if(this.var_get_isenumerable_0_0 == null)
-				this.var_get_isenumerable_0_0 = this.builderType.GetMethod("get_IsEnumerable", 0, true);
-
-			return this.var_get_isenumerable_0_0.Import();
-		}
-						
-		private Method var_get_priority_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// UInt32 get_Priority()<para/>
-		/// </summary>
-		public Method GetMethod_get_Priority()
-		{
-			if(this.var_get_priority_0_0 == null)
-				this.var_get_priority_0_0 = this.builderType.GetMethod("get_Priority", 0, true);
-
-			return this.var_get_priority_0_0.Import();
-		}
-						
-		private Method var_get_type_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// System.Type get_Type()<para/>
-		/// </summary>
-		public Method GetMethod_get_Type()
-		{
-			if(this.var_get_type_0_0 == null)
-				this.var_get_type_0_0 = this.builderType.GetMethod("get_Type", 0, true);
-
-			return this.var_get_type_0_0.Import();
-		}
-						
-		private Method var_createinstance_0_1;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// System.Object CreateInstance(System.Object[])<para/>
-		/// </summary>
-		public Method GetMethod_CreateInstance(TypeReference parguments)
-		{
-						
-						
-			if(this.var_createinstance_0_1 == null)
-				this.var_createinstance_0_1 = this.builderType.GetMethod("CreateInstance", true, parguments);
-			
-			return this.var_createinstance_0_1.Import();
-						
-		}
-						
-		private Method var_createinstance_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// System.Object CreateInstance()<para/>
-		/// </summary>
-		public Method GetMethod_CreateInstance()
-		{
-						
-			if(this.var_createinstance_0_0 == null)
-				this.var_createinstance_0_0 = this.builderType.GetMethod("CreateInstance", true);
-
-			return this.var_createinstance_0_0.Import();
-						
-						
-		}
-					}
 
 			
     /// <summary>
@@ -16473,7 +13855,7 @@ namespace Cauldron.Interception.Cecilator
 		public static implicit operator BuilderType(BuilderTypeIList value) => value.builderType.Import();
 		
 		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeIList value) => Builder.Current.Import((TypeReference)value.builderType);
+		public static implicit operator TypeReference(BuilderTypeIList value) => Builder.Import((TypeReference)value.builderType);
 			
 				
 		private Method var_get_item_0_1;
@@ -16656,105 +14038,9 @@ namespace Cauldron.Interception.Cecilator
 		public static implicit operator BuilderType(BuilderTypeIList1 value) => value.builderType.Import();
 		
 		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeIList1 value) => Builder.Current.Import((TypeReference)value.builderType);
+		public static implicit operator TypeReference(BuilderTypeIList1 value) => Builder.Import((TypeReference)value.builderType);
 			
 			}
-
-			
-    /// <summary>
-    /// Provides a wrapper class for <see cref="Cauldron.Interception.IMethodInterceptor"/>
-    /// </summary>
-    public partial class BuilderTypeIMethodInterceptor : TypeSystemExBase
-	{
-        internal BuilderTypeIMethodInterceptor(BuilderType builderType) : base(builderType)
-		{
-		}
-
-		/// <exclude />
-		public static implicit operator BuilderType(BuilderTypeIMethodInterceptor value) => value.builderType.Import();
-		
-		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeIMethodInterceptor value) => Builder.Current.Import((TypeReference)value.builderType);
-			
-				
-		private Method var_onenter_0_4;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Void OnEnter(System.Type, System.Object, System.Reflection.MethodBase, System.Object[])<para/>
-		/// </summary>
-		public Method GetMethod_OnEnter()
-		{
-			if(this.var_onenter_0_4 == null)
-				this.var_onenter_0_4 = this.builderType.GetMethod("OnEnter", 4, true);
-
-			return this.var_onenter_0_4.Import();
-		}
-						
-		private Method var_onexception_0_1;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Boolean OnException(System.Exception)<para/>
-		/// </summary>
-		public Method GetMethod_OnException()
-		{
-			if(this.var_onexception_0_1 == null)
-				this.var_onexception_0_1 = this.builderType.GetMethod("OnException", 1, true);
-
-			return this.var_onexception_0_1.Import();
-		}
-						
-		private Method var_onexit_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Void OnExit()<para/>
-		/// </summary>
-		public Method GetMethod_OnExit()
-		{
-			if(this.var_onexit_0_0 == null)
-				this.var_onexit_0_0 = this.builderType.GetMethod("OnExit", 0, true);
-
-			return this.var_onexit_0_0.Import();
-		}
-					}
-
-			
-    /// <summary>
-    /// Provides a wrapper class for <see cref="Cauldron.Interception.IMethodInterceptorOnExit"/>
-    /// </summary>
-    public partial class BuilderTypeIMethodInterceptorOnExit : TypeSystemExBase
-	{
-        internal BuilderTypeIMethodInterceptorOnExit(BuilderType builderType) : base(builderType)
-		{
-		}
-
-		/// <exclude />
-		public static implicit operator BuilderType(BuilderTypeIMethodInterceptorOnExit value) => value.builderType.Import();
-		
-		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeIMethodInterceptorOnExit value) => Builder.Current.Import((TypeReference)value.builderType);
-			
-				
-		private Method var_onexit_0_2;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// System.Object OnExit(System.Type, System.Object)<para/>
-		/// </summary>
-		public Method GetMethod_OnExit()
-		{
-			if(this.var_onexit_0_2 == null)
-				this.var_onexit_0_2 = this.builderType.GetMethod("OnExit", 2, true);
-
-			return this.var_onexit_0_2.Import();
-		}
-					}
 
 			
     /// <summary>
@@ -16770,7 +14056,7 @@ namespace Cauldron.Interception.Cecilator
 		public static implicit operator BuilderType(BuilderTypeInt16 value) => value.builderType.Import();
 		
 		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeInt16 value) => Builder.Current.Import((TypeReference)value.builderType);
+		public static implicit operator TypeReference(BuilderTypeInt16 value) => Builder.Import((TypeReference)value.builderType);
 			
 				
 		private Method var_compareto_0_1;
@@ -17041,7 +14327,7 @@ namespace Cauldron.Interception.Cecilator
 		public static implicit operator BuilderType(BuilderTypeInt32 value) => value.builderType.Import();
 		
 		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeInt32 value) => Builder.Current.Import((TypeReference)value.builderType);
+		public static implicit operator TypeReference(BuilderTypeInt32 value) => Builder.Import((TypeReference)value.builderType);
 			
 				
 		private Method var_compareto_0_1;
@@ -17312,7 +14598,7 @@ namespace Cauldron.Interception.Cecilator
 		public static implicit operator BuilderType(BuilderTypeInt64 value) => value.builderType.Import();
 		
 		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeInt64 value) => Builder.Current.Import((TypeReference)value.builderType);
+		public static implicit operator TypeReference(BuilderTypeInt64 value) => Builder.Import((TypeReference)value.builderType);
 			
 				
 		private Method var_compareto_0_1;
@@ -17571,297 +14857,6 @@ namespace Cauldron.Interception.Cecilator
 
 			
     /// <summary>
-    /// Provides a wrapper class for <see cref="Cauldron.Interception.InterceptionRuleAttribute"/>
-    /// </summary>
-    public partial class BuilderTypeInterceptionRuleAttribute : TypeSystemExBase
-	{
-        internal BuilderTypeInterceptionRuleAttribute(BuilderType builderType) : base(builderType)
-		{
-		}
-
-		/// <exclude />
-		public static implicit operator BuilderType(BuilderTypeInterceptionRuleAttribute value) => value.builderType.Import();
-		
-		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeInterceptionRuleAttribute value) => Builder.Current.Import((TypeReference)value.builderType);
-			
-				
-		private Method var_equals_0_1;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Boolean Equals(System.Object)<para/>
-		/// </summary>
-		public Method GetMethod_Equals()
-		{
-			if(this.var_equals_0_1 == null)
-				this.var_equals_0_1 = this.builderType.GetMethod("Equals", 1, true);
-
-			return this.var_equals_0_1.Import();
-		}
-						
-		private Method var_gethashcode_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Int32 GetHashCode()<para/>
-		/// </summary>
-		public Method GetMethod_GetHashCode()
-		{
-			if(this.var_gethashcode_0_0 == null)
-				this.var_gethashcode_0_0 = this.builderType.GetMethod("GetHashCode", 0, true);
-
-			return this.var_gethashcode_0_0.Import();
-		}
-						
-		private Method var_get_typeid_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// System.Object get_TypeId()<para/>
-		/// </summary>
-		public Method GetMethod_get_TypeId()
-		{
-			if(this.var_get_typeid_0_0 == null)
-				this.var_get_typeid_0_0 = this.builderType.GetMethod("get_TypeId", 0, true);
-
-			return this.var_get_typeid_0_0.Import();
-		}
-						
-		private Method var_match_0_1;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Boolean Match(System.Object)<para/>
-		/// </summary>
-		public Method GetMethod_Match()
-		{
-			if(this.var_match_0_1 == null)
-				this.var_match_0_1 = this.builderType.GetMethod("Match", 1, true);
-
-			return this.var_match_0_1.Import();
-		}
-						
-		private Method var_isdefaultattribute_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Boolean IsDefaultAttribute()<para/>
-		/// </summary>
-		public Method GetMethod_IsDefaultAttribute()
-		{
-			if(this.var_isdefaultattribute_0_0 == null)
-				this.var_isdefaultattribute_0_0 = this.builderType.GetMethod("IsDefaultAttribute", 0, true);
-
-			return this.var_isdefaultattribute_0_0.Import();
-		}
-						
-		private Method var_tostring_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// System.String ToString()<para/>
-		/// </summary>
-		public Method GetMethod_ToString()
-		{
-			if(this.var_tostring_0_0 == null)
-				this.var_tostring_0_0 = this.builderType.GetMethod("ToString", 0, true);
-
-			return this.var_tostring_0_0.Import();
-		}
-						
-		private Method var_gettype_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// System.Type GetType()<para/>
-		/// </summary>
-		public Method GetMethod_GetType()
-		{
-			if(this.var_gettype_0_0 == null)
-				this.var_gettype_0_0 = this.builderType.GetMethod("GetType", 0, true);
-
-			return this.var_gettype_0_0.Import();
-		}
-					}
-
-			
-    /// <summary>
-    /// Provides a wrapper class for <see cref="Cauldron.Interception.InterceptorOptionsAttribute"/>
-    /// </summary>
-    public partial class BuilderTypeInterceptorOptionsAttribute : TypeSystemExBase
-	{
-        internal BuilderTypeInterceptorOptionsAttribute(BuilderType builderType) : base(builderType)
-		{
-		}
-
-		/// <exclude />
-		public static implicit operator BuilderType(BuilderTypeInterceptorOptionsAttribute value) => value.builderType.Import();
-		
-		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeInterceptorOptionsAttribute value) => Builder.Current.Import((TypeReference)value.builderType);
-			
-				
-		private Method var_get_alwayscreatenewinstance_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Boolean get_AlwaysCreateNewInstance()<para/>
-		/// </summary>
-		public Method GetMethod_get_AlwaysCreateNewInstance()
-		{
-			if(this.var_get_alwayscreatenewinstance_0_0 == null)
-				this.var_get_alwayscreatenewinstance_0_0 = this.builderType.GetMethod("get_AlwaysCreateNewInstance", 0, true);
-
-			return this.var_get_alwayscreatenewinstance_0_0.Import();
-		}
-						
-		private Method var_set_alwayscreatenewinstance_0_1;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Void set_AlwaysCreateNewInstance(Boolean)<para/>
-		/// </summary>
-		public Method GetMethod_set_AlwaysCreateNewInstance()
-		{
-			if(this.var_set_alwayscreatenewinstance_0_1 == null)
-				this.var_set_alwayscreatenewinstance_0_1 = this.builderType.GetMethod("set_AlwaysCreateNewInstance", 1, true);
-
-			return this.var_set_alwayscreatenewinstance_0_1.Import();
-		}
-						
-		private Method var_equals_0_1;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Boolean Equals(System.Object)<para/>
-		/// </summary>
-		public Method GetMethod_Equals()
-		{
-			if(this.var_equals_0_1 == null)
-				this.var_equals_0_1 = this.builderType.GetMethod("Equals", 1, true);
-
-			return this.var_equals_0_1.Import();
-		}
-						
-		private Method var_gethashcode_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Int32 GetHashCode()<para/>
-		/// </summary>
-		public Method GetMethod_GetHashCode()
-		{
-			if(this.var_gethashcode_0_0 == null)
-				this.var_gethashcode_0_0 = this.builderType.GetMethod("GetHashCode", 0, true);
-
-			return this.var_gethashcode_0_0.Import();
-		}
-						
-		private Method var_get_typeid_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// System.Object get_TypeId()<para/>
-		/// </summary>
-		public Method GetMethod_get_TypeId()
-		{
-			if(this.var_get_typeid_0_0 == null)
-				this.var_get_typeid_0_0 = this.builderType.GetMethod("get_TypeId", 0, true);
-
-			return this.var_get_typeid_0_0.Import();
-		}
-						
-		private Method var_match_0_1;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Boolean Match(System.Object)<para/>
-		/// </summary>
-		public Method GetMethod_Match()
-		{
-			if(this.var_match_0_1 == null)
-				this.var_match_0_1 = this.builderType.GetMethod("Match", 1, true);
-
-			return this.var_match_0_1.Import();
-		}
-						
-		private Method var_isdefaultattribute_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Boolean IsDefaultAttribute()<para/>
-		/// </summary>
-		public Method GetMethod_IsDefaultAttribute()
-		{
-			if(this.var_isdefaultattribute_0_0 == null)
-				this.var_isdefaultattribute_0_0 = this.builderType.GetMethod("IsDefaultAttribute", 0, true);
-
-			return this.var_isdefaultattribute_0_0.Import();
-		}
-						
-		private Method var_tostring_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// System.String ToString()<para/>
-		/// </summary>
-		public Method GetMethod_ToString()
-		{
-			if(this.var_tostring_0_0 == null)
-				this.var_tostring_0_0 = this.builderType.GetMethod("ToString", 0, true);
-
-			return this.var_tostring_0_0.Import();
-		}
-						
-		private Method var_gettype_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// System.Type GetType()<para/>
-		/// </summary>
-		public Method GetMethod_GetType()
-		{
-			if(this.var_gettype_0_0 == null)
-				this.var_gettype_0_0 = this.builderType.GetMethod("GetType", 0, true);
-
-			return this.var_gettype_0_0.Import();
-		}
-						
-		private Method var_ctor_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Void .ctor()<para/>
-		/// </summary>
-		public Method GetMethod_ctor()
-		{
-			if(this.var_ctor_0_0 == null)
-				this.var_ctor_0_0 = this.builderType.GetMethod(".ctor", 0, true);
-
-			return this.var_ctor_0_0.Import();
-		}
-					}
-
-			
-    /// <summary>
     /// Provides a wrapper class for <see cref="System.IntPtr"/>
     /// </summary>
     public partial class BuilderTypeIntPtr : TypeSystemExBase
@@ -17874,7 +14869,7 @@ namespace Cauldron.Interception.Cecilator
 		public static implicit operator BuilderType(BuilderTypeIntPtr value) => value.builderType.Import();
 		
 		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeIntPtr value) => Builder.Current.Import((TypeReference)value.builderType);
+		public static implicit operator TypeReference(BuilderTypeIntPtr value) => Builder.Import((TypeReference)value.builderType);
 			
 				
 		private Method var_equals_0_1;
@@ -18212,246 +15207,6 @@ namespace Cauldron.Interception.Cecilator
 
 			
     /// <summary>
-    /// Provides a wrapper class for <see cref="Cauldron.Interception.IPropertyGetterInterceptor"/>
-    /// </summary>
-    public partial class BuilderTypeIPropertyGetterInterceptor : TypeSystemExBase
-	{
-        internal BuilderTypeIPropertyGetterInterceptor(BuilderType builderType) : base(builderType)
-		{
-		}
-
-		/// <exclude />
-		public static implicit operator BuilderType(BuilderTypeIPropertyGetterInterceptor value) => value.builderType.Import();
-		
-		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeIPropertyGetterInterceptor value) => Builder.Current.Import((TypeReference)value.builderType);
-			
-				
-		private Method var_onexception_0_1;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Boolean OnException(System.Exception)<para/>
-		/// </summary>
-		public Method GetMethod_OnException()
-		{
-			if(this.var_onexception_0_1 == null)
-				this.var_onexception_0_1 = this.builderType.GetMethod("OnException", 1, true);
-
-			return this.var_onexception_0_1.Import();
-		}
-						
-		private Method var_onexit_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Void OnExit()<para/>
-		/// </summary>
-		public Method GetMethod_OnExit()
-		{
-			if(this.var_onexit_0_0 == null)
-				this.var_onexit_0_0 = this.builderType.GetMethod("OnExit", 0, true);
-
-			return this.var_onexit_0_0.Import();
-		}
-						
-		private Method var_onget_0_2;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Void OnGet(Cauldron.Interception.PropertyInterceptionInfo, System.Object)<para/>
-		/// </summary>
-		public Method GetMethod_OnGet()
-		{
-			if(this.var_onget_0_2 == null)
-				this.var_onget_0_2 = this.builderType.GetMethod("OnGet", 2, true);
-
-			return this.var_onget_0_2.Import();
-		}
-					}
-
-			
-    /// <summary>
-    /// Provides a wrapper class for <see cref="Cauldron.Interception.IPropertyInterceptorInitialize"/>
-    /// </summary>
-    public partial class BuilderTypeIPropertyInterceptorInitialize : TypeSystemExBase
-	{
-        internal BuilderTypeIPropertyInterceptorInitialize(BuilderType builderType) : base(builderType)
-		{
-		}
-
-		/// <exclude />
-		public static implicit operator BuilderType(BuilderTypeIPropertyInterceptorInitialize value) => value.builderType.Import();
-		
-		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeIPropertyInterceptorInitialize value) => Builder.Current.Import((TypeReference)value.builderType);
-			
-				
-		private Method var_oninitialize_0_2;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Void OnInitialize(Cauldron.Interception.PropertyInterceptionInfo, System.Object)<para/>
-		/// </summary>
-		public Method GetMethod_OnInitialize()
-		{
-			if(this.var_oninitialize_0_2 == null)
-				this.var_oninitialize_0_2 = this.builderType.GetMethod("OnInitialize", 2, true);
-
-			return this.var_oninitialize_0_2.Import();
-		}
-					}
-
-			
-    /// <summary>
-    /// Provides a wrapper class for <see cref="Cauldron.Interception.IPropertySetterInterceptor"/>
-    /// </summary>
-    public partial class BuilderTypeIPropertySetterInterceptor : TypeSystemExBase
-	{
-        internal BuilderTypeIPropertySetterInterceptor(BuilderType builderType) : base(builderType)
-		{
-		}
-
-		/// <exclude />
-		public static implicit operator BuilderType(BuilderTypeIPropertySetterInterceptor value) => value.builderType.Import();
-		
-		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeIPropertySetterInterceptor value) => Builder.Current.Import((TypeReference)value.builderType);
-			
-				
-		private Method var_onexception_0_1;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Boolean OnException(System.Exception)<para/>
-		/// </summary>
-		public Method GetMethod_OnException()
-		{
-			if(this.var_onexception_0_1 == null)
-				this.var_onexception_0_1 = this.builderType.GetMethod("OnException", 1, true);
-
-			return this.var_onexception_0_1.Import();
-		}
-						
-		private Method var_onexit_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Void OnExit()<para/>
-		/// </summary>
-		public Method GetMethod_OnExit()
-		{
-			if(this.var_onexit_0_0 == null)
-				this.var_onexit_0_0 = this.builderType.GetMethod("OnExit", 0, true);
-
-			return this.var_onexit_0_0.Import();
-		}
-						
-		private Method var_onset_0_3;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Boolean OnSet(Cauldron.Interception.PropertyInterceptionInfo, System.Object, System.Object)<para/>
-		/// </summary>
-		public Method GetMethod_OnSet()
-		{
-			if(this.var_onset_0_3 == null)
-				this.var_onset_0_3 = this.builderType.GetMethod("OnSet", 3, true);
-
-			return this.var_onset_0_3.Import();
-		}
-					}
-
-			
-    /// <summary>
-    /// Provides a wrapper class for <see cref="Cauldron.Interception.ISimpleMethodInterceptor"/>
-    /// </summary>
-    public partial class BuilderTypeISimpleMethodInterceptor : TypeSystemExBase
-	{
-        internal BuilderTypeISimpleMethodInterceptor(BuilderType builderType) : base(builderType)
-		{
-		}
-
-		/// <exclude />
-		public static implicit operator BuilderType(BuilderTypeISimpleMethodInterceptor value) => value.builderType.Import();
-		
-		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeISimpleMethodInterceptor value) => Builder.Current.Import((TypeReference)value.builderType);
-			
-				
-		private Method var_onenter_0_4;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Void OnEnter(System.Type, System.Object, System.Reflection.MethodBase, System.Object[])<para/>
-		/// </summary>
-		public Method GetMethod_OnEnter()
-		{
-			if(this.var_onenter_0_4 == null)
-				this.var_onenter_0_4 = this.builderType.GetMethod("OnEnter", 4, true);
-
-			return this.var_onenter_0_4.Import();
-		}
-					}
-
-			
-    /// <summary>
-    /// Provides a wrapper class for <see cref="Cauldron.Interception.ISyncRoot"/>
-    /// </summary>
-    public partial class BuilderTypeISyncRoot : TypeSystemExBase
-	{
-        internal BuilderTypeISyncRoot(BuilderType builderType) : base(builderType)
-		{
-		}
-
-		/// <exclude />
-		public static implicit operator BuilderType(BuilderTypeISyncRoot value) => value.builderType.Import();
-		
-		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeISyncRoot value) => Builder.Current.Import((TypeReference)value.builderType);
-			
-				
-		private Method var_get_syncroot_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// System.Object get_SyncRoot()<para/>
-		/// </summary>
-		public Method GetMethod_get_SyncRoot()
-		{
-			if(this.var_get_syncroot_0_0 == null)
-				this.var_get_syncroot_0_0 = this.builderType.GetMethod("get_SyncRoot", 0, true);
-
-			return this.var_get_syncroot_0_0.Import();
-		}
-						
-		private Method var_set_syncroot_0_1;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Void set_SyncRoot(System.Object)<para/>
-		/// </summary>
-		public Method GetMethod_set_SyncRoot()
-		{
-			if(this.var_set_syncroot_0_1 == null)
-				this.var_set_syncroot_0_1 = this.builderType.GetMethod("set_SyncRoot", 1, true);
-
-			return this.var_set_syncroot_0_1.Import();
-		}
-					}
-
-			
-    /// <summary>
     /// Provides a wrapper class for <see cref="System.Collections.Generic.List{T}"/>
     /// </summary>
     public partial class BuilderTypeList1 : TypeSystemExBase
@@ -18464,7 +15219,7 @@ namespace Cauldron.Interception.Cecilator
 		public static implicit operator BuilderType(BuilderTypeList1 value) => value.builderType.Import();
 		
 		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeList1 value) => Builder.Current.Import((TypeReference)value.builderType);
+		public static implicit operator TypeReference(BuilderTypeList1 value) => Builder.Import((TypeReference)value.builderType);
 			
 				
 		private Method var_tostring_0_0;
@@ -18542,7 +15297,7 @@ namespace Cauldron.Interception.Cecilator
 		public static implicit operator BuilderType(BuilderTypeMethodBase value) => value.builderType.Import();
 		
 		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeMethodBase value) => Builder.Current.Import((TypeReference)value.builderType);
+		public static implicit operator TypeReference(BuilderTypeMethodBase value) => Builder.Import((TypeReference)value.builderType);
 			
 				
 		private Method var_getmethodfromhandle_0_1;
@@ -19313,7 +16068,7 @@ namespace Cauldron.Interception.Cecilator
 		public static implicit operator BuilderType(BuilderTypeMonitor value) => value.builderType.Import();
 		
 		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeMonitor value) => Builder.Current.Import((TypeReference)value.builderType);
+		public static implicit operator TypeReference(BuilderTypeMonitor value) => Builder.Import((TypeReference)value.builderType);
 			
 				
 		private Method var_enter_0_1;
@@ -19607,7 +16362,7 @@ namespace Cauldron.Interception.Cecilator
 		public static implicit operator BuilderType(BuilderTypeNotSupportedException value) => value.builderType.Import();
 		
 		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeNotSupportedException value) => Builder.Current.Import((TypeReference)value.builderType);
+		public static implicit operator TypeReference(BuilderTypeNotSupportedException value) => Builder.Import((TypeReference)value.builderType);
 			
 				
 		private Method var_get_message_0_0;
@@ -19922,7 +16677,7 @@ namespace Cauldron.Interception.Cecilator
 		public static implicit operator BuilderType(BuilderTypeNullable value) => value.builderType.Import();
 		
 		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeNullable value) => Builder.Current.Import((TypeReference)value.builderType);
+		public static implicit operator TypeReference(BuilderTypeNullable value) => Builder.Import((TypeReference)value.builderType);
 			
 				
 		private Method var_equals_0_1;
@@ -20018,7 +16773,7 @@ namespace Cauldron.Interception.Cecilator
 		public static implicit operator BuilderType(BuilderTypeNullable1 value) => value.builderType.Import();
 		
 		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeNullable1 value) => Builder.Current.Import((TypeReference)value.builderType);
+		public static implicit operator TypeReference(BuilderTypeNullable1 value) => Builder.Import((TypeReference)value.builderType);
 			
 				
 		private Method var_gettype_0_0;
@@ -20051,7 +16806,7 @@ namespace Cauldron.Interception.Cecilator
 		public static implicit operator BuilderType(BuilderTypeObject value) => value.builderType.Import();
 		
 		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeObject value) => Builder.Current.Import((TypeReference)value.builderType);
+		public static implicit operator TypeReference(BuilderTypeObject value) => Builder.Import((TypeReference)value.builderType);
 			
 				
 		private Method var_gettype_0_0;
@@ -20067,21 +16822,6 @@ namespace Cauldron.Interception.Cecilator
 				this.var_gettype_0_0 = this.builderType.GetMethod("GetType", 0, true);
 
 			return this.var_gettype_0_0.Import();
-		}
-						
-		private Method var_gethashcode_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Int32 GetHashCode()<para/>
-		/// </summary>
-		public Method GetMethod_GetHashCode()
-		{
-			if(this.var_gethashcode_0_0 == null)
-				this.var_gethashcode_0_0 = this.builderType.GetMethod("GetHashCode", 0, true);
-
-			return this.var_gethashcode_0_0.Import();
 		}
 						
 		private Method var_tostring_0_0;
@@ -20150,6 +16890,21 @@ namespace Cauldron.Interception.Cecilator
 			return this.var_referenceequals_0_2.Import();
 		}
 						
+		private Method var_gethashcode_0_0;
+		
+		/// <summary>
+		/// Represents the following method:
+		/// <para />
+		/// Int32 GetHashCode()<para/>
+		/// </summary>
+		public Method GetMethod_GetHashCode()
+		{
+			if(this.var_gethashcode_0_0 == null)
+				this.var_gethashcode_0_0 = this.builderType.GetMethod("GetHashCode", 0, true);
+
+			return this.var_gethashcode_0_0.Import();
+		}
+						
 		private Method var_ctor_0_0;
 		
 		/// <summary>
@@ -20168,234 +16923,6 @@ namespace Cauldron.Interception.Cecilator
 
 			
     /// <summary>
-    /// Provides a wrapper class for <see cref="Cauldron.Interception.PropertyInterceptionInfo"/>
-    /// </summary>
-    public partial class BuilderTypePropertyInterceptionInfo : TypeSystemExBase
-	{
-        internal BuilderTypePropertyInterceptionInfo(BuilderType builderType) : base(builderType)
-		{
-		}
-
-		/// <exclude />
-		public static implicit operator BuilderType(BuilderTypePropertyInterceptionInfo value) => value.builderType.Import();
-		
-		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypePropertyInterceptionInfo value) => Builder.Current.Import((TypeReference)value.builderType);
-			
-				
-		private Method var_get_childtype_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// System.Type get_ChildType()<para/>
-		/// </summary>
-		public Method GetMethod_get_ChildType()
-		{
-			if(this.var_get_childtype_0_0 == null)
-				this.var_get_childtype_0_0 = this.builderType.GetMethod("get_ChildType", 0, true);
-
-			return this.var_get_childtype_0_0.Import();
-		}
-						
-		private Method var_get_declaringtype_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// System.Type get_DeclaringType()<para/>
-		/// </summary>
-		public Method GetMethod_get_DeclaringType()
-		{
-			if(this.var_get_declaringtype_0_0 == null)
-				this.var_get_declaringtype_0_0 = this.builderType.GetMethod("get_DeclaringType", 0, true);
-
-			return this.var_get_declaringtype_0_0.Import();
-		}
-						
-		private Method var_get_getmethod_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// System.Reflection.MethodBase get_GetMethod()<para/>
-		/// </summary>
-		public Method GetMethod_get_GetMethod()
-		{
-			if(this.var_get_getmethod_0_0 == null)
-				this.var_get_getmethod_0_0 = this.builderType.GetMethod("get_GetMethod", 0, true);
-
-			return this.var_get_getmethod_0_0.Import();
-		}
-						
-		private Method var_get_instance_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// System.Object get_Instance()<para/>
-		/// </summary>
-		public Method GetMethod_get_Instance()
-		{
-			if(this.var_get_instance_0_0 == null)
-				this.var_get_instance_0_0 = this.builderType.GetMethod("get_Instance", 0, true);
-
-			return this.var_get_instance_0_0.Import();
-		}
-						
-		private Method var_get_propertyname_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// System.String get_PropertyName()<para/>
-		/// </summary>
-		public Method GetMethod_get_PropertyName()
-		{
-			if(this.var_get_propertyname_0_0 == null)
-				this.var_get_propertyname_0_0 = this.builderType.GetMethod("get_PropertyName", 0, true);
-
-			return this.var_get_propertyname_0_0.Import();
-		}
-						
-		private Method var_get_propertytype_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// System.Type get_PropertyType()<para/>
-		/// </summary>
-		public Method GetMethod_get_PropertyType()
-		{
-			if(this.var_get_propertytype_0_0 == null)
-				this.var_get_propertytype_0_0 = this.builderType.GetMethod("get_PropertyType", 0, true);
-
-			return this.var_get_propertytype_0_0.Import();
-		}
-						
-		private Method var_get_setmethod_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// System.Reflection.MethodBase get_SetMethod()<para/>
-		/// </summary>
-		public Method GetMethod_get_SetMethod()
-		{
-			if(this.var_get_setmethod_0_0 == null)
-				this.var_get_setmethod_0_0 = this.builderType.GetMethod("get_SetMethod", 0, true);
-
-			return this.var_get_setmethod_0_0.Import();
-		}
-						
-		private Method var_setvalue_0_1;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Void SetValue(System.Object)<para/>
-		/// </summary>
-		public Method GetMethod_SetValue()
-		{
-			if(this.var_setvalue_0_1 == null)
-				this.var_setvalue_0_1 = this.builderType.GetMethod("SetValue", 1, true);
-
-			return this.var_setvalue_0_1.Import();
-		}
-						
-		private Method var_topropertyinfo_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// System.Reflection.PropertyInfo ToPropertyInfo()<para/>
-		/// </summary>
-		public Method GetMethod_ToPropertyInfo()
-		{
-			if(this.var_topropertyinfo_0_0 == null)
-				this.var_topropertyinfo_0_0 = this.builderType.GetMethod("ToPropertyInfo", 0, true);
-
-			return this.var_topropertyinfo_0_0.Import();
-		}
-						
-		private Method var_tostring_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// System.String ToString()<para/>
-		/// </summary>
-		public Method GetMethod_ToString()
-		{
-			if(this.var_tostring_0_0 == null)
-				this.var_tostring_0_0 = this.builderType.GetMethod("ToString", 0, true);
-
-			return this.var_tostring_0_0.Import();
-		}
-						
-		private Method var_equals_0_1;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Boolean Equals(System.Object)<para/>
-		/// </summary>
-		public Method GetMethod_Equals()
-		{
-			if(this.var_equals_0_1 == null)
-				this.var_equals_0_1 = this.builderType.GetMethod("Equals", 1, true);
-
-			return this.var_equals_0_1.Import();
-		}
-						
-		private Method var_gethashcode_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Int32 GetHashCode()<para/>
-		/// </summary>
-		public Method GetMethod_GetHashCode()
-		{
-			if(this.var_gethashcode_0_0 == null)
-				this.var_gethashcode_0_0 = this.builderType.GetMethod("GetHashCode", 0, true);
-
-			return this.var_gethashcode_0_0.Import();
-		}
-						
-		private Method var_gettype_0_0;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// System.Type GetType()<para/>
-		/// </summary>
-		public Method GetMethod_GetType()
-		{
-			if(this.var_gettype_0_0 == null)
-				this.var_gettype_0_0 = this.builderType.GetMethod("GetType", 0, true);
-
-			return this.var_gettype_0_0.Import();
-		}
-						
-		private Method var_ctor_0_7;
-		
-		/// <summary>
-		/// Represents the following method:
-		/// <para />
-		/// Void .ctor(System.Reflection.MethodBase, System.Reflection.MethodBase, System.String, System.Type, System.Object, System.Type, System.Action`1[System.Object])<para/>
-		/// </summary>
-		public Method GetMethod_ctor()
-		{
-			if(this.var_ctor_0_7 == null)
-				this.var_ctor_0_7 = this.builderType.GetMethod(".ctor", 7, true);
-
-			return this.var_ctor_0_7.Import();
-		}
-					}
-
-			
-    /// <summary>
     /// Provides a wrapper class for <see cref="System.Windows.ResourceDictionary"/>
     /// </summary>
     public partial class BuilderTypeResourceDictionary : TypeSystemExBase
@@ -20408,7 +16935,7 @@ namespace Cauldron.Interception.Cecilator
 		public static implicit operator BuilderType(BuilderTypeResourceDictionary value) => value.builderType.Import();
 		
 		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeResourceDictionary value) => Builder.Current.Import((TypeReference)value.builderType);
+		public static implicit operator TypeReference(BuilderTypeResourceDictionary value) => Builder.Import((TypeReference)value.builderType);
 			
 				
 		private Method var_copyto_0_2;
@@ -20876,7 +17403,7 @@ namespace Cauldron.Interception.Cecilator
 		public static implicit operator BuilderType(BuilderTypeSByte value) => value.builderType.Import();
 		
 		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeSByte value) => Builder.Current.Import((TypeReference)value.builderType);
+		public static implicit operator TypeReference(BuilderTypeSByte value) => Builder.Import((TypeReference)value.builderType);
 			
 				
 		private Method var_tostring_0_0;
@@ -21147,7 +17674,7 @@ namespace Cauldron.Interception.Cecilator
 		public static implicit operator BuilderType(BuilderTypeSingle value) => value.builderType.Import();
 		
 		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeSingle value) => Builder.Current.Import((TypeReference)value.builderType);
+		public static implicit operator TypeReference(BuilderTypeSingle value) => Builder.Import((TypeReference)value.builderType);
 			
 				
 		private Method var_isinfinity_0_1;
@@ -21568,7 +18095,7 @@ namespace Cauldron.Interception.Cecilator
 		public static implicit operator BuilderType(BuilderTypeString value) => value.builderType.Import();
 		
 		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeString value) => Builder.Current.Import((TypeReference)value.builderType);
+		public static implicit operator TypeReference(BuilderTypeString value) => Builder.Import((TypeReference)value.builderType);
 			
 				
 		private Method var_join_0_2;
@@ -23662,7 +20189,7 @@ namespace Cauldron.Interception.Cecilator
 		public static implicit operator BuilderType(BuilderTypeTask value) => value.builderType.Import();
 		
 		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeTask value) => Builder.Current.Import((TypeReference)value.builderType);
+		public static implicit operator TypeReference(BuilderTypeTask value) => Builder.Import((TypeReference)value.builderType);
 			
 				
 		private Method var_start_0_0;
@@ -24801,7 +21328,7 @@ namespace Cauldron.Interception.Cecilator
 		public static implicit operator BuilderType(BuilderTypeTask1 value) => value.builderType.Import();
 		
 		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeTask1 value) => Builder.Current.Import((TypeReference)value.builderType);
+		public static implicit operator TypeReference(BuilderTypeTask1 value) => Builder.Import((TypeReference)value.builderType);
 			
 				
 		private Method var_getawaiter_0_0;
@@ -25358,7 +21885,7 @@ namespace Cauldron.Interception.Cecilator
 		public static implicit operator BuilderType(BuilderTypeType value) => value.builderType.Import();
 		
 		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeType value) => Builder.Current.Import((TypeReference)value.builderType);
+		public static implicit operator TypeReference(BuilderTypeType value) => Builder.Import((TypeReference)value.builderType);
 			
 				
 		private Method var_get_membertype_0_0;
@@ -27985,7 +24512,7 @@ namespace Cauldron.Interception.Cecilator
 		public static implicit operator BuilderType(BuilderTypeUInt16 value) => value.builderType.Import();
 		
 		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeUInt16 value) => Builder.Current.Import((TypeReference)value.builderType);
+		public static implicit operator TypeReference(BuilderTypeUInt16 value) => Builder.Import((TypeReference)value.builderType);
 			
 				
 		private Method var_compareto_0_1;
@@ -28256,7 +24783,7 @@ namespace Cauldron.Interception.Cecilator
 		public static implicit operator BuilderType(BuilderTypeUInt32 value) => value.builderType.Import();
 		
 		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeUInt32 value) => Builder.Current.Import((TypeReference)value.builderType);
+		public static implicit operator TypeReference(BuilderTypeUInt32 value) => Builder.Import((TypeReference)value.builderType);
 			
 				
 		private Method var_compareto_0_1;
@@ -28527,7 +25054,7 @@ namespace Cauldron.Interception.Cecilator
 		public static implicit operator BuilderType(BuilderTypeUInt64 value) => value.builderType.Import();
 		
 		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeUInt64 value) => Builder.Current.Import((TypeReference)value.builderType);
+		public static implicit operator TypeReference(BuilderTypeUInt64 value) => Builder.Import((TypeReference)value.builderType);
 			
 				
 		private Method var_compareto_0_1;
@@ -28798,7 +25325,7 @@ namespace Cauldron.Interception.Cecilator
 		public static implicit operator BuilderType(BuilderTypeUIntPtr value) => value.builderType.Import();
 		
 		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeUIntPtr value) => Builder.Current.Import((TypeReference)value.builderType);
+		public static implicit operator TypeReference(BuilderTypeUIntPtr value) => Builder.Import((TypeReference)value.builderType);
 			
 				
 		private Method var_equals_0_1;
@@ -29127,7 +25654,7 @@ namespace Cauldron.Interception.Cecilator
 		public static implicit operator BuilderType(BuilderTypeUri value) => value.builderType.Import();
 		
 		/// <exclude />
-		public static implicit operator TypeReference(BuilderTypeUri value) => Builder.Current.Import((TypeReference)value.builderType);
+		public static implicit operator TypeReference(BuilderTypeUri value) => Builder.Import((TypeReference)value.builderType);
 			
 				
 		private Method var_makerelative_0_1;

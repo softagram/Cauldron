@@ -15,7 +15,7 @@ namespace Cauldron.Interception.Fody
     {
         private List<string> referencedDlls = new List<string>();
 
-        public void ExecuteInterceptionScripts(Builder builder)
+        public void ExecuteInterceptionScripts(BuilderOld builder)
         {
             using (new StopwatchLog(this, "custom interceptors"))
             {
@@ -56,7 +56,7 @@ namespace Cauldron.Interception.Fody
                                         MethodInfo = y,
                                         Parameters = y.GetParameters()
                                     })
-                                    .Where(y => y.Parameters.Length == 1 && y.Parameters[0].ParameterType.FullName == typeof(Builder).FullName)
+                                    .Where(y => y.Parameters.Length == 1 && y.Parameters[0].ParameterType.FullName == typeof(BuilderOld).FullName)
                                     .OrderBy(y => y.MethodInfo.Name)
                                     .ToArray()
                             })

@@ -210,7 +210,7 @@ namespace Cauldron.Interception.Cecilator.Coders
 
             if (variable == null)
             {
-                var objectArrayType = Builder.Current.Import(new ArrayType(Builder.Current.Import(BuilderTypes.Object)));
+                var objectArrayType = Builder.Import(new ArrayType(Builder.Import(BuilderTypes.Object)));
                 var newBlock = this.instructions.Spawn();
                 variable = variableOrigin.GetOrCreateVariable(objectArrayType, variableName);
 
@@ -218,12 +218,12 @@ namespace Cauldron.Interception.Cecilator.Coders
                     throw new NullReferenceException("Unable to create a local variable");
 
                 newBlock.Emit(OpCodes.Ldc_I4, associatedMethod.AsyncMethodHelper.Method.methodReference.Parameters.Count);
-                newBlock.Emit(OpCodes.Newarr, Builder.Current.Import(BuilderTypes.Object.BuilderType.typeReference));
+                newBlock.Emit(OpCodes.Newarr, Builder.Import(BuilderTypes.Object.BuilderType.typeReference));
                 newBlock.Emit(OpCodes.Stloc, variable.variable);
 
                 if (associatedMethod.IsAsync)
                 {
-                    Builder.Current.Log(LogTypes.Info, $"----> {associatedMethod.Fullname} --- {associatedMethod.methodReference.Parameters.Count}");
+                    Builder.logging.Log($"----> {associatedMethod.Fullname} --- {associatedMethod.methodReference.Parameters.Count}");
 
                     int counter = 0;
                     foreach (var parameter in associatedMethod.AsyncMethodHelper.Method.methodReference.Parameters)
@@ -272,7 +272,7 @@ namespace Cauldron.Interception.Cecilator.Coders
         public Coder Newarr(BuilderType type, int size)
         {
             this.instructions.Append(InstructionBlock.CreateCode(this.instructions, null, size));
-            this.instructions.Emit(OpCodes.Newarr, Builder.Current.Import(type.typeReference));
+            this.instructions.Emit(OpCodes.Newarr, Builder.Import(type.typeReference));
 
             return this;
         }
@@ -281,7 +281,7 @@ namespace Cauldron.Interception.Cecilator.Coders
         {
             InstructionBlock.CreateCodeForFieldReference(this, field.FieldType, field, true);
             this.instructions.Emit(OpCodes.Ldlen);
-            this.instructions.Emit(OpCodes.Newarr, Builder.Current.Import(type.typeReference));
+            this.instructions.Emit(OpCodes.Newarr, Builder.Import(type.typeReference));
 
             return this;
         }
@@ -364,7 +364,7 @@ namespace Cauldron.Interception.Cecilator.Coders
 
         public Coder ThrowNew(Type exception)
         {
-            this.instructions.Emit(OpCodes.Newobj, Builder.Current.Import(Builder.Current.Import(exception).GetMethodReference(".ctor", 0)));
+            this.instructions.Emit(OpCodes.Newobj, Builder.Import(Builder.Import(exception).GetMethodReference(".ctor", 0)));
             this.instructions.Emit(OpCodes.Throw);
             return this;
         }
@@ -372,7 +372,7 @@ namespace Cauldron.Interception.Cecilator.Coders
         public Coder ThrowNew(Type exception, Func<Coder, Coder> coder)
         {
             var newCoder = coder(this.NewCoder());
-            var ctor = Builder.Current.Import(exception).ToBuilderType().GetMethod(".ctor", true, newCoder.instructions.ResultingType);
+            var ctor = Builder.Import(exception).ToBuilderType().GetMethod(".ctor", true, newCoder.instructions.ResultingType);
             this.instructions.Append(InstructionBlock.NewObj(this.instructions, ctor, newCoder));
             this.instructions.Emit(OpCodes.Throw);
             return this;
@@ -381,7 +381,7 @@ namespace Cauldron.Interception.Cecilator.Coders
         public Coder ThrowNew(Type exception, string message)
         {
             this.instructions.Emit(OpCodes.Ldstr, message);
-            this.instructions.Emit(OpCodes.Newobj, Builder.Current.Import(Builder.Current.Import(exception).GetMethodReference(".ctor", new Type[] { typeof(string) })));
+            this.instructions.Emit(OpCodes.Newobj, Builder.Import(Builder.Import(exception).GetMethodReference(".ctor", new Type[] { typeof(string) })));
             this.instructions.Emit(OpCodes.Throw);
             return this;
         }

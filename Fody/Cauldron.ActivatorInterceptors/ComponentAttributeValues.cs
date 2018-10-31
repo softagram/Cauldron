@@ -16,7 +16,7 @@ internal class ComponentAttributeValues
                     break;
 
                 case "System.Type":
-                    this.ContractType = (item.Value as TypeReference)?.ToBuilderType() ?? item.Value as BuilderType ?? Builder.Current.Import(item.Value as Type)?.ToBuilderType();
+                    this.ContractType = (item.Value as TypeReference)?.ToBuilderType() ?? item.Value as BuilderType ?? Builder.Import(item.Value as Type)?.ToBuilderType();
                     break;
 
                 case "System.UInt32":

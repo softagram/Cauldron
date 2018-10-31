@@ -11,7 +11,7 @@ namespace Cauldron.Interception.Cecilator
         [EditorBrowsable(EditorBrowsableState.Never), DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly Instruction instruction;
 
-        internal PropertyUsage(Property property, Method method, Instruction instruction) : base(property)
+        internal PropertyUsage(Property property, Method method, Instruction instruction)
         {
             this.Property = property;
             this.Method = this.Method;

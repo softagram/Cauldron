@@ -8,7 +8,7 @@ public static class Weaver_Validators
     public const int Priority = 50;
 
     [Display("WPF/XAML Validators implementation")]
-    public static void AddValidatorInits(Builder builder)
+    public static void AddValidatorInits(BuilderOld builder)
     {
         var attributes = builder.FindAttributesByBaseClass("Cauldron.XAML.Validation.ValidatorAttributeBase");
         var propertiesWithAttributes = builder.FindPropertiesByAttributes(attributes)

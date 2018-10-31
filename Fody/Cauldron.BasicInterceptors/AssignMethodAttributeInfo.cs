@@ -129,7 +129,7 @@ public sealed class AssignMethodAttributeInfo
     }
 
     private static string ReplacePlaceHolder(
-        Builder builder,
+        BuilderOld builder,
         string targetInfoArgument,
         string targetInfoPropertyOrMethodName,
         string targetInfoReturnTypeName,

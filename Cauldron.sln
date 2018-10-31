@@ -55,7 +55,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cauldron.Localization", "Ne
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cauldron.Activator", "NetStandard\Cauldron.Activator\Cauldron.Activator.csproj", "{E5A31648-DAC2-4C60-A1B8-2FC291C2BF9E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cauldron.Interception.Cecilator", "Fody\Cauldron.Interception.Cecilator\Cauldron.Interception.Cecilator.csproj", "{1645BDC0-C886-4F5C-BF14-7927356EFBD9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cauldron.Interception.Cecilator", "Fody\Cauldron.Interception.Cecilator\Cauldron.Interception.Cecilator.csproj", "{1645BDC0-C886-4F5C-BF14-7927356EFBD9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTests", "UnitTests", "{E2046C41-0213-4CB9-A569-1458B080F9E7}"
 EndProject
@@ -243,14 +243,19 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Cauldron.XAML", "Shared\Cau
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "MainTests.XAML", "UnitTests\Shared\MainTests.XAML\MainTests.XAML.shproj", "{AB43DED7-AE80-453C-B9DA-546D18370027}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Cauldron.Collections.2", "Shared\Cauldron.Collections.2\Cauldron.Collections.2.shproj", "{A6E2ABF4-06B5-4D19-BAA6-0812E4C34032}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		UnitTests\Shared\TestInterceptors\TestInterceptors.projitems*{04e689e2-66b7-4f90-b185-cc402b0f72c1}*SharedItemsImports = 4
+		Shared\Cauldron.Collections.2\Cauldron.Collections.2.projitems*{0584e5fa-bdf8-42e2-a20e-051dc4bee540}*SharedItemsImports = 4
 		Shared\Cauldron.Collections\Cauldron.Collections.projitems*{0584e5fa-bdf8-42e2-a20e-051dc4bee540}*SharedItemsImports = 4
 		Shared\Cauldron.Yaml\Cauldron.Yaml.projitems*{0b37ec23-4e90-49d0-9298-d7a7a4b405f4}*SharedItemsImports = 4
 		Shared\Cauldron.Activator\Cauldron.Activator.projitems*{13701490-ecb2-4f70-80c8-32897748ef05}*SharedItemsImports = 4
+		Shared\Cauldron.Collections.2\Cauldron.Collections.2.projitems*{13701490-ecb2-4f70-80c8-32897748ef05}*SharedItemsImports = 4
 		Shared\Cauldron.Shared\Cauldron.Shared.projitems*{13701490-ecb2-4f70-80c8-32897748ef05}*SharedItemsImports = 4
 		UnitTests\Resources\Fody_Interceptors\Fody_Interceptors.projitems*{1cc529ea-669f-498a-89b2-f6ccddea0b62}*SharedItemsImports = 13
+		Shared\Cauldron.Collections.2\Cauldron.Collections.2.projitems*{2aea8329-a246-496e-bce2-265e839391d6}*SharedItemsImports = 4
 		Shared\Cauldron.Collections\Cauldron.Collections.projitems*{2aea8329-a246-496e-bce2-265e839391d6}*SharedItemsImports = 4
 		Shared\Cauldron.Consoles\Cauldron.Consoles.projitems*{3014e506-954a-4601-97a2-797e6306fdc4}*SharedItemsImports = 13
 		Shared\Cauldron.Interception\Cauldron.Interception.projitems*{38abf85c-9322-4333-be30-a1b37fa5cc52}*SharedItemsImports = 4
@@ -273,7 +278,9 @@ Global
 		Shared\Cauldron.Cryptography\Cauldron.Cryptography.projitems*{97d924b8-8fb2-4720-84e1-28502c2bae51}*SharedItemsImports = 4
 		Shared\Cauldron\Cauldron.projitems*{9d2559da-62d9-4472-8e2f-9c8fe1c2b9cf}*SharedItemsImports = 4
 		Shared\Cauldron.Activator\Cauldron.Activator.projitems*{a0e73415-c2c1-421e-b551-0aeb9181ceac}*SharedItemsImports = 4
+		Shared\Cauldron.Collections.2\Cauldron.Collections.2.projitems*{a0e73415-c2c1-421e-b551-0aeb9181ceac}*SharedItemsImports = 4
 		Shared\Cauldron.Shared\Cauldron.Shared.projitems*{a0e73415-c2c1-421e-b551-0aeb9181ceac}*SharedItemsImports = 4
+		Shared\Cauldron.Collections.2\Cauldron.Collections.2.projitems*{a6e2abf4-06b5-4d19-baa6-0812e4c34032}*SharedItemsImports = 13
 		UnitTests\Shared\MainTests.XAML\MainTests.XAML.projitems*{ab43ded7-ae80-453c-b9da-546d18370027}*SharedItemsImports = 13
 		Shared\Cauldron.Yaml\Cauldron.Yaml.projitems*{ac4d7de4-0a3b-4ff7-9993-5b1dbff9fcaf}*SharedItemsImports = 4
 		UnitTests\Shared\MainTests\MainTests.projitems*{ac9cea5b-6214-4fbc-8e5a-50f57fad5fa9}*SharedItemsImports = 13
@@ -5466,6 +5473,7 @@ Global
 		{3A7174A2-68B9-4CC0-8FC5-67BFA362E2A3} = {819B7C72-B9E8-4FA9-865A-8EA6C728AC92}
 		{CE800E1B-E8A9-49AC-A5A9-7B7881129DCA} = {0586FBD6-24EF-4D21-963D-90443676AB1F}
 		{AB43DED7-AE80-453C-B9DA-546D18370027} = {B18F1BA5-210C-472C-9394-213692C268F1}
+		{A6E2ABF4-06B5-4D19-BAA6-0812E4C34032} = {0586FBD6-24EF-4D21-963D-90443676AB1F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D1F2CDF5-23CA-42FF-B139-C74A73C3FA62}

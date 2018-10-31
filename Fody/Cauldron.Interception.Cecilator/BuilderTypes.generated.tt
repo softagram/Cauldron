@@ -2,8 +2,6 @@
 <#@ assembly name="System.Core" #>
 <#@ assembly name="WindowsBase" #>
 <#@ assembly name="PresentationFramework" #>
-<#@ assembly name="$(SolutionDir)Win32\\Cauldron.Activator\\bin\\Release\\Cauldron.Activator.dll" #>
-<#@ assembly name="$(SolutionDir)Win32\\Cauldron.Interception\\bin\\Release\\Cauldron.Interception.dll" #>
 <#@ import namespace="System" #>
 <#@ import namespace="System.Collections" #>
 <#@ import namespace="System.Collections.Generic" #>
@@ -64,28 +62,8 @@
 		typeof(EventHandler),
 		typeof(Monitor),
 		typeof(Uri),
-		typeof(Cauldron.Activator.ComponentConstructorAttribute),
-		typeof(Cauldron.Activator.ComponentAttribute),
-		typeof(Cauldron.IDisposableObject),
-		typeof(Cauldron.Activator.IFactoryTypeInfo),
-		typeof(Cauldron.Activator.IFactoryExtension),
-		typeof(Cauldron.Activator.GenericComponentAttribute),
 		typeof(System.Windows.Application),
 		typeof(System.Windows.ResourceDictionary),
-		typeof(Cauldron.Interception.ExtensionsInterception),
-		typeof(Cauldron.ExtensionsReflection),
-		typeof(Cauldron.Activator.Factory),
-		typeof(Cauldron.Interception.IConstructorInterceptor),
-		typeof(Cauldron.Interception.IMethodInterceptor),
-		typeof(Cauldron.Interception.InterceptionRuleAttribute),
-		typeof(Cauldron.Interception.InterceptorOptionsAttribute),
-		typeof(Cauldron.Interception.IPropertyGetterInterceptor),
-		typeof(Cauldron.Interception.IPropertyInterceptorInitialize),
-		typeof(Cauldron.Interception.IPropertySetterInterceptor),
-		typeof(Cauldron.Interception.ISimpleMethodInterceptor),
-		typeof(Cauldron.Interception.IMethodInterceptorOnExit),
-		typeof(Cauldron.Interception.ISyncRoot),
-		typeof(Cauldron.Interception.PropertyInterceptionInfo),
 	};
 
 	string GenerateCommas(string count)
@@ -213,7 +191,7 @@ namespace Cauldron.Interception.Cecilator
         {
             get
             {
-                if (_Void == null) _Void = Builder.Current.GetType("System.Void");
+                if (_Void == null) _Void = Builder.GetType("System.Void");
                 return _Void;
             }
         }
@@ -236,7 +214,7 @@ namespace Cauldron.Interception.Cecilator
         {
             get
             {
-                if (<#=variableName#> == null) <#=variableName#> = new BuilderType<#=type.Name.Replace("`", "")#>(Builder.Current.GetType("<#=StringRepresentation(type.FullName)#>").Import());
+                if (<#=variableName#> == null) <#=variableName#> = new BuilderType<#=type.Name.Replace("`", "")#>(Builder.GetType("<#=StringRepresentation(type.FullName)#>").Import());
                 return <#=variableName#>;
 			}
         }
@@ -282,7 +260,7 @@ namespace Cauldron.Interception.Cecilator
 		public static implicit operator BuilderType(BuilderType<#=type.Name.Replace("`", "")#> value) => value.builderType.Import();
 		
 		/// <exclude />
-		public static implicit operator TypeReference(BuilderType<#=type.Name.Replace("`", "")#> value) => Builder.Current.Import((TypeReference)value.builderType);
+		public static implicit operator TypeReference(BuilderType<#=type.Name.Replace("`", "")#> value) => Builder.Import((TypeReference)value.builderType);
 			
 		<#
 		// Methods

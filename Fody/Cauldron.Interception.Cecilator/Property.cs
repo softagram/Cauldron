@@ -17,7 +17,7 @@ namespace Cauldron.Interception.Cecilator
         [EditorBrowsable(EditorBrowsableState.Never), DebuggerBrowsable(DebuggerBrowsableState.Never)]
         internal readonly BuilderType type;
 
-        internal Property(BuilderType type, PropertyDefinition propertyDefinition) : base(type)
+        internal Property(BuilderType type, PropertyDefinition propertyDefinition)
         {
             this.type = type;
             this.propertyDefinition = propertyDefinition;
@@ -29,35 +29,26 @@ namespace Cauldron.Interception.Cecilator
 
         public Field BackingField { get; private set; }
 
-        public BuilderCustomAttributeCollection CustomAttributes => new BuilderCustomAttributeCollection(this.type.Builder, this.propertyDefinition);
-
-        /// <summary>
-        /// Gets the type that contains the property.
-        /// </summary>
-        public BuilderType DeclaringType => new BuilderType(this.type.Builder, this.propertyDefinition.DeclaringType);
+        public BuilderCustomAttributeCollection CustomAttributes => new BuilderCustomAttributeCollection(this.propertyDefinition);
 
         public string Fullname => this.propertyDefinition.FullName;
 
         public Method Getter { get; private set; }
 
-        public bool IsAbstract => this.GetterOrSetter.With(x => x.IsAbstract && x.IsHideBySig && x.IsNewSlot && x.IsVirtual);
         public bool IsAutoProperty => (this.propertyDefinition.GetMethod ?? this.propertyDefinition.SetMethod).CustomAttributes.Get("CompilerGeneratedAttribute") != null;
 
         public bool IsGenerated => this.propertyDefinition.Name.IndexOf('<') >= 0 ||
-                                    this.propertyDefinition.Name.IndexOf('>') >= 0 ||
-                                    this.type.typeDefinition.FullName.IndexOf('<') >= 0 ||
-                                    this.type.typeDefinition.FullName.IndexOf('>') >= 0;
+                                            this.propertyDefinition.Name.IndexOf('>') >= 0 ||
+                                            this.type.typeDefinition.FullName.IndexOf('<') >= 0 ||
+                                            this.type.typeDefinition.FullName.IndexOf('>') >= 0;
 
-        public bool IsInternal => GetAttributes().HasFlag(MethodAttributes.Assembly);
+        public bool IsInternal => this.GetAttributes().HasFlag(MethodAttributes.Assembly);
+
         public bool IsOverride => this.GetterOrSetter.With(x => x.IsVirtual && x.IsHideBySig && !x.IsStatic);
 
-        public bool IsPrivate => GetAttributes().HasFlag(MethodAttributes.Private);
+        public bool IsPrivate => this.GetAttributes().HasFlag(MethodAttributes.Private);
 
-        public bool IsProtected => GetAttributes().HasFlag(MethodAttributes.Family);
-
-        public bool IsPublic => this.GetterOrSetter.IsPublic;
-
-        public bool IsStatic => this.GetterOrSetter.IsStatic;
+        public bool IsProtected => this.GetAttributes().HasFlag(MethodAttributes.Family);
 
         public Modifiers Modifiers
         {
@@ -90,8 +81,6 @@ namespace Cauldron.Interception.Cecilator
             }
         }
 
-        public string Name => this.propertyDefinition.Name;
-
         /// <summary>
         /// Gets the type that inherited the property.
         /// </summary>
@@ -112,11 +101,21 @@ namespace Cauldron.Interception.Cecilator
 
         public Method Setter { get; private set; }
 
+        /// <summary>
+        /// Gets the type that contains the property.
+        /// </summary>
+        public BuilderType DeclaringType => new BuilderType(this.propertyDefinition.DeclaringType);
+
+        public bool IsAbstract => this.GetterOrSetter.With(x => x.IsAbstract && x.IsHideBySig && x.IsNewSlot && x.IsVirtual);
+        public bool IsPublic => this.GetterOrSetter.IsPublic;
+
+        public bool IsStatic => this.GetterOrSetter.IsStatic;
+        public string Name => this.propertyDefinition.Name;
         private MethodDefinition GetterOrSetter => this.propertyDefinition.GetMethod ?? this.propertyDefinition.SetMethod;
 
         public void AddSetter()
         {
-            this.propertyDefinition.SetMethod = new MethodDefinition("set_" + this.Name, this.propertyDefinition.GetMethod.Attributes, this.moduleDefinition.TypeSystem.Void);
+            this.propertyDefinition.SetMethod = new MethodDefinition("set_" + this.Name, this.propertyDefinition.GetMethod.Attributes, this.ModuleDefinition.TypeSystem.Void);
             this.propertyDefinition.SetMethod.Parameters.Add(new ParameterDefinition("value", ParameterAttributes.None, this.ReturnType.typeReference));
             this.type.typeDefinition.Methods.Add(this.propertyDefinition.SetMethod);
 
@@ -131,7 +130,7 @@ namespace Cauldron.Interception.Cecilator
             if (field != null)
                 return new Field(this.type, field);
 
-            return this.CreateField(this.moduleDefinition.ImportReference(fieldType.GetTypeDefinition().ResolveType(this.OriginType.typeReference)), name);
+            return this.CreateField(this.ModuleDefinition.ImportReference(fieldType.GetTypeDefinition().ResolveType(this.OriginType.typeReference)), name);
         }
 
         public Field CreateField(Field field, string name) => this.CreateField(field.fieldRef.FieldType, name);

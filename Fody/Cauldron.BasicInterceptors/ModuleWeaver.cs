@@ -5,19 +5,19 @@ using System.Linq;
 
 internal static class ModuleWeaver
 {
-    public static void ImplementAssignMethodAttribute(Builder builder, AssignMethodAttributeInfo[] assignMethodAttributeInfos, Field interceptorInstance, BuilderType contentType, Coder coder) =>
+    public static void ImplementAssignMethodAttribute(BuilderOld builder, AssignMethodAttributeInfo[] assignMethodAttributeInfos, Field interceptorInstance, BuilderType contentType, Coder coder) =>
         ImplementAssignMethodAttribute(builder, assignMethodAttributeInfos,
             (delegateCtor, method, assignMethodAttributeInfo) => coder.Load(interceptorInstance)
                 .As(contentType)
                 .SetValue(assignMethodAttributeInfo.AttributeField, y => y.NewObj(delegateCtor, method.ThisOrNull(), method)));
 
-    public static void ImplementAssignMethodAttribute(Builder builder, AssignMethodAttributeInfo[] assignMethodAttributeInfos, LocalVariable interceptorInstance, BuilderType contentType, Coder coder) =>
+    public static void ImplementAssignMethodAttribute(BuilderOld builder, AssignMethodAttributeInfo[] assignMethodAttributeInfos, LocalVariable interceptorInstance, BuilderType contentType, Coder coder) =>
         ImplementAssignMethodAttribute(builder, assignMethodAttributeInfos,
             (delegateCtor, method, assignMethodAttributeInfo) => coder.Load(interceptorInstance)
                 .As(contentType)
                 .SetValue(assignMethodAttributeInfo.AttributeField, y => y.NewObj(delegateCtor, method.ThisOrNull(), method)));
 
-    public static void ImplementAssignMethodAttribute(Builder builder, AssignMethodAttributeInfo[] assignMethodAttributeInfos, CecilatorBase cecilatorBase, BuilderType contentType, Coder coder)
+    public static void ImplementAssignMethodAttribute(BuilderOld builder, AssignMethodAttributeInfo[] assignMethodAttributeInfos, CecilatorBase cecilatorBase, BuilderType contentType, Coder coder)
     {
         switch (cecilatorBase)
         {
@@ -34,7 +34,7 @@ internal static class ModuleWeaver
         }
     }
 
-    private static void ImplementAssignMethodAttribute(Builder builder, AssignMethodAttributeInfo[] assignMethodAttributeInfos,
+    private static void ImplementAssignMethodAttribute(BuilderOld builder, AssignMethodAttributeInfo[] assignMethodAttributeInfos,
                 Action<Method, Method, AssignMethodAttributeInfo> @delegate)
     {
         if (@delegate == null)

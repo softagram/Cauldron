@@ -13,14 +13,14 @@ namespace Cauldron.Interception.Cecilator
         [EditorBrowsable(EditorBrowsableState.Never), DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly BuilderType type;
 
-        internal LocalVariable(BuilderType type, VariableDefinition variable) : base(type)
+        internal LocalVariable(BuilderType type, VariableDefinition variable)
         {
             this.variable = variable;
             this.type = type;
             this.Name = variable.Index.ToString();
         }
 
-        internal LocalVariable(BuilderType type, VariableDefinition variable, string name) : base(type)
+        internal LocalVariable(BuilderType type, VariableDefinition variable, string name)
         {
             this.variable = variable;
             this.type = type;

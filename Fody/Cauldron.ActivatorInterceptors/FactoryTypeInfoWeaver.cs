@@ -19,7 +19,7 @@ namespace Cauldron.ActivatorInterceptors
 
         static FactoryTypeInfoWeaver()
         {
-            cauldronInterceptionHelper = Builder.Current.GetType("CauldronInterceptionHelper", SearchContext.Module);
+            cauldronInterceptionHelper = Builder.GetType("CauldronInterceptionHelper", SearchContext.Module);
 
             unknownConstructorText = cauldronInterceptionHelper.CreateField(Modifiers.PublicStatic, (BuilderType)BuilderTypes.String, "UnknownConstructorText");
             unknownConstructorText.CustomAttributes.AddCompilerGeneratedAttribute();
@@ -54,7 +54,7 @@ namespace Cauldron.ActivatorInterceptors
             ComponentAttributeValues componentAttributeValue,
             Func<(ComponentAttributeValues componentAttributeValue, BuilderType componentInfoType, BuilderType componentType, (TypeReference childType, bool isSuccessful) childType), FactoryTypeInfoWeaverBase> typeInfoWeaver)
         {
-            var builder = Builder.Current;
+            var builder = BuilderOld.Current;
 
             builder.Log(LogTypes.Info, "Hardcoding component factory .ctor: " + componentType.Fullname);
 
@@ -68,7 +68,7 @@ namespace Cauldron.ActivatorInterceptors
             componentInfoType.AddInterface(BuilderTypes.IFactoryTypeInfo);
             componentInfoType.CustomAttributes.AddDebuggerDisplayAttribute(componentType.Name + " ({ContractName})");
 
-            var childType = Builder.Current.GetChildrenType((TypeReference)componentType);
+            var childType = Builder.GetChildrenType((TypeReference)componentType);
             var result = typeInfoWeaver(( componentAttributeValue, componentInfoType, componentType, childType ));
 
             //ImplementProperties(result);

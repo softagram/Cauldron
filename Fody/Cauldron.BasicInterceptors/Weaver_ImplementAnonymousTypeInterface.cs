@@ -14,7 +14,7 @@ public sealed class Weaver_ImplementAnonymousTypeInterface
     private static int counter = 0;
 
     [Display("Anonymous Type To Interface")]
-    public static void ImplementAnonymousTypeInterface(Builder builder)
+    public static void ImplementAnonymousTypeInterface(BuilderOld builder)
     {
         var cauldronCoreExtension = builder.GetType("Cauldron.Interception.ExtensionsInterception");
         var createTypeMethod = cauldronCoreExtension.GetMethod("CreateType", 1).FindUsages().ToArray();
@@ -86,7 +86,7 @@ public sealed class Weaver_ImplementAnonymousTypeInterface
         }
     }
 
-    private static Method CreateAssigningMethod(Builder builder, BuilderType anonSource, BuilderType anonTarget, BuilderType anonTargetInterface, Method method)
+    private static Method CreateAssigningMethod(BuilderOld builder, BuilderType anonSource, BuilderType anonTarget, BuilderType anonTargetInterface, Method method)
     {
         var name = $"<{counter++}>f__Anon_Assign";
         var assignMethod = method.OriginType.CreateMethod(Modifiers.PrivateStatic, anonTarget, name, anonSource);

@@ -13,7 +13,7 @@ namespace Cauldron.Interception.Cecilator
         [EditorBrowsable(EditorBrowsableState.Never), DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly Instruction instruction;
 
-        internal MethodUsage(Method method, Method hostMethod, Instruction instruction) : base(method)
+        internal MethodUsage(Method method, Method hostMethod, Instruction instruction)
         {
             this.Method = method;
             this.HostMethod = hostMethod;
@@ -35,22 +35,20 @@ namespace Cauldron.Interception.Cecilator
 
         public BuilderType GetGenericArgument(int index)
         {
-            var method = this.instruction.Operand as GenericInstanceMethod;
-
-            if (method == null)
+            if (!(this.instruction.Operand is GenericInstanceMethod method))
                 return null;
 
-            return new BuilderType(this.Method.type.Builder, method.GenericArguments[index]);
+            return new BuilderType(method.GenericArguments[index]);
         }
 
         public BuilderType GetLastNewObjectType()
         {
-            var interestingInstruction = instruction.Previous.Previous.Previous.Previous;
+            var interestingInstruction = this.instruction.Previous.Previous.Previous.Previous;
 
             if (interestingInstruction.OpCode == OpCodes.Newobj)
             {
                 var ctor = interestingInstruction.Operand as MethodDefinition ?? interestingInstruction.Operand as MethodReference;
-                return new BuilderType(this.Method.type.Builder, ctor.DeclaringType);
+                return new BuilderType(ctor.DeclaringType);
             }
 
             return null;
@@ -59,7 +57,7 @@ namespace Cauldron.Interception.Cecilator
         public BuilderType GetPreviousInstructionObjectType()
         {
             TypeReference declaringType = null;
-            var previousInstruction = instruction.Previous;
+            var previousInstruction = this.instruction.Previous;
 
             if (previousInstruction.OpCode == OpCodes.Dup)
                 previousInstruction = previousInstruction.Previous;
@@ -94,12 +92,12 @@ namespace Cauldron.Interception.Cecilator
             else
                 throw new Exception($"'{ this.HostMethod.methodDefinition.Name}': The anonymous type was not found.");
 
-            return new BuilderType(this.Method.type.Builder, declaringType);
+            return new BuilderType(declaringType);
         }
 
         public void Replace(Method method, bool autoCast = true)
         {
-            this.instruction.Operand = Builder.Current.Import(method.methodReference);
+            this.instruction.Operand = Builder.Import(method.methodReference);
 
             // If we know this method has only one param (Because easy to do), we should try to check
             // the type and and try a cast if needed

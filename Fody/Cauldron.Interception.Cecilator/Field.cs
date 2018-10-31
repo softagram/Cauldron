@@ -19,14 +19,14 @@ namespace Cauldron.Interception.Cecilator
         [EditorBrowsable(EditorBrowsableState.Never), DebuggerBrowsable(DebuggerBrowsableState.Never)]
         internal readonly BuilderType type;
 
-        internal Field(BuilderType type, FieldDefinition field) : base(type)
+        internal Field(BuilderType type, FieldDefinition field)
         {
             this.fieldDef = field;
             this.fieldRef = field.CreateFieldReference();
             this.type = type;
         }
 
-        internal Field(BuilderType type, FieldDefinition fieldDefinition, FieldReference fieldReference) : base(type)
+        internal Field(BuilderType type, FieldDefinition fieldDefinition, FieldReference fieldReference)
         {
             this.fieldDef = fieldDefinition;
             this.fieldRef = fieldReference;
@@ -44,17 +44,7 @@ namespace Cauldron.Interception.Cecilator
             }
         }
 
-        public BuilderCustomAttributeCollection CustomAttributes => new BuilderCustomAttributeCollection(this.type.Builder, this.fieldDef);
-
-        /// <summary>
-        /// Gets the type that contains the field
-        /// </summary>
-        public BuilderType DeclaringType => new BuilderType(this.type.Builder, this.fieldRef.DeclaringType);
-
-        public BuilderType FieldType => new BuilderType(this.type, this.fieldRef.FieldType);
-        public bool IsPrivate => this.fieldDef.IsPrivate;
-        public bool IsPublic => this.fieldDef.IsPublic;
-        public bool IsStatic => this.fieldDef.IsStatic;
+        public BuilderCustomAttributeCollection CustomAttributes => new BuilderCustomAttributeCollection(this.fieldDef);
 
         public Modifiers Modifiers
         {
@@ -70,8 +60,6 @@ namespace Cauldron.Interception.Cecilator
             }
         }
 
-        public string Name => this.fieldDef.Name;
-
         /// <summary>
         /// Gets the type that inherited the field
         /// </summary>
@@ -83,23 +71,34 @@ namespace Cauldron.Interception.Cecilator
             set => this.fieldDef.IsInitOnly = value;
         }
 
+        /// <summary>
+        /// Gets the type that contains the field
+        /// </summary>
+        public BuilderType DeclaringType => new BuilderType(this.fieldRef.DeclaringType);
+
+        public BuilderType FieldType => new BuilderType(this.type, this.fieldRef.FieldType);
+        public bool IsPrivate => this.fieldDef.IsPrivate;
+        public bool IsPublic => this.fieldDef.IsPublic;
+        public bool IsStatic => this.fieldDef.IsStatic;
+        public string Name => this.fieldDef.Name;
+
         public IEnumerable<FieldUsage> FindUsages()
         {
             var result = this.fieldDef
                 .DeclaringType
                 .Methods.Concat(this.fieldDef.DeclaringType.GetNestedTypes().SelectMany(x => x.Resolve().Methods))
                 .Where(x => x.Body != null)
-                .SelectMany(x => this.GetFieldUsage(new Method(new BuilderType(this.type.Builder, x.DeclaringType), x)));
+                .SelectMany(x => this.GetFieldUsage(new Method(new BuilderType(x.DeclaringType), x)));
 
             if (!this.IsPrivate)
-                return result.Concat(this.type.Builder.GetTypes().SelectMany(x => x.Methods).SelectMany(x => this.GetFieldUsage(x)));
+                return result.Concat(Builder.GetTypes().SelectMany(x => x.Methods).SelectMany(x => this.GetFieldUsage(x)));
 
             return result;
         }
 
         public Field Import()
         {
-            var result = this.moduleDefinition.ImportReference(this.fieldRef);
+            var result = this.ModuleDefinition.ImportReference(this.fieldRef);
             return new Field(this.type, result.Resolve(), result);
         }
 

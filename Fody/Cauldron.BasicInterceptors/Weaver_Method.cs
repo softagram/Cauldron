@@ -14,15 +14,15 @@ public sealed class Weaver_Method
     static Weaver_Method()
     {
         methodInterceptionAttributes =
-            Builder.Current.FindAttributesByInterfaces("Cauldron.Interception.IMethodInterceptor")
-            .Concat(Builder.Current.FindAttributesByInterfaces("Cauldron.Interception.ISimpleMethodInterceptor"));
+            Builder.FindAttributesByInterfaces("Cauldron.Interception.IMethodInterceptor")
+            .Concat(Builder.FindAttributesByInterfaces("Cauldron.Interception.ISimpleMethodInterceptor"));
     }
 
     [Display("Type-Wide Method Interception")]
-    public static void ImplementTypeWideMethodInterception(Builder builder) => ImplementTypeWideMethodInterception(builder, methodInterceptionAttributes);
+    public static void ImplementTypeWideMethodInterception(BuilderOld builder) => ImplementTypeWideMethodInterception(builder, methodInterceptionAttributes);
 
     [Display("Method Interception")]
-    public static void InterceptMethods(Builder builder)
+    public static void InterceptMethods(BuilderOld builder)
     {
         if (!methodInterceptionAttributes.Any())
             return;
@@ -172,7 +172,7 @@ public sealed class Weaver_Method
         };
     }
 
-    internal static void ImplementTypeWideMethodInterception(Builder builder, IEnumerable<BuilderType> attributes)
+    internal static void ImplementTypeWideMethodInterception(BuilderOld builder, IEnumerable<BuilderType> attributes)
     {
         if (!methodInterceptionAttributes.Any())
             return;

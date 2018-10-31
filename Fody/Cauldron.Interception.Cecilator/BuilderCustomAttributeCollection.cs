@@ -11,9 +11,6 @@ namespace Cauldron.Interception.Cecilator
     public class BuilderCustomAttributeCollection : CecilatorBase, IEnumerable<BuilderCustomAttribute>
     {
         [EditorBrowsable(EditorBrowsableState.Never), DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private readonly Builder builder;
-
-        [EditorBrowsable(EditorBrowsableState.Never), DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly ICustomAttributeProvider customAttributeProvider;
 
         [EditorBrowsable(EditorBrowsableState.Never), DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -22,30 +19,27 @@ namespace Cauldron.Interception.Cecilator
         [EditorBrowsable(EditorBrowsableState.Never), DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly PropertyDefinition propertyDefinition;
 
-        internal BuilderCustomAttributeCollection(Builder builder, ICustomAttributeProvider customAttributeProvider) : base(builder)
+        internal BuilderCustomAttributeCollection(ICustomAttributeProvider customAttributeProvider)
         {
-            this.builder = builder;
             this.customAttributeProvider = customAttributeProvider;
-
-            this.innerCollection.AddRange(customAttributeProvider.CustomAttributes.Select(x => new BuilderCustomAttribute(builder, customAttributeProvider, x)));
+            this.innerCollection.AddRange(customAttributeProvider.CustomAttributes.Select(x => new BuilderCustomAttribute(customAttributeProvider, x)));
         }
 
-        internal BuilderCustomAttributeCollection(Builder builder, PropertyDefinition propertyDefinition) : base(builder)
+        internal BuilderCustomAttributeCollection(PropertyDefinition propertyDefinition)
         {
-            this.builder = builder;
             this.propertyDefinition = propertyDefinition;
             this.customAttributeProvider = propertyDefinition;
 
-            this.innerCollection.AddRange(this.customAttributeProvider.CustomAttributes.Select(x => new BuilderCustomAttribute(builder, this.customAttributeProvider, x)));
+            this.innerCollection.AddRange(this.customAttributeProvider.CustomAttributes.Select(x => new BuilderCustomAttribute(this.customAttributeProvider, x)));
 
             if (propertyDefinition.GetMethod != null)
-                this.innerCollection.AddRange(propertyDefinition.GetMethod.CustomAttributes.Select(x => new BuilderCustomAttribute(builder, propertyDefinition.GetMethod, x)));
+                this.innerCollection.AddRange(propertyDefinition.GetMethod.CustomAttributes.Select(x => new BuilderCustomAttribute(propertyDefinition.GetMethod, x)));
 
             if (propertyDefinition.SetMethod != null)
-                this.innerCollection.AddRange(propertyDefinition.SetMethod.CustomAttributes.Select(x => new BuilderCustomAttribute(builder, propertyDefinition.SetMethod, x)));
+                this.innerCollection.AddRange(propertyDefinition.SetMethod.CustomAttributes.Select(x => new BuilderCustomAttribute(propertyDefinition.SetMethod, x)));
         }
 
-        public bool Add(Type customAttributeType, params object[] parameters) => this.Add(this.moduleDefinition.ImportReference(customAttributeType), parameters);
+        public bool Add(Type customAttributeType, params object[] parameters) => this.Add(this.ModuleDefinition.ImportReference(customAttributeType), parameters);
 
         public bool Add(TypeReference customAttributeType, params object[] parameters) => this.Add(customAttributeType.ToBuilderType(), parameters);
 
@@ -66,37 +60,37 @@ namespace Cauldron.Interception.Cecilator
             if (this.customAttributeProvider != null)
             {
                 this.customAttributeProvider.CustomAttributes.Add(attrib.attribute);
-                this.innerCollection.Add(new BuilderCustomAttribute(this.builder, this.customAttributeProvider, attrib.attribute));
+                this.innerCollection.Add(new BuilderCustomAttribute(this.customAttributeProvider, attrib.attribute));
             }
 
             return true;
         }
 
-        public void AddCompilerGeneratedAttribute() => this.Add(this.builder.GetType("System.Runtime.CompilerServices.CompilerGeneratedAttribute"));
+        public void AddCompilerGeneratedAttribute() => this.Add(Builder.GetType("System.Runtime.CompilerServices.CompilerGeneratedAttribute"));
 
-        public void AddDebuggerBrowsableAttribute(DebuggerBrowsableState state) => this.Add(this.builder.GetType("System.Diagnostics.DebuggerBrowsableAttribute"), state);
+        public void AddDebuggerBrowsableAttribute(DebuggerBrowsableState state) => this.Add(Builder.GetType("System.Diagnostics.DebuggerBrowsableAttribute"), state);
 
-        public void AddDebuggerDisplayAttribute(string value) => this.Add(this.builder.GetType("System.Diagnostics.DebuggerDisplayAttribute"), value);
+        public void AddDebuggerDisplayAttribute(string value) => this.Add(Builder.GetType("System.Diagnostics.DebuggerDisplayAttribute"), value);
 
-        public void AddEditorBrowsableAttribute(EditorBrowsableState state) => this.Add(this.builder.GetType("System.ComponentModel.EditorBrowsableAttribute"), state);
+        public void AddEditorBrowsableAttribute(EditorBrowsableState state) => this.Add(Builder.GetType("System.ComponentModel.EditorBrowsableAttribute"), state);
 
         public void AddNonSerializedAttribute()
         {
-            if (this.builder.IsUWP)
-                this.Add(this.builder.GetType("System.Runtime.Serialization.IgnoreDataMemberAttribute"));
-            else if (this.builder.TypeExists("System.NonSerializedAttribute"))
+            if (Builder.IsUWP)
+                this.Add(Builder.GetType("System.Runtime.Serialization.IgnoreDataMemberAttribute"));
+            else if (Builder.TypeExists("System.NonSerializedAttribute"))
             {
                 if (this.propertyDefinition != null)
                 {
-                    if (this.builder.TypeExists("System.Xml.Serialization.XmlIgnoreAttribute"))
-                        this.Add(this.builder.GetType("System.Xml.Serialization.XmlIgnoreAttribute"));
+                    if (Builder.TypeExists("System.Xml.Serialization.XmlIgnoreAttribute"))
+                        this.Add(Builder.GetType("System.Xml.Serialization.XmlIgnoreAttribute"));
                 }
                 else if (this.customAttributeProvider is FieldDefinition fieldDefinition)
-                    this.Add(this.builder.GetType("System.NonSerializedAttribute"));
+                    this.Add(Builder.GetType("System.NonSerializedAttribute"));
             }
 
             //if (this.builder.TypeExists("Newtonsoft.Json.JsonIgnoreAttribute"))
-            //    this.Add(this.builder.GetType("Newtonsoft.Json.JsonIgnoreAttribute"));
+            //    this.Add(Builder.GetType("Newtonsoft.Json.JsonIgnoreAttribute"));
         }
 
         public void Copy(BuilderCustomAttribute attribute)

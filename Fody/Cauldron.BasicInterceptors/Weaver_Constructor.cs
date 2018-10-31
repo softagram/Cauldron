@@ -12,11 +12,11 @@ public static class Weaver_Constructor
 
     static Weaver_Constructor()
     {
-        constructorInterceptionAttributes = Builder.Current.FindAttributesByInterfaces(BuilderTypes.IConstructorInterceptor.BuilderType.Fullname);
+        constructorInterceptionAttributes = Builder.FindAttributesByInterfaces(BuilderTypes.IConstructorInterceptor.BuilderType.Fullname);
     }
 
     [Display("Constructor Interception")]
-    public static void InterceptConstructors(Builder builder)
+    public static void InterceptConstructors(BuilderOld builder)
     {
         if (!constructorInterceptionAttributes.Any())
             return;

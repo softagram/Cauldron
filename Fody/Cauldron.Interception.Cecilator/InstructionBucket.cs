@@ -17,7 +17,7 @@ namespace Cauldron.Interception.Cecilator
             {
                 if (instructions == null)
                 {
-                    instructions = Builder.Current.GetTypesInternal(SearchContext.Module)
+                    instructions = Builder.GetTypesInternal(SearchContext.Module)
                         .AsParallel()
                         .SelectMany(x => x.BetterResolve().Methods)
                         .Where(x => x.HasBody)
@@ -35,7 +35,7 @@ namespace Cauldron.Interception.Cecilator
             {
                 if (types == null)
                 {
-                    types = Builder.Current.GetTypesInternal(SearchContext.Module)
+                    types = Builder.GetTypesInternal(SearchContext.Module)
                         .AsParallel()
                         .SelectMany(x => GetTypeReference(x))
                         .ToArray();

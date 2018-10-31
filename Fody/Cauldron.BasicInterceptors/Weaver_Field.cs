@@ -9,7 +9,7 @@ public static class Weaver_Field
     public static int Priority = 0;
 
     [Display("Field Interception")]
-    public static void InterceptFields(Builder builder)
+    public static void InterceptFields(BuilderOld builder)
     {
         if (!Weaver_Property.PropertyInterceptingAttributes.Any())
             return;
